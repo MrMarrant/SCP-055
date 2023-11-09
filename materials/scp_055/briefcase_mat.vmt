@@ -1,0 +1,7 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "scp_055/briefcase_mat"
+	"$normalmap" "scp_055/briefcase_normal"
+	"$bumpmap  " "scp_055/briefcase_metalic"
+	$nocull 1
+}

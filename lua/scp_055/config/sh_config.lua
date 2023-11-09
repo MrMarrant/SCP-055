@@ -1,0 +1,33 @@
+-- SCP-055, A representation of a paranormal object on a fictional series on the game Garry's Mod.
+-- Copyright (C) 2023  MrMarrant aka BIBI.
+
+-- This program is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU General Public License as published by
+-- the Free Software Foundation, either version 3 of the License, or
+-- (at your option) any later version.
+
+-- This program is distributed in the hope that it will be useful,
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU General Public License for more details.
+
+-- You should have received a copy of the GNU General Public License
+-- along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+local alphabet = {}
+for char = 97, 122 do -- Les codes ASCII de 'a' à 'z'
+    table.insert(alphabet, math.random(1, #alphabet), string.char(char))
+end
+
+for digit = 0, 9 do
+    table.insert(alphabet, math.random(1, #alphabet), tostring(digit))
+end
+
+local password = ""
+
+for i = 1, 6 do
+    local randomIndex = math.random(1, #alphabet)
+    password = password .. array[randomIndex]
+end
+
+SCP_055_CONFIG.SecurityPassword = password
