@@ -15,3 +15,8 @@ function scp_055.Drop(ply, name)
 
 	return ent
 end
+
+-- Return true if the player has the security card or if is not needed
+function scp_055.HasSecurityCard(ply)
+	return (ply:HasWeapon("swep_cardscp055") or (not SCP_055_CONFIG.NeedCard and not ply:HasWeapon("swep_cardscp055")))
+end

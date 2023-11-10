@@ -19,7 +19,7 @@ AddCSLuaFile("shared.lua")
 include("shared.lua")
 
 function ENT:Initialize()
-	self:SetModel( "" ) -- TODO : Add the model
+	self:SetModel( "models/card_scp055/card_scp055.mdl" )
 	self:RebuildPhysics()
 end
 
@@ -30,6 +30,7 @@ function ENT:RebuildPhysics( )
 	self:SetSolid( SOLID_VPHYSICS ) 
 	self:SetUseType(SIMPLE_USE)
 	self:PhysWake()
+	self:SetModelScale( 0.05 )
 end
 
 -- Use specially for the physics sounds

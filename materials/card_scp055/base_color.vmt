@@ -1,0 +1,17 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "card_scp055/base_color"
+	$normalmap "card_scp055/normal"
+
+	$envmap	"env_cubemap"
+	$envmaptint	"[.25 .25 .25]" // modified by proxy (not in hlmv)
+	$normalmapalphaenvmapmask	"1"
+	$envmapfresnel	"1"
+
+	$rimlight	"1"
+	$rimmask	"1"
+	$rimlightboost	"1"
+	$rimlightexponent	"2"
+
+	$envmaptintmult	"[.25 .25 .25]"
+}
