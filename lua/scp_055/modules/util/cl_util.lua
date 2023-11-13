@@ -14,23 +14,11 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
--- NET VAR
-SCP_055_CONFIG.RemoveClientElement = "SCP_055_CONFIG.RemoveClientElement"
+net.Receive(SCP_055_CONFIG.RemoveClientElement, function ( )
+    local name = net.ReadString()
+    local ply = LocalPlayer()
 
-local alphabet = {}
-for char = 97, 122 do -- Les codes ASCII de 'a' à 'z'
-    table.insert(alphabet, math.random(1, #alphabet), string.char(char))
-end
-
-for digit = 0, 9 do
-    table.insert(alphabet, math.random(1, #alphabet), tostring(digit))
-end
-
-local password = ""
-
-for i = 1, 6 do
-    local randomIndex = math.random(1, #alphabet)
-    password = password .. alphabet[randomIndex]
-end
-
-SCP_055_CONFIG.SecurityPassword = password
+    if (ply[name]) then
+        ply[name] = nil
+	end
+end)

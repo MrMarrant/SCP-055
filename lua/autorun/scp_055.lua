@@ -15,12 +15,12 @@
 -- along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 -- Functions
-SCP_055 = {}
+scp_055 = {}
 -- Global Variable
 SCP_055_CONFIG = {}
 
 -- Root path
-SCP_055_CONFIG.RootFolder = "SCP-055/"
+SCP_055_CONFIG.RootFolder = "scp_055/"
 
 /*
 * Load the file set in the parameters.

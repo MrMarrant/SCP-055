@@ -47,6 +47,8 @@ end
 
 function ENT:Use(ply)
 	if (not IsValid(ply)) then return end
-	-- TODO : Check if he has already the swep
-	-- TODO : Give The swep
+	if (ply:HasWeapon( "swep_cardscp055" )) then return end
+
+	ply:Give("swep_cardscp055")
+	self:Remove()
 end

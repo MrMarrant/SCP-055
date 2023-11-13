@@ -24,7 +24,7 @@ SWEP.Spawnable = true
 
 SWEP.Category = "SCP"
 SWEP.ViewModel = Model( "" )
-SWEP.WorldModel = Model( "" ) -- TODO : Faire le world model
+SWEP.WorldModel = Model( "models/weapons/card_scp055/w_card_scp055.mdl" )
 
 SWEP.ViewModelFOV = 65
 SWEP.HoldType = "normal"
@@ -52,14 +52,23 @@ end
 
 function SWEP:PrimaryAttack()
 	self:SetNextPrimaryFire( CurTime() + self.PrimaryCooldown )
+	if SERVER then return end
 
-	-- TODO : Primary Function, display or hide the card with unique ID
+	local ply = self:GetOwner()
+
+	ply.scp055_cardCode = !ply.scp055_cardCode
 end
 
 function SWEP:SecondaryAttack()
-	if CLIENT then return end
+	local ply = self:GetOwner()
+	if CLIENT then ply.scp055_cardCode = nil return end
 
 	self:SetNextSecondaryFire( CurTime() + self.PrimaryCooldown )
 	local ent = scp_055.Drop(self:GetOwner(), "card_scp055")
 	if (IsValid(ent)) then self:Remove() end
+end
+
+function SWEP:OnDrop()
+	local ply = self:GetOwner()
+	scp_055.RemoveClientElement(ply, "scp055_cardCode")
 end
