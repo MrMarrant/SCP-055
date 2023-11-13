@@ -48,6 +48,7 @@ SWEP.PrimaryCooldown = 1
 function SWEP:Initialize()
 	self:SetWeaponHoldType( self.HoldType )
 	self:SetHoldType( self.HoldType )
+	self:GetOwner().scp055_cardCode = nil
 end
 
 function SWEP:PrimaryAttack()
@@ -66,9 +67,4 @@ function SWEP:SecondaryAttack()
 	self:SetNextSecondaryFire( CurTime() + self.PrimaryCooldown )
 	local ent = scp_055.Drop(self:GetOwner(), "card_scp055")
 	if (IsValid(ent)) then self:Remove() end
-end
-
-function SWEP:OnDrop()
-	local ply = self:GetOwner()
-	scp_055.RemoveClientElement(ply, "scp055_cardCode")
 end

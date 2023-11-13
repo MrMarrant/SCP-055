@@ -48,10 +48,13 @@ end
 
 function ENT:Use(ply)
 	if (not IsValid(ply)) then return end
-	-- TODO : Check if he has already the swep
-	-- TODO: Give The swep
-	local weapon = ply:Give("scp_055")
-	if (IsValid(weapon)) then weapon.IsOpen = self:GetIsOpen() end
+	if (ply:HasWeapon( "swep_scp055" )) then return end
+
+	local weapon = ply:Give("swep_scp055")
+	if (IsValid(weapon)) then 
+		weapon.IsOpen = self:GetIsOpen() 
+		self:Remove()
+	end
 end
 
 -- Intialise every var related to the entity

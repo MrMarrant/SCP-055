@@ -15,7 +15,7 @@
 -- along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 -- NET VAR
-SCP_055_CONFIG.RemoveClientElement = "SCP_055_CONFIG.RemoveClientElement"
+SCP_055_CONFIG.RemoveClientElement = "SCP_055_CONFIG.RemoveClientElement"-- DEPRECATED
 
 local alphabet = {}
 for char = 97, 122 do -- Les codes ASCII de 'a' à 'z'

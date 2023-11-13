@@ -17,8 +17,9 @@
 -- Enable if it need to have the card for open SCP-055 briefcase
 SCP_055_CONFIG.NeedCard = CreateConVar( "SCP055_NeedCard", 1, {FCVAR_PROTECTED, FCVAR_ARCHIVE}, "Enable if it need to have the securty card for open SCP-055 briefcase", 0, 1 )
 
-util.AddNetworkString( SCP_055_CONFIG.RemoveClientElement )
+util.AddNetworkString( SCP_055_CONFIG.RemoveClientElement ) -- DEPRECATED
 
 hook.Add( "PlayerDeath", "PlayerDeath.SCP055_Died", function( victim, inflictor, attacker )
-    scp_055.RemoveClientElement(victim, "scp055_cardCode")
+    scp_055.DropEntitie(victim, "swep_cardscp055", "card_scp055")
+    scp_055.DropEntitie(victim, "swep_scp055", "scp_055")
 end)
