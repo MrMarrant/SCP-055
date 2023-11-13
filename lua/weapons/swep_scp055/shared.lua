@@ -23,8 +23,8 @@ SWEP.SlotPos = 1
 SWEP.Spawnable = true
 
 SWEP.Category = "SCP"
-SWEP.ViewModel = Model( "" )
-SWEP.WorldModel = Model( "" )
+SWEP.ViewModel = Model( "" ) -- TODO : Model
+SWEP.WorldModel = Model( "models/weapons/w_scp055/w_scp055.mdl" )
 
 SWEP.ViewModelFOV = 65
 SWEP.HoldType = "normal"
@@ -70,15 +70,17 @@ function SWEP:PrimaryAttack()
 	self:SetNextPrimaryFire( CurTime() + self.PrimaryCooldown )
 	if CLIENT then return end
 
+	local ply = self:GetOwner()
+
 	if (not self.IsOpen and scp_055.HasSecurityCard(ply)) then
 		-- TODO : Afficher la demande du mot de passe
 	elseif (self.IsOpen) then
 		self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
-		local VMAnim = self:GetOwner():GetViewModel()
+		local VMAnim = ply:GetViewModel()
 		local NexIdle = VMAnim:SequenceDuration() / VMAnim:GetPlaybackRate()
 	
 		timer.Simple(NexIdle, function()
-			if(!self:IsValid() or !self:GetOwner():IsValid()) then return end
+			if(!self:IsValid() or !ply:IsValid()) then return end
 	
 			-- TODO : Primary Function
 			-- TODO : jouer un son / animation
