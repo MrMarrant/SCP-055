@@ -14,12 +14,11 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-SCP_055_CONFIG.ScrW = ScrW()
-SCP_055_CONFIG.ScrH = ScrH()
+--[[
+    * Return true if the player has the security card or if is not needed
+    * @Player ply The player who will drop the entity.
+--]]
 
-SCP_055_CONFIG.NeedCard = SCP_055_CONFIG.NeedCard or 1
-
-surface.CreateFont( "SCP055_Password", {
-    font = "Oswald",
-    size = 100,
-} )
+function scp_055.HasSecurityCard(ply)
+	return (ply:HasWeapon("swep_cardscp055") or (not SCP_055_CONFIG.NeedCard and not ply:HasWeapon("swep_cardscp055")))
+end

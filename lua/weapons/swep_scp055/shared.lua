@@ -23,7 +23,7 @@ SWEP.SlotPos = 1
 SWEP.Spawnable = true
 
 SWEP.Category = "SCP"
-SWEP.ViewModel = Model( "" ) -- TODO : Model
+SWEP.ViewModel = Model( "models/weapons/v_scp055/v_scp055.mdl" )
 SWEP.WorldModel = Model( "models/weapons/w_scp055/w_scp055.mdl" )
 
 SWEP.ViewModelFOV = 65
@@ -40,22 +40,29 @@ SWEP.Secondary.DefaultClip = -1
 SWEP.Secondary.Automatic = false
 SWEP.Secondary.Ammo = "none"
 SWEP.DrawAmmo = false
+SWEP.AutoSwitch = true
+SWEP.Automatic = false
 
 -- Variables Personnal to this weapon --
 -- [[ STATS WEAPON ]]
 SWEP.PrimaryCooldown = 3.5
 
+-- Animation SWEP CONST --
+local check = "check"
+local open = "open"
+local uncheck = "uncheck"
+
 function SWEP:Initialize()
+	self:InitVar()
 	self:SetWeaponHoldType( self.HoldType )
 	self:SetHoldType( self.HoldType )
+	self:SetPlaybackRate( GetConVarNumber( "sv_defaultdeployspeed" ) )
 end
 
 function SWEP:Deploy()
 	local ply = self:GetOwner()
-	local speedAnimation = GetConVarNumber( "sv_defaultdeployspeed" )
 
 	self:SendWeaponAnim( ACT_VM_IDLE )
-	self:SetPlaybackRate( speedAnimation )
 
 	local VMAnim = ply:GetViewModel()
 	local NexIdle = VMAnim:SequenceDuration() / VMAnim:GetPlaybackRate() 
@@ -68,25 +75,38 @@ end
 
 function SWEP:PrimaryAttack()
 	self:SetNextPrimaryFire( CurTime() + self.PrimaryCooldown )
-	if CLIENT then return end
 
 	local ply = self:GetOwner()
+	local VMAnim = ply:GetViewModel()
+	local StateOpen = self:GetIsOpen()
+	local StateCheck = self:GetIsCheck()
 
-	if (not self.IsOpen and scp_055.HasSecurityCard(ply)) then
-		-- TODO : Afficher la demande du mot de passe
-	elseif (self.IsOpen) then
-		self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
-		local VMAnim = ply:GetViewModel()
-		local NexIdle = VMAnim:SequenceDuration() / VMAnim:GetPlaybackRate()
-	
-		timer.Simple(NexIdle, function()
-			if(!self:IsValid() or !ply:IsValid()) then return end
-	
-			-- TODO : Primary Function
-			-- TODO : jouer un son / animation
-		end)
+	if (StateCheck) then
+		VMAnim:SendViewModelMatchingSequence( VMAnim:LookupSequence( uncheck ) )
+		self:SetIsCheck(false)
 	else
-		-- TODO : jouer un son d'erreur
+		if (!scp_055.HasSecurityCard(ply)) then
+			-- TODO : jouer un son d'erreur
+			print("NoCard")
+		else
+			local AnimToPlay = StateOpen and open or check
+			VMAnim:SendViewModelMatchingSequence( VMAnim:LookupSequence( AnimToPlay ) )
+			if (AnimToPlay == check) then self:SetIsCheck(true) end
+			if CLIENT then return end
+	
+			local NexIdle = VMAnim:SequenceDuration() / VMAnim:GetPlaybackRate()
+		
+			timer.Simple(NexIdle, function()
+				if(!self:IsValid() or !ply:IsValid()) then return end
+	
+				if (StateOpen) then
+					-- TODO : Primary Function
+					-- TODO : jouer un son / animation
+				else
+					-- TODO : Afficher la demande du mot de passe
+				end
+			end)
+		end
 	end
 end
 
@@ -96,7 +116,7 @@ function SWEP:SecondaryAttack()
 	self:SetNextSecondaryFire( CurTime() + self.PrimaryCooldown )
 	local ent = scp_055.Drop(self:GetOwner(), "scp_055")
 	if (IsValid(ent)) then
-		ent:SetIsOpen(self.IsOpen)
+		ent:SetIsOpen(self:GetIsOpen())
 		self:Remove()
 	end
 end
@@ -104,8 +124,19 @@ end
 -- Close the entitie
 function SWEP:Reload()
 	local ply = self:GetOwner()
-	if (self.IsOpen and scp_055.HasSecurityCard(ply)) then
-		self.ISOpen = false
+	if (self:GetIsOpen() and scp_055.HasSecurityCard(ply)) then
+		self:SetIsOpen(false)
 		-- TODO : jouer un son / animation
 	end
+end
+
+function SWEP:SetupDataTables()
+    self:NetworkVar("Bool", 0, "IsOpen")
+    self:NetworkVar("Bool", 1, "IsCheck")
+end
+
+-- Intialise every var related to the entity
+function SWEP:InitVar( )
+	self:SetIsOpen(false)
+	self:SetIsCheck(false)
 end

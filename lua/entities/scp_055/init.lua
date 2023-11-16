@@ -52,7 +52,7 @@ function ENT:Use(ply)
 
 	local weapon = ply:Give("swep_scp055")
 	if (IsValid(weapon)) then 
-		weapon.IsOpen = self:GetIsOpen() 
+		weapon:SetIsOpen(self:GetIsOpen())
 		self:Remove()
 	end
 end

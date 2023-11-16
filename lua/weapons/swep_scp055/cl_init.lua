@@ -22,5 +22,3 @@ SWEP.Purpose = "It isn't round"
 SWEP.DrawCrosshair = false
 SWEP.Base = "weapon_base"
 SWEP.AutoSwitchTo = false
-
-SWEP.IsOpen = false
