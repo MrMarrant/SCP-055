@@ -31,12 +31,3 @@ function scp_055.Drop(ply, name)
 
 	return ent
 end
-
---[[
-	* DEPRECATED
---]]
-function scp_055.RemoveClientElement(ply, name)
-	net.Start(SCP_055_CONFIG.RemoveClientElement)
-		net.WriteString(name)
-	net.Send(ply)
-end

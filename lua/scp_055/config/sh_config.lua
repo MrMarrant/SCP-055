@@ -14,9 +14,6 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
--- NET VAR
-SCP_055_CONFIG.RemoveClientElement = "SCP_055_CONFIG.RemoveClientElement"-- DEPRECATED
-
 local alphabet = {}
 for char = 97, 122 do -- Les codes ASCII de 'a' à 'z'
     table.insert(alphabet, math.random(1, #alphabet), string.char(char))

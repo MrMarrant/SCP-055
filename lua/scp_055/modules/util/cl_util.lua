@@ -14,12 +14,47 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
--- DEPRECATED
-net.Receive(SCP_055_CONFIG.RemoveClientElement, function ( )
-    local name = net.ReadString()
-    local ply = LocalPlayer()
+local tab = {
+    [ "$pp_colour_addr" ] = 0,
+    [ "$pp_colour_addg" ] = 0,
+    [ "$pp_colour_addb" ] = 0,
+    [ "$pp_colour_brightness" ] = 0,
+    [ "$pp_colour_contrast" ] = 1,
+    [ "$pp_colour_colour" ] = 1,
+    [ "$pp_colour_mulr" ] = 0,
+    [ "$pp_colour_mulg" ] = 0,
+    [ "$pp_colour_mulb" ] = 0
+}
 
-    if (ply[name]) then
-        ply[name] = nil
-	end
-end)
+local AddAlpha = 0.1
+local DrawAlpha = 0.2
+local Delay = 0.05
+
+function scp_055.SetBriefcaseEffect(ent)
+    local ply = LocalPlayer()
+    local maxRange = SCP_055_CONFIG.RadiusEffect
+
+    if (ply:GetPos():Distance(ent:GetPos()) > maxRange) then return end
+
+    local distanceLeft = maxRange - ply:GetPos():Distance(ent:GetPos())
+    tab[ "$pp_colour_contrast" ] = 1 - 0.99 * (distanceLeft / maxRange)
+
+    DrawColorModify( tab )
+    cam.Start3D()
+        render.SetStencilEnable( true )
+        render.SetStencilWriteMask( 1 )
+        render.SetStencilTestMask( 1 )
+        render.SetStencilReferenceValue( 1 )
+        render.SetStencilFailOperation( STENCIL_KEEP )
+        render.SetStencilZFailOperation( STENCIL_KEEP )
+
+        render.SetStencilCompareFunction( STENCIL_ALWAYS )
+        render.SetStencilPassOperation( STENCIL_REPLACE )
+
+        ent:DrawModel()
+
+        render.SetStencilEnable( false )
+    cam.End3D()
+
+    DrawMotionBlur( AddAlpha, DrawAlpha, Delay )
+end

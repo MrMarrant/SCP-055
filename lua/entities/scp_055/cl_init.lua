@@ -19,3 +19,14 @@ include("shared.lua")
 function ENT:Draw()
     self:DrawModel() 
 end
+
+
+function ENT:Initialize()
+    hook.Add("HUDPaint", "HUDPaint.SCP055_BriefcaseEffect".. self:EntIndex(), function()
+        scp_055.SetBriefcaseEffect(self)
+    end)
+end
+
+function ENT:OnRemove()
+    hook.Remove("HUDPaint", "HUDPaint.SCP055_BriefcaseEffect".. self:EntIndex())
+end
