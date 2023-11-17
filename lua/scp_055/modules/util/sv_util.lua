@@ -31,3 +31,34 @@ function scp_055.Drop(ply, name)
 
 	return ent
 end
+
+function scp_055.OpenPanelPassword(ply)
+	net.Start(SCP_055_CONFIG.OpenPanelPassword)
+	net.Send(ply)
+end
+
+function scp_055.UnCheckBriefcase(ply, SCP055)
+	local VMAnim = ply:GetViewModel()
+	VMAnim:SendViewModelMatchingSequence( VMAnim:LookupSequence( "uncheck" ) )
+	SCP055:SetIsCheck(false)
+end
+
+function scp_055.OpenBriefcase(ply)
+	local SCP055 = ply:GetWeapon("swep_scp055")
+
+	if (not IsValid(SCP055)) then return end
+
+	scp_055.UnCheckBriefcase(ply, SCP055)
+	SCP055:SetIsOpen(true)
+end
+
+net.Receive(SCP_055_CONFIG.OpenBriefcase, function(len, ply)
+	scp_055.OpenBriefcase(ply)
+end)
+
+net.Receive(SCP_055_CONFIG.UnCheckBriefcase, function(len, ply)
+	local SCP055 = ply:GetWeapon("swep_scp055")
+	if (not IsValid(SCP055)) then return end
+
+	scp_055.UnCheckBriefcase(ply, SCP055)
+end)

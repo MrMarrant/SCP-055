@@ -13,12 +13,3 @@
 
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
---[[
-    * Return true if the player has the security card or if is not needed
-    * @Player ply The player who will drop the entity.
---]]
-
-function scp_055.HasSecurityCard(ply)
-	return (ply:HasWeapon("swep_cardscp055") or (not SCP_055_CONFIG.NeedCard and not ply:HasWeapon("swep_cardscp055")))
-end

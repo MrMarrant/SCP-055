@@ -58,3 +58,60 @@ function scp_055.SetBriefcaseEffect(ent)
 
     DrawMotionBlur( AddAlpha, DrawAlpha, Delay )
 end
+
+function scp_055.OpenPanelPassword()
+    local ply = LocalPlayer()
+
+    local frame = vgui.Create("DFrame")
+    frame:SetSize(SCP_055_CONFIG.ScrW * 0.5, SCP_055_CONFIG.ScrH * 0.5)
+    frame:SetPos(SCP_055_CONFIG.ScrW * 0.27, SCP_055_CONFIG.ScrH * 0.488)
+    frame:SetTitle("")
+    frame:SetDraggable(false)
+    frame:ShowCloseButton(false)
+    frame:MakePopup()
+    function frame:Paint(width, height)
+        draw.RoundedBoxEx(0, 0, 0, width, height, Color(0, 0, 0, 0), false , false, true, true)
+    end
+
+    local WidthParent, HeightParent = frame:GetSize()
+
+    ply.SCP055_PanelPassword = vgui.Create("DHTML", frame)
+    ply.SCP055_PanelPassword:SetSize(WidthParent, HeightParent)
+    ply.SCP055_PanelPassword:SetHTML(SCP_055_CONFIG.PanelPassword)
+    ply.SCP055_PanelPassword:SetAllowLua( true )
+    ply.SCP055_PanelPassword:RequestFocus()
+end
+
+function scp_055.ClosePanelPassword()
+    local ply = LocalPlayer()
+    if (ply.SCP055_PanelPassword) then 
+        ply.SCP055_PanelPassword:GetParent():Remove()
+        ply.SCP055_PanelPassword = nil
+    end
+end
+
+function scp_055.CheckPassword(password)
+    local ply = LocalPlayer()
+    if (SCP_055_CONFIG.SecurityPassword == password) then
+        scp_055.ClosePanelPassword()
+        net.Start(SCP_055_CONFIG.OpenBriefcase)
+        net.SendToServer()
+        -- TODO : Jouer un son d'ouverture de la mallette
+    else
+        -- TODO : Jouer un son d'erreur de la mallette
+        -- TODO : Afficher un message d'erreur
+    end
+end
+
+function scp_055.UnCheckBriefcase()
+    scp_055.ClosePanelPassword()
+    net.Start(SCP_055_CONFIG.UnCheckBriefcase)
+    net.SendToServer()
+end
+
+net.Receive(SCP_055_CONFIG.OpenPanelPassword, function()
+    local ply = LocalPlayer()
+    if (ply.SCP055_PanelPassword) then return end
+
+    scp_055.OpenPanelPassword()
+end)

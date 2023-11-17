@@ -45,7 +45,7 @@ SWEP.Automatic = false
 
 -- Variables Personnal to this weapon --
 -- [[ STATS WEAPON ]]
-SWEP.PrimaryCooldown = 3.5
+SWEP.PrimaryCooldown = 1.5
 
 -- Animation SWEP CONST --
 local check = "check"
@@ -75,6 +75,7 @@ end
 
 function SWEP:PrimaryAttack()
 	self:SetNextPrimaryFire( CurTime() + self.PrimaryCooldown )
+	if CLIENT then return end
 
 	local ply = self:GetOwner()
 	local VMAnim = ply:GetViewModel()
@@ -91,19 +92,21 @@ function SWEP:PrimaryAttack()
 		else
 			local AnimToPlay = StateOpen and open or check
 			VMAnim:SendViewModelMatchingSequence( VMAnim:LookupSequence( AnimToPlay ) )
-			if (AnimToPlay == check) then self:SetIsCheck(true) end
+
 			if CLIENT then return end
 	
 			local NexIdle = VMAnim:SequenceDuration() / VMAnim:GetPlaybackRate()
 		
 			timer.Simple(NexIdle, function()
 				if(!self:IsValid() or !ply:IsValid()) then return end
-	
+
+				if (AnimToPlay == check) then self:SetIsCheck(true) end
 				if (StateOpen) then
 					-- TODO : Primary Function
 					-- TODO : jouer un son / animation
 				else
 					-- TODO : Afficher la demande du mot de passe
+					scp_055.OpenPanelPassword(ply)
 				end
 			end)
 		end
@@ -123,6 +126,8 @@ end
 
 -- Close the entitie
 function SWEP:Reload()
+	if CLIENT then return end
+
 	local ply = self:GetOwner()
 	if (self:GetIsOpen() and scp_055.HasSecurityCard(ply)) then
 		self:SetIsOpen(false)

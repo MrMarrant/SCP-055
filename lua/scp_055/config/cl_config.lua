@@ -17,7 +17,6 @@
 SCP_055_CONFIG.ScrW = ScrW()
 SCP_055_CONFIG.ScrH = ScrH()
 
-SCP_055_CONFIG.NeedCard = SCP_055_CONFIG.NeedCard or 0
 SCP_055_CONFIG.RadiusEffect = SCP_055_CONFIG.RadiusEffect or 300
 
 surface.CreateFont( "SCP055_Password", {

@@ -22,3 +22,22 @@ SWEP.Purpose = "It isn't round"
 SWEP.DrawCrosshair = false
 SWEP.Base = "weapon_base"
 SWEP.AutoSwitchTo = false
+
+
+local panelPassword = Material( "card_scp055/panel_password.png" )
+
+function SWEP:DrawHUD()
+    if (self:GetIsCheck()) then
+        surface.SetMaterial( panelPassword )
+        surface.SetDrawColor( 255, 255, 255, 255 )
+        surface.DrawTexturedRect( SCP_055_CONFIG.ScrW *0.27, SCP_055_CONFIG.ScrH * 0.3, SCP_055_CONFIG.ScrW * 0.5, SCP_055_CONFIG.ScrH * 0.5 )
+    end
+end
+
+function SWEP:OnRemove()
+    local ply = self:GetOwner()
+    if (IsValid(ply.SCP055_PanelPassword)) then
+        ply.SCP055_PanelPassword:Remove()
+        ply.SCP055_PanelPassword = nil
+    end
+end

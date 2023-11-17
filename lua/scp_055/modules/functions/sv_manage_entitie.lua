@@ -32,3 +32,11 @@ function scp_055.DropEntitie(ply, weapon, entity)
         ent:Activate()
     end
 end
+
+--[[
+    * Return true if the player has the security card or if is not needed
+    * @Player ply The player who will drop the entity.
+--]]
+function scp_055.HasSecurityCard(ply)
+    return (ply:HasWeapon("swep_cardscp055") or (not SCP_055_CONFIG.NeedCard:GetBool() and not ply:HasWeapon("swep_cardscp055")))
+end

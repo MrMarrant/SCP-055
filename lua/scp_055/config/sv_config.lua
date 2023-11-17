@@ -22,3 +22,7 @@ hook.Add( "PlayerDeath", "PlayerDeath.SCP055_Died", function( victim, inflictor,
     scp_055.DropEntitie(victim, "swep_cardscp055", "card_scp055")
     scp_055.DropEntitie(victim, "swep_scp055", "scp_055")
 end)
+
+util.AddNetworkString(SCP_055_CONFIG.OpenPanelPassword)
+util.AddNetworkString(SCP_055_CONFIG.OpenBriefcase)
+util.AddNetworkString(SCP_055_CONFIG.UnCheckBriefcase)

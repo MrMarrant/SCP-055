@@ -31,3 +31,8 @@ for i = 1, 6 do
 end
 
 SCP_055_CONFIG.SecurityPassword = password
+
+-- NET VAR
+SCP_055_CONFIG.OpenPanelPassword = "SCP_055_CONFIG.OpenPanelPassword"
+SCP_055_CONFIG.OpenBriefcase = "SCP_055_CONFIG.OpenBriefcase"
+SCP_055_CONFIG.UnCheckBriefcase = "SCP_055_CONFIG.UnCheckBriefcase"
