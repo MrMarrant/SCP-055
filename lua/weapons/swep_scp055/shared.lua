@@ -90,8 +90,7 @@ function SWEP:PrimaryAttack()
 			-- TODO : jouer un son d'erreur
 			print("NoCard")
 		else
-			local AnimToPlay = StateOpen and open or check
-			VMAnim:SendViewModelMatchingSequence( VMAnim:LookupSequence( AnimToPlay ) )
+			VMAnim:SendViewModelMatchingSequence( VMAnim:LookupSequence( check ) )
 
 			if CLIENT then return end
 	
@@ -100,12 +99,12 @@ function SWEP:PrimaryAttack()
 			timer.Simple(NexIdle, function()
 				if(!self:IsValid() or !ply:IsValid()) then return end
 
-				if (AnimToPlay == check) then self:SetIsCheck(true) end
 				if (StateOpen) then
+					VMAnim:SendViewModelMatchingSequence( VMAnim:LookupSequence( open ) )
 					-- TODO : Primary Function
 					-- TODO : jouer un son / animation
 				else
-					-- TODO : Afficher la demande du mot de passe
+					self:SetIsCheck(true)
 					scp_055.OpenPanelPassword(ply)
 				end
 			end)
