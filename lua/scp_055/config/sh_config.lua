@@ -32,7 +32,16 @@ end
 
 SCP_055_CONFIG.SecurityPassword = password
 
+-- In seconds, the time it takes to the ascent effect.
+SCP_055_CONFIG.AscentTime = 10
+SCP_055_CONFIG.AscentVelocity = Vector(0, 0, 50)
+
 -- NET VAR
 SCP_055_CONFIG.OpenPanelPassword = "SCP_055_CONFIG.OpenPanelPassword"
 SCP_055_CONFIG.OpenBriefcase = "SCP_055_CONFIG.OpenBriefcase"
 SCP_055_CONFIG.UnCheckBriefcase = "SCP_055_CONFIG.UnCheckBriefcase"
+SCP_055_CONFIG.SetToTheDark = "SCP_055_CONFIG.SetToTheDark"
+SCP_055_CONFIG.RemoveTheDark = "SCP_055_CONFIG.RemoveTheDark"
+SCP_055_CONFIG.SkullEvent = "SCP_055_CONFIG.SkullEvent"
+
+util.PrecacheModel( "models/Gibs/HGIBS.mdl" )

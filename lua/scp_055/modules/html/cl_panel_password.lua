@@ -71,8 +71,8 @@ SCP_055_CONFIG.PanelPassword =
         </div>
         <br>
         <div class="button-container">
-            <button onclick="checkPassword()">ENTER</button>
-            <button onclick='quitPanel()'>QUIT</button>
+            <button onclick="checkPassword()">]]..scp_055.GetTranslation("enter")..[[</button>
+            <button onclick='quitPanel()'>]]..scp_055.GetTranslation("quit")..[[</button>
         </div>
     
         <script>

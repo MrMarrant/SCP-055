@@ -13,3 +13,10 @@
 
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+local LANG_FR = {
+    enter = "ENTRER",
+    quit = "QUITTER",
+}
+
+scp_055.AddLanguage("fr", LANG_FR)

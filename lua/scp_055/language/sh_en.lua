@@ -14,24 +14,9 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-SCP_055_CONFIG.ScrW = ScrW()
-SCP_055_CONFIG.ScrH = ScrH()
-
-SCP_055_CONFIG.RadiusEffect = SCP_055_CONFIG.RadiusEffect or 300
-
-SCP_055_CONFIG.TabPPColor = {
-    [ "$pp_colour_addr" ] = 0,
-    [ "$pp_colour_addg" ] = 0,
-    [ "$pp_colour_addb" ] = 0,
-    [ "$pp_colour_brightness" ] = 0,
-    [ "$pp_colour_contrast" ] = 1,
-    [ "$pp_colour_colour" ] = 1,
-    [ "$pp_colour_mulr" ] = 0,
-    [ "$pp_colour_mulg" ] = 0,
-    [ "$pp_colour_mulb" ] = 0
+local LANG_EN = {
+    enter = "ENTER",
+    quit = "QUIT",
 }
 
-surface.CreateFont( "SCP055_Password", {
-    font = "Oswald",
-    size = 100,
-} )
+scp_055.AddLanguage("en", LANG_EN)

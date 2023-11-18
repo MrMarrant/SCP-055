@@ -14,21 +14,10 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-local tab = {
-    [ "$pp_colour_addr" ] = 0,
-    [ "$pp_colour_addg" ] = 0,
-    [ "$pp_colour_addb" ] = 0,
-    [ "$pp_colour_brightness" ] = 0,
-    [ "$pp_colour_contrast" ] = 1,
-    [ "$pp_colour_colour" ] = 1,
-    [ "$pp_colour_mulr" ] = 0,
-    [ "$pp_colour_mulg" ] = 0,
-    [ "$pp_colour_mulb" ] = 0
-}
-
 local AddAlpha = 0.1
 local DrawAlpha = 0.2
 local Delay = 0.05
+local tab = SCP_055_CONFIG.TabPPColor
 
 function scp_055.SetBriefcaseEffect(ent)
     local ply = LocalPlayer()
@@ -84,7 +73,7 @@ end
 
 function scp_055.ClosePanelPassword()
     local ply = LocalPlayer()
-    if (ply.SCP055_PanelPassword) then 
+    if (ply.SCP055_PanelPassword) then
         ply.SCP055_PanelPassword:GetParent():Remove()
         ply.SCP055_PanelPassword = nil
     end
@@ -109,9 +98,55 @@ function scp_055.UnCheckBriefcase()
     net.SendToServer()
 end
 
+function scp_055.SetToTheDark()
+	local countTime = 0
+	local startTime = CurTime()
+	local ply = LocalPlayer()
+	local tab = SCP_055_CONFIG.TabPPColor
+    local maxTime = SCP_055_CONFIG.AscentTime
+
+	hook.Add("HUDPaint", "HUDPaint.SCP055_SetToTheDark".. ply:EntIndex(), function()
+		if(not IsValid(ply)) then return end
+
+		countTime = math.Clamp( CurTime() - startTime, 0, maxTime )
+
+		tab[ "$pp_colour_contrast" ] = 1 - 1 * (countTime / maxTime)
+	
+		DrawColorModify( tab )
+		cam.Start3D()
+			render.SetStencilEnable( true )
+			render.SetStencilWriteMask( 1 )
+			render.SetStencilTestMask( 1 )
+			render.SetStencilReferenceValue( 1 )
+			render.SetStencilFailOperation( STENCIL_KEEP )
+			render.SetStencilZFailOperation( STENCIL_KEEP )
+	
+			render.SetStencilCompareFunction( STENCIL_ALWAYS )
+			render.SetStencilPassOperation( STENCIL_REPLACE )
+	
+			render.SetStencilEnable( false )
+		cam.End3D()
+	
+		DrawMotionBlur( AddAlpha, DrawAlpha, Delay )
+    end)
+end
+
+function scp_055.RemoveTheDark()
+    local ply = LocalPlayer()
+    hook.Remove("HUDPaint", "HUDPaint.SCP055_SetToTheDark".. ply:EntIndex())
+end
+
 net.Receive(SCP_055_CONFIG.OpenPanelPassword, function()
     local ply = LocalPlayer()
     if (ply.SCP055_PanelPassword) then return end
 
     scp_055.OpenPanelPassword()
+end)
+
+net.Receive(SCP_055_CONFIG.SetToTheDark, function()
+    scp_055.SetToTheDark()
+end)
+
+net.Receive(SCP_055_CONFIG.RemoveTheDark, function()
+    scp_055.RemoveTheDark()
 end)

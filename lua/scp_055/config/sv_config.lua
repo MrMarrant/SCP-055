@@ -21,8 +21,12 @@ SCP_055_CONFIG.RadiusEffect = CreateConVar( "SCP055_RadiusEffect", 300, {FCVAR_P
 hook.Add( "PlayerDeath", "PlayerDeath.SCP055_Died", function( victim, inflictor, attacker )
     scp_055.DropEntitie(victim, "swep_cardscp055", "card_scp055")
     scp_055.DropEntitie(victim, "swep_scp055", "scp_055")
+    scp_055.RemoveTheDark(victim)
+    victim:GetRagdollEntity():Remove()
 end)
 
 util.AddNetworkString(SCP_055_CONFIG.OpenPanelPassword)
 util.AddNetworkString(SCP_055_CONFIG.OpenBriefcase)
 util.AddNetworkString(SCP_055_CONFIG.UnCheckBriefcase)
+util.AddNetworkString(SCP_055_CONFIG.SetToTheDark)
+util.AddNetworkString(SCP_055_CONFIG.RemoveTheDark)

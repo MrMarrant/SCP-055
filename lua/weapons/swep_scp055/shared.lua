@@ -50,7 +50,7 @@ SWEP.PrimaryCooldown = 1.5
 -- Animation SWEP CONST --
 local check = "check"
 local open = "open"
-local uncheck = "uncheck"
+local idle = "idle"
 
 function SWEP:Initialize()
 	self:InitVar()
@@ -83,29 +83,31 @@ function SWEP:PrimaryAttack()
 	local StateCheck = self:GetIsCheck()
 
 	if (StateCheck) then
-		VMAnim:SendViewModelMatchingSequence( VMAnim:LookupSequence( uncheck ) )
-		self:SetIsCheck(false)
+		scp_055.UnCheckBriefcase(ply, self)
 	else
 		if (!scp_055.HasSecurityCard(ply)) then
 			-- TODO : jouer un son d'erreur
 			print("NoCard")
 		else
-			VMAnim:SendViewModelMatchingSequence( VMAnim:LookupSequence( check ) )
-
-			if CLIENT then return end
-	
+			scp_055.SetViewModel(VMAnim, check)
 			local NexIdle = VMAnim:SequenceDuration() / VMAnim:GetPlaybackRate()
 		
 			timer.Simple(NexIdle, function()
 				if(!self:IsValid() or !ply:IsValid()) then return end
 
 				if (StateOpen) then
-					VMAnim:SendViewModelMatchingSequence( VMAnim:LookupSequence( open ) )
+					scp_055.SetViewModel(VMAnim, open)
+					local NexIdle = VMAnim:SequenceDuration() / VMAnim:GetPlaybackRate()
+		
+					timer.Simple(NexIdle - 1, function()
+						scp_055.SetViewModel(VMAnim, idle)
+						scp_055.StartSCP055Effect(ply)
+					end)
 					-- TODO : Primary Function
-					-- TODO : jouer un son / animation
 				else
-					self:SetIsCheck(true)
-					scp_055.OpenPanelPassword(ply)
+					scp_055.StartSCP055Effect(ply) --TODO : A virer
+					-- self:SetIsCheck(true)
+					-- scp_055.OpenPanelPassword(ply)
 				end
 			end)
 		end

@@ -18,9 +18,13 @@
 scp_055 = {}
 -- Global Variable
 SCP_055_CONFIG = {}
+-- Lang
+SCP_055_LANG = {}
 
 -- Root path
 SCP_055_CONFIG.RootFolder = "scp_055/"
+-- Actual lang server
+SCP_055_CONFIG.LangServer = GetConVar("gmod_language"):GetString()
 
 /*
 * Load the file set in the parameters.
@@ -68,5 +72,6 @@ end
 
 print("SCP-055 Loading . . .")
     LoadDirectory(SCP_055_CONFIG.RootFolder .. "config")
+	LoadDirectory(SCP_055_CONFIG.RootFolder .. "language")
     LoadDirectory(SCP_055_CONFIG.RootFolder .. "modules")
 print("SCP-055 Loaded!")

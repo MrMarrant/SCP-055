@@ -14,24 +14,25 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-SCP_055_CONFIG.ScrW = ScrW()
-SCP_055_CONFIG.ScrH = ScrH()
+--[[
+* Returns the element to be translated according to the server language.
+* @string langName Language name (ex : en, fr)
+* @table data The table contain the translations
+--]]
+function scp_055.AddLanguage(langName, data)
+    if (type(langName) == "string" and type(data) == "table") then
+        SCP_055_LANG[langName] = data
+    end
+end
 
-SCP_055_CONFIG.RadiusEffect = SCP_055_CONFIG.RadiusEffect or 300
-
-SCP_055_CONFIG.TabPPColor = {
-    [ "$pp_colour_addr" ] = 0,
-    [ "$pp_colour_addg" ] = 0,
-    [ "$pp_colour_addb" ] = 0,
-    [ "$pp_colour_brightness" ] = 0,
-    [ "$pp_colour_contrast" ] = 1,
-    [ "$pp_colour_colour" ] = 1,
-    [ "$pp_colour_mulr" ] = 0,
-    [ "$pp_colour_mulg" ] = 0,
-    [ "$pp_colour_mulb" ] = 0
-}
-
-surface.CreateFont( "SCP055_Password", {
-    font = "Oswald",
-    size = 100,
-} )
+--[[
+* Returns the element to be translated according to the server language.
+* @string name Element to translate.
+--]]
+function scp_055.GetTranslation(name)
+    local langUsed = SCP_055_CONFIG.LangServer
+    if not SCP_055_LANG[langUsed] then
+        langUsed = "en" -- Default lang is EN.
+    end
+    return string.format( SCP_055_LANG[langUsed][ name ] or "Not Found" )
+end
