@@ -25,6 +25,11 @@ hook.Add( "PlayerDeath", "PlayerDeath.SCP055_Died", function( victim, inflictor,
     scp_055.RemoveTheDark(victim)
 end)
 
+-- Players affect can't hear others players and can't be heard by others.
+hook.Add( "PlayerCanHearPlayersVoice", "PlayerCanHearPlayersVoice.SCP055_Effect", function( Listener, Talker )
+    if Listener.SCP055_AffectBySCP005 or Talker.SCP055_AffectBySCP005 then return false end
+end )
+
 util.AddNetworkString(SCP_055_CONFIG.OpenPanelPassword)
 util.AddNetworkString(SCP_055_CONFIG.OpenBriefcase)
 util.AddNetworkString(SCP_055_CONFIG.UnCheckBriefcase)
