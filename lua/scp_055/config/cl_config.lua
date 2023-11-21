@@ -24,14 +24,19 @@ surface.CreateFont( "SCP055_Password", {
     size = 100,
 } )
 
-surface.CreateFont( "SCP055_BlueScreen", {
-surface.CreateFont( "SCP055_BlueScreen_6", {
+surface.CreateFont( "SCP055_BlueScreen_1", {
+    font = "Libre Barcode 39",
+    size = 100,
+} )
+
+surface.CreateFont( "SCP055_BlueScreen_2", {
     font = "Rock Salt",
     size = 300,
 } )
 
-surface.CreateFont( "SCP055_BlueScreen_7", {
-    font = "Vina Sans",
-    size = 100,
-} )
-} )
+hook.Add( "ChatText", "ChatText.SCP055_BotJoin", function( index, name, text, typeText )
+    if (name == "Console") then
+        local startText, endText = string.find( text, "SCP-055-01", 1, true )
+        if (startText) then return true end
+    end
+end )

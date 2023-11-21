@@ -37,7 +37,7 @@ end
 
 -- TODO : Faire bouger le NPC ?
 function scp_055.CreateNPCReplace(ply)
-    local NPC = player.CreateNextBot( ply:Nick() )
+    local NPC = player.CreateNextBot( "SCP-055-01" )
 	local model = ply:GetModel()
 	local pos = ply:GetPos()
 	local angle = ply:GetAngles()
@@ -126,9 +126,10 @@ function scp_055.KillNPC(ply)
 	end
 end
 
-function scp_055.BlueScreen(ply, keyText, delay)
+function scp_055.BlueScreen(ply, keyText, font, delay)
 	net.Start(SCP_055_CONFIG.BlueScreen)
 		net.WriteString(keyText)
+		net.WriteString(font)
 		net.WriteUInt(delay, 4)
 	net.Send(ply)
 end
@@ -143,7 +144,7 @@ function scp_055.ForwardPlayer(ply, endStep, step)
 		if(currentStep >= endStep) then
 			hook.Remove("Think", "Think.SCP055_ForwardPlayer_".. ply:EntIndex())
 			local text = SCP_055_CONFIG.SkullEventText[ math.random( #SCP_055_CONFIG.SkullEventText ) ]
-			scp_055.BlueScreen(ply, text, 3)
+			scp_055.BlueScreen(ply, text, "SCP055_BlueScreen_2", 3)
 			local pos = IsValid(ply.SCP055_NPCReplace) and ply.SCP055_NPCReplace:GetPos() or ply.SCP055_OriginPos
 			scp_055.MovePlayerToAPos(ply, pos, 100, 100, true)
 		end

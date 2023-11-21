@@ -19,7 +19,7 @@ SCP_055_CONFIG.NeedCard = CreateConVar( "SCP055_NeedCard", 0, {FCVAR_PROTECTED, 
 SCP_055_CONFIG.RadiusEffect = CreateConVar( "SCP055_RadiusEffect", 300, {FCVAR_PROTECTED, FCVAR_ARCHIVE}, "Radius effect of the briefcase, set it to 0 to disable it", 0, 9999 )
 
 hook.Add( "PlayerDeath", "PlayerDeath.SCP055_Died", function( victim, inflictor, attacker )
-    scp_055.SpawnRagdoll(victim, victim:GetModel(), victim.SCP055_NPCReplace:GetPos(), victim:GetAngles(), true)
+    scp_055.SpawnRagdoll(victim, victim:GetModel(), victim.SCP055_NPCReplace and victim.SCP055_NPCReplace:GetPos() or victim.SCP055_OriginPos, victim:GetAngles(), true)
     scp_055.DropEntitie(victim, "swep_cardscp055", "card_scp055")
     scp_055.DropEntitie(victim, "swep_scp055", "scp_055")
     scp_055.RemoveTheDark(victim)

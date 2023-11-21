@@ -159,7 +159,7 @@ function scp_055.RemoveTheDark()
     hook.Remove("Think", "Think.SCP055_ItSeeIt_".. ply:EntIndex())
 end
 
-function scp_055.BlueScreen(ply, keyText, delay)
+function scp_055.BlueScreen(ply, keyText, font, delay)
     local staticNoise = scp_055.DisPlayGIF(ply, "https://i.imgur.com/fVFcRiM.gif", 0.2)
     local multW = 0.5
     local multH = 0.35
@@ -167,7 +167,7 @@ function scp_055.BlueScreen(ply, keyText, delay)
     hook.Add("HUDPaint", "HUDPaint.SCP055_BlueScreen_".. ply:EntIndex(), function()
         surface.SetDrawColor( 0, 102, 255)
         surface.DrawRect(0, 0, SCP_055_CONFIG.ScrW, SCP_055_CONFIG.ScrH)
-        draw.DrawText( scp_055.GetTranslation(keyText), "SCP055_BlueScreen_6", SCP_055_CONFIG.ScrW * multW, SCP_055_CONFIG.ScrH * 0.35, Color(255, 255, 255, 199), TEXT_ALIGN_CENTER )
+        draw.DrawText( scp_055.GetTranslation(keyText), font, SCP_055_CONFIG.ScrW * multW, SCP_055_CONFIG.ScrH * 0.35, Color(255, 255, 255, 199), TEXT_ALIGN_CENTER )
         multW = multW == 0.5 and 0.498 or 0.5
         multH = multH == 0.35 and 0.348 or 0.35
     end)
@@ -198,8 +198,9 @@ end)
 net.Receive(SCP_055_CONFIG.BlueScreen, function()
     local ply = LocalPlayer()
     local keyText = net.ReadString()
+    local font = net.ReadString()
     local delay = net.ReadUInt(4)
-    scp_055.BlueScreen(ply, keyText, delay)
+    scp_055.BlueScreen(ply, keyText, font, delay)
 
     hook.Remove("RenderScreenspaceEffects", "RenderScreenspaceEffects.SCP055_SkullEvent_".. ply:EntIndex())
 end)
