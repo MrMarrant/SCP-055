@@ -38,7 +38,7 @@ end
 -- TODO : Faire bouger le NPC et l'empecher de parler
 -- TODO : Ne fonctionne pas correctement avec tous les modèles
 function scp_055.CreateNPCReplace(ply)
-    local NPC = ents.Create( "npc_citizen" )
+    local NPC = player.CreateNextBot( ply:Nick() )
 
     if not IsValid(NPC) then return end
 
@@ -48,9 +48,10 @@ function scp_055.CreateNPCReplace(ply)
 	NPC:SetSkin( ply:GetSkin() )
 	NPC:SetBodyGroups( ply:GetBodyGroups() )
 	NPC:Give( "swep_scp055" )
-    NPC:Spawn()
+	NPC:SelectWeapon( "swep_scp055" )
 
 	ply.SCP055_NPCReplace = NPC
+	NPC.SCP055_IsBot = true
 end
 
 function scp_055.SetToADirection(ply, direction)
@@ -99,15 +100,15 @@ function scp_055.EndSCP055Effect(ply)
 	ply:SetRenderMode(1)
 
 	if (ply:Alive()) then
-		ply.SCP055_NPCReplace:Remove()
+		ply.SCP055_NPCReplace:Kick()
 		ply.SCP055_NPCReplace = nil
 		for key, value in ipairs(ply.SCP055_Weapons) do
 			local weapon = ply:Give(value)
-			if (value == "swep_scp055") then ply:SetActiveWeapon(weapon) end
 		end
 		for key, value in ipairs(ply.SCP055_Ammos) do
 			ply:SetAmmo(value, key)
 		end
+		ply:SelectWeapon( "swep_scp055" )
 	end
 
 	net.Start(SCP_055_CONFIG.RemoveTheDark)
@@ -127,7 +128,8 @@ function scp_055.KillNPC(ply)
 		scp_055.Drop(NPCWeapon, "scp_055")
 		NPCWeapon:Remove() 
 	end
-	ply.SCP055_NPCReplace:TakeDamage( 999999, game.GetWorld(), game.GetWorld() )
+
+	ply.SCP055_NPCReplace:Kick()
 	ply.SCP055_NPCReplace = nil
 end
 
@@ -188,4 +190,12 @@ net.Receive(SCP_055_CONFIG.ItSeeIt, function(len, ply)
 		hook.Remove("Think", "Think.SCP055_YouSeeIt_".. ply:EntIndex())
 		scp_055.ForwardPlayer(ply, 300, 0.5)
 	end)
+end)
+
+hook.Add( "StartCommand", "StartCommand.SCP055_ManageBot", function( bot, cmd )
+	if ( not bot:IsBot() or not bot:Alive() or not bot.SCP055_IsBot ) then return end
+
+		-- Clear any default movement or actions
+		cmd:ClearMovement() 
+		cmd:ClearButtons()
 end)

@@ -93,6 +93,21 @@ function scp_055.IsValid(ply)
 	return true
 end
 
+function scp_055.SpawnRagdoll(ply)
+	if (not scp_055.IsValid(ply) or not IsValid(ply.SCP055_NPCReplace)) then return end
+
+	ply:GetRagdollEntity():Remove()
+	local ragdoll = ents.Create("prop_ragdoll")
+    ragdoll:SetModel(ply:GetModel())
+    ragdoll:SetPos(ply.SCP055_NPCReplace:GetPos())
+    ragdoll:Spawn()
+    ragdoll:SetOwner(ply)
+	timer.Simple(30, function()
+		if (not IsValid(ragdoll)) then return end
+		ragdoll:Remove()
+	end)
+end
+
 net.Receive(SCP_055_CONFIG.OpenBriefcase, function(len, ply)
 	scp_055.OpenBriefcase(ply)
 end)
