@@ -17,13 +17,23 @@
 local AddAlpha = 0.1
 local DrawAlpha = 0.2
 local Delay = 0.05
-local tab = SCP_055_CONFIG.TabPPColor
+local tab = {
+    [ "$pp_colour_addr" ] = 0,
+    [ "$pp_colour_addg" ] = 0,
+    [ "$pp_colour_addb" ] = 0,
+    [ "$pp_colour_brightness" ] = 0,
+    [ "$pp_colour_contrast" ] = 1,
+    [ "$pp_colour_colour" ] = 1,
+    [ "$pp_colour_mulr" ] = 0,
+    [ "$pp_colour_mulg" ] = 0,
+    [ "$pp_colour_mulb" ] = 0
+}
 
 function scp_055.SetBriefcaseEffect(ent)
     local ply = LocalPlayer()
     local maxRange = SCP_055_CONFIG.RadiusEffect
 
-    if (ply:GetPos():Distance(ent:GetPos()) > maxRange) then return end
+    if (ply:GetPos():Distance(ent:GetPos()) > maxRange or not ply:Alive()) then return end
 
     local distanceLeft = maxRange - ply:GetPos():Distance(ent:GetPos())
     tab[ "$pp_colour_contrast" ] = 1 - 0.99 * (distanceLeft / maxRange)
@@ -88,7 +98,7 @@ function scp_055.CheckPassword(password)
         -- TODO : Jouer un son d'ouverture de la mallette
     else
         -- TODO : Jouer un son d'erreur de la mallette
-        -- TODO : Afficher un message d'erreur
+        -- TODO : Afficher un message d'erreur ?
     end
 end
 
@@ -98,42 +108,32 @@ function scp_055.UnCheckBriefcase()
     net.SendToServer()
 end
 
-function scp_055.SetToTheDark()
-	local countTime = 0
-	local startTime = CurTime()
-	local ply = LocalPlayer()
-	local tab = SCP_055_CONFIG.TabPPColor
-    local maxTime = SCP_055_CONFIG.AscentTime
+/* 
+* Display a gif on the screen of the player, it find the screen with an url.
+* @Player ply
+* @string material
+* @number alpha
+*/
+function scp_055.DisPlayGIF(ply, material, alpha)
+    alpha = alpha or 1
+    local width, height = SCP_055_CONFIG.ScrW + 100, SCP_055_CONFIG.ScrH + 100 --? Cant disabled overflow-y, dont know why again so i hide it in a more stupid way.
+    StaticNoise = vgui.Create("DHTML")
+    StaticNoise:SetPos(-10, -10) --? No idea why, but the element dont pos exactly to (0,0), so i've to do stupid shit like this.
+    StaticNoise:SetSize(width, height)
+    StaticNoise:SetZPos( 10 )
+    StaticNoise:SetHTML(
+        '<style>'..
+            '#container {overflow: hidden;}'..
+            'img {opacity: '..alpha..';}'..
+        '</style>'..
 
-	hook.Add("HUDPaint", "HUDPaint.SCP055_SetToTheDark".. ply:EntIndex(), function()
-		if(not IsValid(ply)) then return end
-
-		countTime = math.Clamp( CurTime() - startTime, 0, maxTime )
-
-		tab[ "$pp_colour_contrast" ] = 1 - 1 * (countTime / maxTime)
-	
-		DrawColorModify( tab )
-		cam.Start3D()
-			render.SetStencilEnable( true )
-			render.SetStencilWriteMask( 1 )
-			render.SetStencilTestMask( 1 )
-			render.SetStencilReferenceValue( 1 )
-			render.SetStencilFailOperation( STENCIL_KEEP )
-			render.SetStencilZFailOperation( STENCIL_KEEP )
-	
-			render.SetStencilCompareFunction( STENCIL_ALWAYS )
-			render.SetStencilPassOperation( STENCIL_REPLACE )
-	
-			render.SetStencilEnable( false )
-		cam.End3D()
-	
-		DrawMotionBlur( AddAlpha, DrawAlpha, Delay )
-    end)
-end
-
-function scp_055.RemoveTheDark()
-    local ply = LocalPlayer()
-    hook.Remove("HUDPaint", "HUDPaint.SCP055_SetToTheDark".. ply:EntIndex())
+        '<div id="portrait">'..
+            '<div id="container">'..
+                '<img id="gif-scp035" src="'..material..'" width="'..width..'" height="'..height..'">'..
+            '</div>'..
+        '</div>'
+        )
+    return StaticNoise
 end
 
 net.Receive(SCP_055_CONFIG.OpenPanelPassword, function()
@@ -141,12 +141,4 @@ net.Receive(SCP_055_CONFIG.OpenPanelPassword, function()
     if (ply.SCP055_PanelPassword) then return end
 
     scp_055.OpenPanelPassword()
-end)
-
-net.Receive(SCP_055_CONFIG.SetToTheDark, function()
-    scp_055.SetToTheDark()
-end)
-
-net.Receive(SCP_055_CONFIG.RemoveTheDark, function()
-    scp_055.RemoveTheDark()
 end)

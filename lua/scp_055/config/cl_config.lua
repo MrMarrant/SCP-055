@@ -19,19 +19,19 @@ SCP_055_CONFIG.ScrH = ScrH()
 
 SCP_055_CONFIG.RadiusEffect = SCP_055_CONFIG.RadiusEffect or 300
 
-SCP_055_CONFIG.TabPPColor = {
-    [ "$pp_colour_addr" ] = 0,
-    [ "$pp_colour_addg" ] = 0,
-    [ "$pp_colour_addb" ] = 0,
-    [ "$pp_colour_brightness" ] = 0,
-    [ "$pp_colour_contrast" ] = 1,
-    [ "$pp_colour_colour" ] = 1,
-    [ "$pp_colour_mulr" ] = 0,
-    [ "$pp_colour_mulg" ] = 0,
-    [ "$pp_colour_mulb" ] = 0
-}
-
 surface.CreateFont( "SCP055_Password", {
     font = "Oswald",
     size = 100,
+} )
+
+surface.CreateFont( "SCP055_BlueScreen", {
+surface.CreateFont( "SCP055_BlueScreen_6", {
+    font = "Rock Salt",
+    size = 300,
+} )
+
+surface.CreateFont( "SCP055_BlueScreen_7", {
+    font = "Vina Sans",
+    size = 100,
+} )
 } )

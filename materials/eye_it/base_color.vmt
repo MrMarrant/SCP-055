@@ -1,0 +1,18 @@
+"VertexlitGeneric"
+{
+	$basetexture "eye_it/base_color"
+	//$normalmap "eye_it/briefcase_normal"
+	//$phongexponenttexture "eye_it/sclerametalic_material"
+
+	$envmap	"env_cubemap"
+	$envmaptint	"[.15 .15 .15]" 
+	$normalmapalphaenvmapmask	"1"
+	$envmapfresnel	"1"
+
+	$rimlight	"1"
+	$rimmask	"1"
+	$rimlightboost	"1"
+	$rimlightexponent	"2"
+
+	$envmaptintmult	"[.25 .25 .25]"
+}

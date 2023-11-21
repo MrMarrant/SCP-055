@@ -17,6 +17,10 @@
 local LANG_FR = {
     enter = "ENTRER",
     quit = "QUITTER",
+    not055 = "Tu n'es pas SCP-055",
+    notstupid = "Ce n'est pas stupide",
+    notalone = "Ce n'est pas seul",
+    isalive = "Est-ce en vie ?",
 }
 
 scp_055.AddLanguage("fr", LANG_FR)

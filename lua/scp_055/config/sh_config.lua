@@ -31,10 +31,16 @@ for i = 1, 6 do
 end
 
 SCP_055_CONFIG.SecurityPassword = password
+SCP_055_CONFIG.SkullEventText = {}
+SCP_055_CONFIG.SkullEventText[1] = "not055"
+SCP_055_CONFIG.SkullEventText[2] = "notstupid"
+SCP_055_CONFIG.SkullEventText[3] = "notalone"
+SCP_055_CONFIG.SkullEventText[4] = "isalive"
 
 -- In seconds, the time it takes to the ascent effect.
-SCP_055_CONFIG.AscentTime = 10
+SCP_055_CONFIG.AscentTime = 5
 SCP_055_CONFIG.AscentVelocity = Vector(0, 0, 50)
+SCP_055_CONFIG.DescentVelocity = Vector(0, 0, -50)
 
 -- NET VAR
 SCP_055_CONFIG.OpenPanelPassword = "SCP_055_CONFIG.OpenPanelPassword"
@@ -43,5 +49,5 @@ SCP_055_CONFIG.UnCheckBriefcase = "SCP_055_CONFIG.UnCheckBriefcase"
 SCP_055_CONFIG.SetToTheDark = "SCP_055_CONFIG.SetToTheDark"
 SCP_055_CONFIG.RemoveTheDark = "SCP_055_CONFIG.RemoveTheDark"
 SCP_055_CONFIG.SkullEvent = "SCP_055_CONFIG.SkullEvent"
-
-util.PrecacheModel( "models/Gibs/HGIBS.mdl" )
+SCP_055_CONFIG.ItSeeIt = "SCP_055_CONFIG.ItSeeIt"
+SCP_055_CONFIG.BlueScreen = "SCP_055_CONFIG.BlueScreen"
