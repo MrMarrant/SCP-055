@@ -19,13 +19,19 @@ function scp_055.Drop(ply, name)
 
 	local LookForward = ply:EyeAngles():Forward()
 	local LookUp = ply:EyeAngles():Up()
-	local ent = ents.Create( name )
+	local ent = scp_055.CreateEnt(name)
 	local DistanceToPos = 50
 	local PosObject = (ply:IsPlayer() and ply:GetShootPos() or ply:GetPos()) + LookForward * DistanceToPos + LookUp
     PosObject.z = ply:GetPos().z
 
 	ent:SetPos( PosObject )
 	ent:SetAngles( ply:EyeAngles() )
+
+	return ent
+end
+
+function scp_055.CreateEnt(name)
+	local ent = ents.Create( name )
 	ent:Spawn()
 	ent:Activate()
 
@@ -100,19 +106,43 @@ function scp_055.IsValid(ply)
 	return true
 end
 
-function scp_055.SpawnRagdoll(ply)
-	if (not scp_055.IsValid(ply) or not IsValid(ply.SCP055_NPCReplace)) then return end
+function scp_055.SpawnRagdoll(ply, model, pos, angle, remove)
+	if (not scp_055.IsValid(ply)) then return end
+	if(IsValid(ply:GetRagdollEntity())) then ply:GetRagdollEntity():Remove() end
 
-	ply:GetRagdollEntity():Remove()
 	local ragdoll = ents.Create("prop_ragdoll")
-    ragdoll:SetModel(ply:GetModel())
-    ragdoll:SetPos(ply.SCP055_NPCReplace:GetPos())
+    ragdoll:SetModel(model)
+	ragdoll:SetAngles( angle )
+    ragdoll:SetPos(pos)
     ragdoll:Spawn()
     ragdoll:SetOwner(ply)
-	timer.Simple(30, function()
-		if (not IsValid(ragdoll)) then return end
-		ragdoll:Remove()
-	end)
+	if ply:GetNumBodyGroups() then
+        for i = 0, ply:GetNumBodyGroups() - 1 do
+            ragdoll:SetBodygroup(i, ply:GetBodygroup(i))
+        end
+    end
+
+	if (remove) then
+		timer.Simple(30, function()
+			if (not IsValid(ragdoll)) then return end
+			ragdoll:Remove()
+		end)
+	end
+
+	return ragdoll
+end
+
+function scp_055.FreezeRagDoll(ragdoll, target)
+	local Bones = ragdoll:GetPhysicsObjectCount()
+	for i = 0, Bones - 1 do
+		local phys = ragdoll:GetPhysicsObjectNum(i)
+		local b = ragdoll:TranslatePhysBoneToBone(i)
+		local pos, ang = target:GetBonePosition(b)
+		phys:EnableMotion(false)
+		phys:SetPos(pos)
+		phys:SetAngles(ang)
+		phys:Wake()
+	end
 end
 
 net.Receive(SCP_055_CONFIG.OpenBriefcase, function(len, ply)

@@ -35,23 +35,33 @@ function scp_055.SetToTheDark(ply)
 	net.Send(ply)
 end
 
--- TODO : Faire bouger le NPC et l'empecher de parler
--- TODO : Ne fonctionne pas correctement avec tous les modèles
+-- TODO : Faire bouger le NPC ?
 function scp_055.CreateNPCReplace(ply)
     local NPC = player.CreateNextBot( ply:Nick() )
+	local model = ply:GetModel()
+	local pos = ply:GetPos()
+	local angle = ply:GetAngles()
 
-    if not IsValid(NPC) then return end
-
-    NPC:SetPos( ply:GetPos() )
-    NPC:SetAngles( ply:GetAngles() )
-    NPC:SetModel( ply:GetModel() )
-	NPC:SetSkin( ply:GetSkin() )
-	NPC:SetBodyGroups( ply:GetBodyGroups() )
-	NPC:Give( "swep_scp055" )
-	NPC:SelectWeapon( "swep_scp055" )
+	if not IsValid(NPC) then
+		NPC = scp_055.SpawnRagdoll(ply, model, pos, angle)
+		scp_055.FreezeRagDoll(NPC, ply)
+		for i = 0, ply:GetBoneCount() do
+			NPC:ManipulateBoneScale(i, ply:GetManipulateBoneScale(i))
+			NPC:ManipulateBoneAngles(i, ply:GetManipulateBoneAngles(i))
+			NPC:ManipulateBonePosition(i, ply:GetManipulateBonePosition(i))
+		end
+	else
+		NPC:SetPos( pos )
+		NPC:SetAngles( angle )
+		NPC:SetModel( model )
+		NPC:SetSkin( ply:GetSkin() )
+		NPC:SetBodyGroups( ply:GetBodyGroups() )
+		NPC:Give( "swep_scp055" )
+		NPC:SelectWeapon( "swep_scp055" )
+		NPC.SCP055_IsBot = true
+	end
 
 	ply.SCP055_NPCReplace = NPC
-	NPC.SCP055_IsBot = true
 end
 
 function scp_055.SetViewModel(VMAnim, anim)
@@ -99,14 +109,21 @@ end
 function scp_055.KillNPC(ply)
 	if (not ply.SCP055_NPCReplace) then return end
 
-	local NPCWeapon = ply.SCP055_NPCReplace:GetWeapon( "swep_scp055" )
-	if (IsValid(NPCWeapon)) then
-		scp_055.Drop(NPCWeapon, "scp_055")
-		NPCWeapon:Remove() 
-	end
+	if (ply.SCP055_NPCReplace.SCP055_IsBot) then
+		local NPCWeapon = ply.SCP055_NPCReplace:GetWeapon( "swep_scp055" )
+		if (IsValid(NPCWeapon)) then
+			scp_055.Drop(ply.SCP055_NPCReplace, "scp_055")
+			NPCWeapon:Remove() 
+		end
 
-	ply.SCP055_NPCReplace:Kick()
-	ply.SCP055_NPCReplace = nil
+		ply.SCP055_NPCReplace:Kick()
+		ply.SCP055_NPCReplace = nil
+	else
+		local ent = scp_055.CreateEnt("scp_055")
+		ent:SetPos( ply.SCP055_NPCReplace:GetPos() )
+		ply.SCP055_NPCReplace:Remove()
+		ply.SCP055_NPCReplace = nil
+	end
 end
 
 function scp_055.BlueScreen(ply, keyText, delay)
