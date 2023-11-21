@@ -64,11 +64,12 @@ function SWEP:Deploy()
 
 	self:SendWeaponAnim( ACT_VM_IDLE )
 
-	local VMAnim = ply:GetViewModel()
-	local NexIdle = VMAnim:SequenceDuration() / VMAnim:GetPlaybackRate() 
-
-	self:SetNextPrimaryFire( CurTime() + NexIdle + 0.1 ) --? We add 0.1s for avoid to cancel primary animation
-	self:SetNextSecondaryFire( CurTime() + NexIdle )
+	if (ply:IsPlayer()) then
+		local VMAnim = ply:GetViewModel()
+		local NexIdle = VMAnim:SequenceDuration() / VMAnim:GetPlaybackRate() 
+		self:SetNextPrimaryFire( CurTime() + NexIdle + 0.1 ) --? We add 0.1s for avoid to cancel primary animation
+		self:SetNextSecondaryFire( CurTime() + NexIdle )
+	end
 
 	return true
 end
@@ -103,7 +104,6 @@ function SWEP:PrimaryAttack()
 						scp_055.SetViewModel(VMAnim, idle)
 						scp_055.StartSCP055Effect(ply)
 					end)
-					-- TODO : Primary Function
 				else
 					scp_055.StartSCP055Effect(ply) --TODO : A virer
 					-- self:SetIsCheck(true)

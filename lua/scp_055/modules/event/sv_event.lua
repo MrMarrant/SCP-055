@@ -54,29 +54,6 @@ function scp_055.CreateNPCReplace(ply)
 	NPC.SCP055_IsBot = true
 end
 
-function scp_055.SetToADirection(ply, direction)
-	ply:SetMoveType(MOVETYPE_NOCLIP)
-	ply:Freeze(true)
-	ply:SetEyeAngles(Angle(-180, 0, 0))
-
-	-- TODO : Son de la montée
-    hook.Add("Think", "Think.SCP055_SetToADirection".. ply:EntIndex(), function()
-		ply:SetPos(ply:GetPos() + direction)
-    end)
-
-	timer.Simple(SCP_055_CONFIG.AscentTime, function()
-		if (not scp_055.IsValid(ply)) then return end
-
-		hook.Remove("Think", "Think.SCP055_SetToADirection".. ply:EntIndex())
-		ply:SetMoveType(MOVETYPE_NONE)
-        ply:Freeze(false)
-		ply:SetEyeAngles(Angle(0, 0, 0))
-		timer.Simple(0.1, function() --? If you setangle someone and freeze right after in the same thread, it will not set the fking angle, pretty cool ...
-			ply:Freeze(true)
-		end)
-	end)
-end
-
 function scp_055.SetViewModel(VMAnim, anim)
 	VMAnim:SendViewModelMatchingSequence( VMAnim:LookupSequence( anim ) )
 end
@@ -84,7 +61,6 @@ end
 function scp_055.RemoveTheDark(ply)
 	if (ply.SCP055_AffectBySCP005) then
 		scp_055.EndSCP055Effect(ply)
-		hook.Remove("Think", "Think.SCP055_SetToADirection".. ply:EntIndex())
 		hook.Remove("Think", "Think.SCP055_YouSeeIt_".. ply:EntIndex())
 		hook.Remove("Think", "Think.SCP055_ForwardPlayer_".. ply:EntIndex())
 		hook.Remove("Think", "Think.SCP055_MovePlayerToAPos_".. ply:EntIndex())
@@ -152,23 +128,24 @@ function scp_055.ForwardPlayer(ply, endStep, step)
 			local text = SCP_055_CONFIG.SkullEventText[ math.random( #SCP_055_CONFIG.SkullEventText ) ]
 			scp_055.BlueScreen(ply, text, 3)
 			local pos = IsValid(ply.SCP055_NPCReplace) and ply.SCP055_NPCReplace:GetPos() or ply.SCP055_OriginPos
-			scp_055.MovePlayerToAPos(ply, pos)
+			scp_055.MovePlayerToAPos(ply, pos, 100, 100, true)
 		end
 	end)
 end
 
-function scp_055.MovePlayerToAPos(ply, targetPos)
+function scp_055.MovePlayerToAPos(ply, targetPos, velocity, endDistance, endEffect)
     if not IsValid(ply) or not targetPos then return end
-	local velocity = 100
+
+	ply:SetMoveType(MOVETYPE_NOCLIP)
 
 	hook.Add("Think", "Think.SCP055_MovePlayerToAPos_".. ply:EntIndex(), function()
 		local direction = (targetPos - ply:GetPos()):GetNormalized()
 		local nouvellePos = ply:GetPos() + direction * velocity
 
 		ply:SetPos(nouvellePos)
-		if (ply:GetPos():Distance(targetPos) <= 100) then 
+		if (ply:GetPos():Distance(targetPos) <= endDistance) then
 			hook.Remove("Think", "Think.SCP055_MovePlayerToAPos_".. ply:EntIndex()) 
-			scp_055.EndSCP055Effect(ply)
+			if (endEffect) then scp_055.EndSCP055Effect(ply) end
 		end
 	end)
 end

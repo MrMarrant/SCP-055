@@ -53,19 +53,26 @@ function scp_055.OpenBriefcase(ply)
 end
 
 function scp_055.StartSCP055Effect(ply)
-	ply:SetCustomCollisionCheck( true )
-	ply.SCP055_AffectBySCP005 = true
-	ply:SetRenderMode(RENDERMODE_TRANSALPHA)
-	ply:SetColor( Color(0, 0, 0, 0))
-	ply.SCP055_OriginPos = ply:GetPos()
-
 	scp_055.RemoveWeapons(ply)
-	scp_055.CreateNPCReplace(ply)
-	scp_055.SetToADirection(ply, SCP_055_CONFIG.AscentVelocity)
-	scp_055.SetToTheDark(ply)
-	timer.Simple(SCP_055_CONFIG.AscentTime, function()
-		if (not scp_055.IsValid(ply)) then return end
-		scp_055.StartEvent(ply)
+
+	timer.Simple(0.1, function() --? Strip weapon make 0.1s for remove all weapons.
+		ply.SCP055_AffectBySCP005 = true
+		ply:SetRenderMode(RENDERMODE_TRANSALPHA)
+		ply:SetColor( Color(0, 0, 0, 0))
+		ply.SCP055_OriginPos = ply:GetPos()
+
+		scp_055.CreateNPCReplace(ply)
+		ply:SetEyeAngles(Angle(-180, 0, 0))
+		scp_055.MovePlayerToAPos(ply, ply.SCP055_NPCReplace:GetPos() + SCP_055_CONFIG.AscentDirection, 50, 0)
+		scp_055.SetToTheDark(ply)
+		timer.Simple(SCP_055_CONFIG.AscentTime, function()
+			if (not scp_055.IsValid(ply)) then return end
+
+			hook.Remove("Think", "Think.SCP055_MovePlayerToAPos_".. ply:EntIndex())
+			ply:SetEyeAngles(Angle(0, 0, 0))
+			ply:Freeze(true)
+			scp_055.StartEvent(ply)
+		end)
 	end)
 end
 

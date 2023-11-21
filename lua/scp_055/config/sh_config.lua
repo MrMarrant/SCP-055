@@ -39,8 +39,7 @@ SCP_055_CONFIG.SkullEventText[4] = "isalive"
 
 -- In seconds, the time it takes to the ascent effect.
 SCP_055_CONFIG.AscentTime = 5
-SCP_055_CONFIG.AscentVelocity = Vector(0, 0, 50)
-SCP_055_CONFIG.DescentVelocity = Vector(0, 0, -50)
+SCP_055_CONFIG.AscentDirection = Vector(0, 0, 18000)
 
 -- NET VAR
 SCP_055_CONFIG.OpenPanelPassword = "SCP_055_CONFIG.OpenPanelPassword"

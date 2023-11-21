@@ -156,6 +156,7 @@ function scp_055.RemoveTheDark()
     hook.Remove("HUDPaint", "HUDPaint.SCP055_SetToTheDark".. ply:EntIndex())
     hook.Remove("RenderScreenspaceEffects", "RenderScreenspaceEffects.SCP055_SkullEvent_".. ply:EntIndex())
     hook.Remove("RenderScreenspaceEffects", "RenderScreenspaceEffects.SCP055_BlurryVision_".. ply:EntIndex())
+    hook.Remove("Think", "Think.SCP055_ItSeeIt_".. ply:EntIndex())
 end
 
 function scp_055.BlueScreen(ply, keyText, delay)
