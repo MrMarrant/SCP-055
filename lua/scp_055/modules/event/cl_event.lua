@@ -38,9 +38,8 @@ It:SetAngles( Angle(0, 90, 0) )
 It:SetNoDraw( true )
 
 for var = 1, 6 do
-    local ClModel = ClientsideModel( "models/Gibs/HGIBS.mdl" )
-    ClModel:SetMaterial("models/debug/debugwhite")
-    ClModel:SetModelScale(10)
+    local ClModel = ClientsideModel( "models/road_sign/road_sign.mdl" )
+    ClModel:SetModelScale(20)
     ClModel:SetNoDraw( true )
     table.insert(Skulls, ClModel)
 end
@@ -62,7 +61,7 @@ end
 
 
 function scp_055.SpawnSkull(ply)
-    local angle = Angle(0, 90, 0)
+    local angle = Angle(0, 180, 0)
     local posPlayer = ply:GetPos()
 
     hook.Remove("HUDPaint", "HUDPaint.SCP055_SetToTheDark".. ply:EntIndex())
@@ -85,8 +84,8 @@ function scp_055.SpawnSkull(ply)
                     value:DrawModel()
 
                     distanceEdit.y = distanceEdit.y * -1
-                    angle.yaw = angle.yaw * - 1
-                    if (key % 2 == 0) then distanceEdit.x = distanceEdit.x + 200 end
+                    angle.yaw = angle.yaw == 180 and 0 or 180
+                    if (key % 2 == 0) then distanceEdit.x = distanceEdit.x + 400 end
                 end
             end
             if(ply.SCP055_DelaySkull >= 8) then 
