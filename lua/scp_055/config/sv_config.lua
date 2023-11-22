@@ -23,6 +23,13 @@ hook.Add( "PlayerDeath", "PlayerDeath.SCP055_Died", function( victim, inflictor,
     scp_055.DropEntitie(victim, "swep_cardscp055", "card_scp055")
     scp_055.DropEntitie(victim, "swep_scp055", "scp_055")
     scp_055.RemoveTheDark(victim)
+    if (victim.SCP055_IsBot and scp_055.IsValid(victim.SCP055_Owner)) then
+        if (victim.SCP055_Owner:Alive()) then
+            victim.SCP055_Owner:Kill()
+            if(IsValid( victim.SCP055_Owner:GetRagdollEntity())) then  victim.SCP055_Owner:GetRagdollEntity():Remove() end
+            victim:Kick()
+        end
+    end
 end)
 
 -- Players affect can't hear others players and can't be heard by others.

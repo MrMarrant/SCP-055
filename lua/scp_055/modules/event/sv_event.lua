@@ -59,6 +59,7 @@ function scp_055.CreateNPCReplace(ply)
 		NPC:Give( "swep_scp055" )
 		NPC:SelectWeapon( "swep_scp055" )
 		NPC.SCP055_IsBot = true
+		NPC.SCP055_Owner = ply
 	end
 
 	ply.SCP055_NPCReplace = NPC
@@ -75,7 +76,7 @@ function scp_055.RemoveTheDark(ply)
 		hook.Remove("Think", "Think.SCP055_ForwardPlayer_".. ply:EntIndex())
 		hook.Remove("Think", "Think.SCP055_MovePlayerToAPos_".. ply:EntIndex())
 
-		scp_055.KillNPC(ply)
+		scp_055.KillBot(ply.SCP055_NPCReplace)
 	end
 end
 
@@ -106,23 +107,25 @@ function scp_055.EndSCP055Effect(ply)
 	ply.SCP055_OriginPos = nil
 end
 
-function scp_055.KillNPC(ply)
-	if (not ply.SCP055_NPCReplace) then return end
+function scp_055.KillBot(bot)
+	if (not IsValid(bot)) then return end
 
-	if (ply.SCP055_NPCReplace.SCP055_IsBot) then
-		local NPCWeapon = ply.SCP055_NPCReplace:GetWeapon( "swep_scp055" )
-		if (IsValid(NPCWeapon)) then
-			scp_055.Drop(ply.SCP055_NPCReplace, "scp_055")
-			NPCWeapon:Remove() 
+	bot.SCP055_Owner.SCP055_NPCReplace = nil
+
+	if (bot.SCP055_IsBot) then
+		if (bot:Alive()) then
+			local NPCWeapon = bot:GetWeapon( "swep_scp055" )
+			if (IsValid(NPCWeapon)) then
+				scp_055.Drop(bot, "scp_055")
+				NPCWeapon:Remove() 
+			end
 		end
 
-		ply.SCP055_NPCReplace:Kick()
-		ply.SCP055_NPCReplace = nil
+		bot:Kick()
 	else
 		local ent = scp_055.CreateEnt("scp_055")
-		ent:SetPos( ply.SCP055_NPCReplace:GetPos() )
-		ply.SCP055_NPCReplace:Remove()
-		ply.SCP055_NPCReplace = nil
+		ent:SetPos( bot:GetPos() )
+		bot:Remove()
 	end
 end
 
