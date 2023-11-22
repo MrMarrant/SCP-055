@@ -136,9 +136,31 @@ function scp_055.DisPlayGIF(ply, material, alpha)
     return StaticNoise
 end
 
+-- TODO : Son de confusion / Etat de choc
+function scp_055.BlurEffect(ply, duration)
+    hook.Add("HUDPaint", "HUDPaint.SCP055_BlurEffect_".. ply:EntIndex(), function()
+        local addA = 0.1
+        local dA = 0.8
+        local d = 0.05
+		DrawMotionBlur( addA, dA, d )
+    end)
+
+    timer.Simple(duration, function()
+        if (not IsValid(ply)) then return end
+        hook.Remove("HUDPaint", "HUDPaint.SCP055_BlurEffect_".. ply:EntIndex())
+    end)
+end
+
 net.Receive(SCP_055_CONFIG.OpenPanelPassword, function()
     local ply = LocalPlayer()
     if (ply.SCP055_PanelPassword) then return end
 
     scp_055.OpenPanelPassword()
+end)
+
+net.Receive(SCP_055_CONFIG.BlurEffect, function()
+    local ply = LocalPlayer()
+    local duration = net.ReadFloat()
+
+    scp_055.BlurEffect(ply, duration)
 end)

@@ -145,6 +145,12 @@ function scp_055.FreezeRagDoll(ragdoll, target)
 	end
 end
 
+function scp_055.BlurEffect(ply, duration)
+	net.Start(SCP_055_CONFIG.BlurEffect)
+		net.WriteFloat(duration)
+	net.Send(ply)
+end
+
 net.Receive(SCP_055_CONFIG.OpenBriefcase, function(len, ply)
 	scp_055.OpenBriefcase(ply)
 end)

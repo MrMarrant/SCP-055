@@ -80,18 +80,23 @@ function scp_055.RemoveTheDark(ply)
 	end
 end
 
-function scp_055.EndSCP055Effect(ply)
+function scp_055.EndSCP055Effect(ply, isBlur)
 	ply:SetMoveType(MOVETYPE_WALK)
 	ply:Freeze(false)
 	ply:SetColor( Color(255, 255, 255, 255))
 	ply:SetRenderMode(1)
 
 	if (ply:Alive()) then
-		ply.SCP055_NPCReplace:Kick()
+		local bot = ply.SCP055_NPCReplace
+		if (IsValid(bot)) then
+			bot:Kick()
+		end
 		ply.SCP055_NPCReplace = nil
+
 		for key, value in ipairs(ply.SCP055_Weapons) do
 			local weapon = ply:Give(value)
 		end
+
 		for key, value in ipairs(ply.SCP055_Ammos) do
 			ply:SetAmmo(value, key)
 		end
@@ -105,6 +110,8 @@ function scp_055.EndSCP055Effect(ply)
 	ply.SCP055_Weapons = nil
 	ply.SCP055_AffectBySCP005 = nil
 	ply.SCP055_OriginPos = nil
+
+	if (isBlur) then scp_055.BlurEffect(ply, 5.0) end
 end
 
 function scp_055.KillBot(bot)
@@ -166,7 +173,7 @@ function scp_055.MovePlayerToAPos(ply, targetPos, velocity, endDistance, endEffe
 		ply:SetPos(nouvellePos)
 		if (ply:GetPos():Distance(targetPos) <= endDistance) then
 			hook.Remove("Think", "Think.SCP055_MovePlayerToAPos_".. ply:EntIndex()) 
-			if (endEffect) then scp_055.EndSCP055Effect(ply) end
+			if (endEffect) then scp_055.EndSCP055Effect(ply, true) end
 		end
 	end)
 end
