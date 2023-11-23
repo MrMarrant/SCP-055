@@ -138,6 +138,7 @@ end
 
 -- TODO : Son de confusion / Etat de choc
 function scp_055.BlurEffect(ply, duration)
+    if (not IsValid(ply)) then return end
     hook.Add("HUDPaint", "HUDPaint.SCP055_BlurEffect_".. ply:EntIndex(), function()
         local addA = 0.1
         local dA = 0.8

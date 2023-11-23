@@ -97,6 +97,10 @@ function SWEP:PrimaryAttack()
 				if(!self:IsValid() or !ply:IsValid()) then return end
 
 				if (StateOpen) then
+					if (scp_055.IsValid(ply) or ply.SCP055_01) then -- If it is affect by 055 or was affect by it
+						scp_055.UnCheckBriefcase(ply, self)
+						return 
+					end
 					scp_055.SetViewModel(VMAnim, open)
 					local NexIdle = VMAnim:SequenceDuration() / VMAnim:GetPlaybackRate()
 		

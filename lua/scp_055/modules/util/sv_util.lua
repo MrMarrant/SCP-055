@@ -63,6 +63,7 @@ function scp_055.StartSCP055Effect(ply)
 
 	timer.Simple(0.1, function() --? Strip weapon make 0.1s for remove all weapons.
 		ply.SCP055_AffectBySCP005 = true
+		ply.SCP055_01 = true
 		ply:SetRenderMode(RENDERMODE_TRANSALPHA)
 		ply:SetColor( Color(0, 0, 0, 0))
 		ply.SCP055_OriginPos = ply:GetPos()
