@@ -14,7 +14,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-local Skulls = {}
+local RoadSigns = {}
 local AddAlpha = 0.1
 local DrawAlpha = 0.2
 local Delay = 0.05
@@ -41,18 +41,18 @@ for var = 1, 6 do
     local ClModel = ClientsideModel( "models/road_sign/road_sign.mdl" )
     ClModel:SetModelScale(20)
     ClModel:SetNoDraw( true )
-    table.insert(Skulls, ClModel)
+    table.insert(RoadSigns, ClModel)
 end
 
-function scp_055.SkullEvent()
+function scp_055.ItEvent()
     local ply = LocalPlayer()
-    ply.SCP055_DelaySkull = 0
-    scp_055.SpawnSkull(ply)
-    timer.Create("SCP055_DelaySkull_".. ply:EntIndex(), 4, 4, function()
+    ply.SCP055_DelayIt = 0
+    scp_055.SpawnRoadSign(ply)
+    timer.Create("SCP055_DelayIt_".. ply:EntIndex(), 4, 4, function()
         if(not IsValid(ply)) then return end
-        ply.SCP055_DelaySkull = ply.SCP055_DelaySkull + 2
-        if (ply.SCP055_DelaySkull == 2) then timer.Adjust( "SCP055_DelaySkull_".. ply:EntIndex(), 2 ) end
-        if (ply.SCP055_DelaySkull == 8) then 
+        ply.SCP055_DelayIt = ply.SCP055_DelayIt + 2
+        if (ply.SCP055_DelayIt == 2) then timer.Adjust( "SCP055_DelayIt_".. ply:EntIndex(), 2 ) end
+        if (ply.SCP055_DelayIt == 8) then 
             hook.Add( "Think", "Think.SCP055_ItSeeIt_".. ply:EntIndex(), function() scp_055.ItSeeIt(ply) end)
         end
         -- TODO : Son d'apparition (SFX UltraKill ?)
@@ -60,13 +60,13 @@ function scp_055.SkullEvent()
 end
 
 
-function scp_055.SpawnSkull(ply)
+function scp_055.SpawnRoadSign(ply)
     local angle = Angle(0, 180, 0)
     local posPlayer = ply:GetPos()
 
     hook.Remove("HUDPaint", "HUDPaint.SCP055_SetToTheDark".. ply:EntIndex())
 
-    hook.Add( "RenderScreenspaceEffects", "RenderScreenspaceEffects.SCP055_SkullEvent_".. ply:EntIndex(), function()
+    hook.Add( "RenderScreenspaceEffects", "RenderScreenspaceEffects.SCP055_ItEvent_".. ply:EntIndex(), function()
         DrawColorModify( tab )
         DrawSobel( 0.1 )
         cam.Start3D()
@@ -77,8 +77,8 @@ function scp_055.SpawnSkull(ply)
             render.SetStencilFailOperation( STENCIL_KEEP )
             render.SetStencilZFailOperation( STENCIL_KEEP )
             local distanceEdit = Vector(200, -200, 50)
-            for key, value in ipairs(Skulls) do
-                if (key <= ply.SCP055_DelaySkull) then
+            for key, value in ipairs(RoadSigns) do
+                if (key <= ply.SCP055_DelayIt) then
                     value:SetPos( posPlayer + distanceEdit )
                     value:SetAngles( angle )
                     value:DrawModel()
@@ -88,7 +88,7 @@ function scp_055.SpawnSkull(ply)
                     if (key % 2 == 0) then distanceEdit.x = distanceEdit.x + 400 end
                 end
             end
-            if(ply.SCP055_DelaySkull >= 8) then 
+            if(ply.SCP055_DelayIt >= 8) then 
                 It:SetPos( posPlayer + ItPosition )
                 It:DrawModel()
             end
@@ -153,7 +153,7 @@ function scp_055.RemoveTheDark()
     local ply = LocalPlayer()
 
     hook.Remove("HUDPaint", "HUDPaint.SCP055_SetToTheDark".. ply:EntIndex())
-    hook.Remove("RenderScreenspaceEffects", "RenderScreenspaceEffects.SCP055_SkullEvent_".. ply:EntIndex())
+    hook.Remove("RenderScreenspaceEffects", "RenderScreenspaceEffects.SCP055_ItEvent_".. ply:EntIndex())
     hook.Remove("RenderScreenspaceEffects", "RenderScreenspaceEffects.SCP055_BlurryVision_".. ply:EntIndex())
     hook.Remove("Think", "Think.SCP055_ItSeeIt_".. ply:EntIndex())
 end
@@ -182,8 +182,8 @@ end
 function scp_055.ErrorMessageEvent()
 end
 
-net.Receive(SCP_055_CONFIG.SkullEvent, function()
-    scp_055.SkullEvent()
+net.Receive(SCP_055_CONFIG.ItEvent, function()
+    scp_055.ItEvent()
 end)
 
 net.Receive(SCP_055_CONFIG.SetToTheDark, function()
@@ -201,5 +201,5 @@ net.Receive(SCP_055_CONFIG.BlueScreen, function()
     local delay = net.ReadUInt(4)
     scp_055.BlueScreen(ply, keyText, font, delay)
 
-    hook.Remove("RenderScreenspaceEffects", "RenderScreenspaceEffects.SCP055_SkullEvent_".. ply:EntIndex())
+    hook.Remove("RenderScreenspaceEffects", "RenderScreenspaceEffects.SCP055_ItEvent_".. ply:EntIndex())
 end)

@@ -17,15 +17,21 @@
 function scp_055.StartEvent(ply)
     local eventCount = 1
     local choice = math.random(1, eventCount)
+	choice = 2 -- TODO : Remove this line
 
     if (choice == 1) then
-        scp_055.SkullEvent(ply)
+        scp_055.ItEvent(ply)
 		scp_055.UnFreezeDelay(ply, 10)
+    end
+
+	if (choice == 2) then
+        scp_055.TalkEvent(ply)
+		scp_055.UnFreezeDelay(ply, 1)
     end
 end
 
-function scp_055.SkullEvent(ply)
-    net.Start(SCP_055_CONFIG.SkullEvent)
+function scp_055.ItEvent(ply)
+    net.Start(SCP_055_CONFIG.ItEvent)
     net.Send(ply)
 end
 
@@ -153,7 +159,7 @@ function scp_055.ForwardPlayer(ply, endStep, step)
 		ply:SetPos(ply:GetPos() + Vector(currentStep, 0, 0))
 		if(currentStep >= endStep) then
 			hook.Remove("Think", "Think.SCP055_ForwardPlayer_".. ply:EntIndex())
-			local text = SCP_055_CONFIG.SkullEventText[ math.random( #SCP_055_CONFIG.SkullEventText ) ]
+			local text = SCP_055_CONFIG.ItEventText[ math.random( #SCP_055_CONFIG.ItEventText ) ]
 			scp_055.BlueScreen(ply, text, "SCP055_BlueScreen_2", 3)
 			local pos = IsValid(ply.SCP055_NPCReplace) and ply.SCP055_NPCReplace:GetPos() or ply.SCP055_OriginPos
 			scp_055.MovePlayerToAPos(ply, pos, 100, 100, true)

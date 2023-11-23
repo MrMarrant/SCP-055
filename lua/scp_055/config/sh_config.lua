@@ -31,11 +31,11 @@ for i = 1, 6 do
 end
 
 SCP_055_CONFIG.SecurityPassword = password
-SCP_055_CONFIG.SkullEventText = {}
-SCP_055_CONFIG.SkullEventText[1] = "not055"
-SCP_055_CONFIG.SkullEventText[2] = "notstupid"
-SCP_055_CONFIG.SkullEventText[3] = "notalone"
-SCP_055_CONFIG.SkullEventText[4] = "isalive"
+SCP_055_CONFIG.ItEventText = {}
+SCP_055_CONFIG.ItEventText[1] = "not055"
+SCP_055_CONFIG.ItEventText[2] = "notstupid"
+SCP_055_CONFIG.ItEventText[3] = "notalone"
+SCP_055_CONFIG.ItEventText[4] = "isalive"
 
 -- In seconds, the time it takes to the ascent effect.
 SCP_055_CONFIG.AscentTime = 5
@@ -47,7 +47,8 @@ SCP_055_CONFIG.OpenBriefcase = "SCP_055_CONFIG.OpenBriefcase"
 SCP_055_CONFIG.UnCheckBriefcase = "SCP_055_CONFIG.UnCheckBriefcase"
 SCP_055_CONFIG.SetToTheDark = "SCP_055_CONFIG.SetToTheDark"
 SCP_055_CONFIG.RemoveTheDark = "SCP_055_CONFIG.RemoveTheDark"
-SCP_055_CONFIG.SkullEvent = "SCP_055_CONFIG.SkullEvent"
+SCP_055_CONFIG.ItEvent = "SCP_055_CONFIG.ItEvent"
 SCP_055_CONFIG.ItSeeIt = "SCP_055_CONFIG.ItSeeIt"
 SCP_055_CONFIG.BlueScreen = "SCP_055_CONFIG.BlueScreen"
 SCP_055_CONFIG.BlurEffect = "SCP_055_CONFIG.BlurEffect"
+SCP_055_CONFIG.TalkEvent = "SCP_055_CONFIG.TalkEvent"
