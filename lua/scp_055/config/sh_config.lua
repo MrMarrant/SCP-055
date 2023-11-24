@@ -39,7 +39,10 @@ SCP_055_CONFIG.ItEventText[4] = "isalive"
 
 -- In seconds, the time it takes to the ascent effect.
 SCP_055_CONFIG.AscentTime = 5
+SCP_055_CONFIG.TalkEventDuration = 30 -- TODO: Mettre 167 (durée du mp3)
 SCP_055_CONFIG.AscentDirection = Vector(0, 0, 18000)
+SCP_055_CONFIG.XDistanceSkull = 800
+SCP_055_CONFIG.EventCount = 2
 
 -- NET VAR
 SCP_055_CONFIG.OpenPanelPassword = "SCP_055_CONFIG.OpenPanelPassword"
@@ -52,3 +55,5 @@ SCP_055_CONFIG.ItSeeIt = "SCP_055_CONFIG.ItSeeIt"
 SCP_055_CONFIG.BlueScreen = "SCP_055_CONFIG.BlueScreen"
 SCP_055_CONFIG.BlurEffect = "SCP_055_CONFIG.BlurEffect"
 SCP_055_CONFIG.TalkEvent = "SCP_055_CONFIG.TalkEvent"
+SCP_055_CONFIG.BlueScreens = "SCP_055_CONFIG.BlueScreens"
+SCP_055_CONFIG.RemoveHook = "SCP_055_CONFIG.RemoveHook"

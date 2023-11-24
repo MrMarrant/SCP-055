@@ -165,3 +165,11 @@ net.Receive(SCP_055_CONFIG.BlurEffect, function()
 
     scp_055.BlurEffect(ply, duration)
 end)
+
+
+net.Receive(SCP_055_CONFIG.RemoveHook, function()
+    local eventName = net.ReadString()
+    local identifier = net.ReadString()
+
+    hook.Remove(eventName, identifier)
+end)

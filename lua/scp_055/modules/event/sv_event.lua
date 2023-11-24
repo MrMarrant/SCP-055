@@ -15,22 +15,24 @@
 -- along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 function scp_055.StartEvent(ply)
-    local eventCount = 1
-    local choice = math.random(1, eventCount)
+    local choice = math.random(1, SCP_055_CONFIG.EventCount)
 	choice = 2 -- TODO : Remove this line
 
     if (choice == 1) then
         scp_055.ItEvent(ply)
-		scp_055.UnFreezeDelay(ply, 10)
     end
 
 	if (choice == 2) then
         scp_055.TalkEvent(ply)
-		scp_055.UnFreezeDelay(ply, 1)
     end
 end
 
 function scp_055.ItEvent(ply)
+	ply:SetEyeAngles(Angle(0, 0, 0))
+	timer.Simple(0.1, function()
+		if (not scp_055.IsValid(ply)) then return end
+		ply:Freeze(true)
+	end)
     net.Start(SCP_055_CONFIG.ItEvent)
     net.Send(ply)
 end
@@ -81,6 +83,8 @@ function scp_055.RemoveTheDark(ply)
 		hook.Remove("Think", "Think.SCP055_YouSeeIt_".. ply:EntIndex())
 		hook.Remove("Think", "Think.SCP055_ForwardPlayer_".. ply:EntIndex())
 		hook.Remove("Think", "Think.SCP055_MovePlayerToAPos_".. ply:EntIndex())
+		hook.Remove("Think", "Think.SCP055_ChaosChaos_".. ply:EntIndex())
+		timer.Remove("SCP055_Timer_TalkEvent_".. ply:EntIndex())
 
 		scp_055.KillBot(ply.SCP055_NPCReplace)
 	end
@@ -95,7 +99,8 @@ function scp_055.EndSCP055Effect(ply, isBlur)
 	if (ply:Alive()) then
 		local bot = ply.SCP055_NPCReplace
 		if (IsValid(bot)) then
-			bot:Kick()
+			if (bot:IsPlayer()) then bot:Kick()
+			else bot:Remove() end
 		end
 		ply.SCP055_NPCReplace = nil
 
@@ -142,11 +147,23 @@ function scp_055.KillBot(bot)
 	end
 end
 
-function scp_055.BlueScreen(ply, keyText, font, delay)
+function scp_055.BlueScreen(ply, keyText, font, duration, multH, delay)
 	net.Start(SCP_055_CONFIG.BlueScreen)
 		net.WriteString(keyText)
 		net.WriteString(font)
-		net.WriteUInt(delay, 4)
+		net.WriteUInt(duration, 4)
+		net.WriteFloat(multH)
+		net.WriteUInt(delay, 5)
+	net.Send(ply)
+end
+
+function scp_055.BlueScreens(ply, keyText, font, duration, multH, delay)
+	net.Start(SCP_055_CONFIG.BlueScreens)
+		net.WriteTable(keyText)
+		net.WriteString(font)
+		net.WriteUInt(duration, 4)
+		net.WriteFloat(multH)
+		net.WriteUInt(delay, 5)
 	net.Send(ply)
 end
 
@@ -160,7 +177,7 @@ function scp_055.ForwardPlayer(ply, endStep, step)
 		if(currentStep >= endStep) then
 			hook.Remove("Think", "Think.SCP055_ForwardPlayer_".. ply:EntIndex())
 			local text = SCP_055_CONFIG.ItEventText[ math.random( #SCP_055_CONFIG.ItEventText ) ]
-			scp_055.BlueScreen(ply, text, "SCP055_BlueScreen_2", 3)
+			scp_055.BlueScreen(ply, text, "SCP055_BlueScreen_2", 3, 0.35, 0)
 			local pos = IsValid(ply.SCP055_NPCReplace) and ply.SCP055_NPCReplace:GetPos() or ply.SCP055_OriginPos
 			scp_055.MovePlayerToAPos(ply, pos, 100, 100, true)
 		end

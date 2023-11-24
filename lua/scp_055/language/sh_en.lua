@@ -22,6 +22,16 @@ local LANG_EN = {
     notalone = "It isn't alone",
     isalive = "Is it alive ?",
 
+    introtalkevent_1 = "And I heard as it were the noise of thunder",
+    introtalkevent_2 = "One of the four beasts saying come and see",
+    introtalkevent_3 = "And I saw",
+    introtalkevent_4 = "And behold a white horse",
+
+    outrotalkevent_1 = "And I heard a voice in the midst of the four beasts",
+    outrotalkevent_2 = "And I looked and behold a pale horse",
+    outrotalkevent_3 = "And his name that sat on him was death",
+    outrotalkevent_4 = "And hell followed with him",
+
 }
 
 scp_055.AddLanguage("en", LANG_EN)

@@ -21,6 +21,16 @@ local LANG_FR = {
     notstupid = "Ce n'est pas stupide",
     notalone = "Ce n'est pas seul",
     isalive = "Est-ce en vie ?",
+
+    introtalkevent_1 = "Et j'ai entendu comme le bruit du tonnerre",
+    introtalkevent_2 = "Une des quatre bêtes disant viens et regardes",
+    introtalkevent_3 = "Et j'ai vu",
+    introtalkevent_4 = "Et je contemplais un cheval blanc",
+
+    outrotalkevent_1 = "Et j'ai entendu une voix s'élever au milieu des quatre bêtes",
+    outrotalkevent_2 = "Et j'ai regardé et contemplé, un cheval blême",
+    outrotalkevent_3 = "Et son nom était la Mort",
+    outrotalkevent_4 = "Et l'Enfer le suivait",
 }
 
 scp_055.AddLanguage("fr", LANG_FR)

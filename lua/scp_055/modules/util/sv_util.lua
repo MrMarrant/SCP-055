@@ -70,14 +70,15 @@ function scp_055.StartSCP055Effect(ply)
 
 		scp_055.CreateNPCReplace(ply)
 		ply:SetEyeAngles(Angle(-180, 0, 0))
+		ply:Freeze(true)
 		scp_055.MovePlayerToAPos(ply, ply.SCP055_NPCReplace:GetPos() + SCP_055_CONFIG.AscentDirection, 50, 0)
 		scp_055.SetToTheDark(ply)
-		timer.Simple(SCP_055_CONFIG.AscentTime, function()
+		timer.Simple(SCP_055_CONFIG.AscentTime + 2, function()
 			if (not scp_055.IsValid(ply)) then return end
 
 			hook.Remove("Think", "Think.SCP055_MovePlayerToAPos_".. ply:EntIndex())
-			ply:SetEyeAngles(Angle(0, 0, 0))
-			ply:Freeze(true)
+			ply:Freeze(false)
+			ply:SetMoveType(MOVETYPE_NONE)
 			scp_055.StartEvent(ply)
 		end)
 	end)
@@ -150,6 +151,23 @@ function scp_055.BlurEffect(ply, duration)
 	net.Start(SCP_055_CONFIG.BlurEffect)
 		net.WriteFloat(duration)
 	net.Send(ply)
+end
+
+function scp_055.RemoveHook(ply, eventName, identifier)
+	net.Start(SCP_055_CONFIG.RemoveHook)
+		net.WriteString(eventName)
+		net.WriteString(identifier)
+	net.Send(ply)
+end
+
+
+function scp_055.NewPosCircle(angle, rayon, centre)
+	local newPos = Vector(0, 0, 0)
+	newPos.x = centre.x + rayon * math.cos(math.rad(angle))
+	newPos.y = centre.y + rayon * math.sin(math.rad(angle))
+	newPos.z = centre.z
+
+	return newPos
 end
 
 net.Receive(SCP_055_CONFIG.OpenBriefcase, function(len, ply)

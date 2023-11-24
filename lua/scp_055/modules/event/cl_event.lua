@@ -30,7 +30,7 @@ local tab = {
     [ "$pp_colour_mulb" ] = 0
 }
 
-local ItPosition = Vector(-100, 0, 120)
+local ItPosition = Vector(-100, 0, 65)
 local It = ClientsideModel( "models/eye_it/eye_it.mdl" )
 
 It:SetModelScale(40)
@@ -155,26 +155,47 @@ function scp_055.RemoveTheDark()
     hook.Remove("HUDPaint", "HUDPaint.SCP055_SetToTheDark".. ply:EntIndex())
     hook.Remove("RenderScreenspaceEffects", "RenderScreenspaceEffects.SCP055_ItEvent_".. ply:EntIndex())
     hook.Remove("RenderScreenspaceEffects", "RenderScreenspaceEffects.SCP055_BlurryVision_".. ply:EntIndex())
+    hook.Remove("RenderScreenspaceEffects", "RenderScreenspaceEffects.SCP055_TalkEvent_".. ply:EntIndex())
+    hook.Remove("HUDPaint", "HUDPaint.SCP055_BlueScreen_".. ply:EntIndex())
+    if (ply.SCP055_staticNoise) then ply.SCP055_staticNoise:Remove() end
+    timer.Remove("SCP055_DelayBlueScreen_".. ply:EntIndex())
     hook.Remove("Think", "Think.SCP055_ItSeeIt_".. ply:EntIndex())
+    ply:StopSound( "scp_055/text_event.mp3" )
 end
 
-function scp_055.BlueScreen(ply, keyText, font, delay)
-    local staticNoise = scp_055.DisPlayGIF(ply, "https://i.imgur.com/fVFcRiM.gif", 0.2)
+function scp_055.BlueScreen(ply, keyText, font, duration, multH, delay)
     local multW = 0.5
-    local multH = 0.35
+    local defineMultH = multH
+    local key = type(keyText) == "table" and keyText[1] or keyText
+    local i = 1
+    delay = delay or 0
     -- TODO : Play sound
-    hook.Add("HUDPaint", "HUDPaint.SCP055_BlueScreen_".. ply:EntIndex(), function()
-        surface.SetDrawColor( 0, 102, 255)
-        surface.DrawRect(0, 0, SCP_055_CONFIG.ScrW, SCP_055_CONFIG.ScrH)
-        draw.DrawText( scp_055.GetTranslation(keyText), font, SCP_055_CONFIG.ScrW * multW, SCP_055_CONFIG.ScrH * 0.35, Color(255, 255, 255, 199), TEXT_ALIGN_CENTER )
-        multW = multW == 0.5 and 0.498 or 0.5
-        multH = multH == 0.35 and 0.348 or 0.35
-    end)
-
     timer.Simple(delay, function()
         if (not IsValid(ply)) then return end
-        hook.Remove("HUDPaint", "HUDPaint.SCP055_BlueScreen_".. ply:EntIndex())
-        staticNoise:Remove()
+
+        ply.SCP055_staticNoise = scp_055.DisPlayGIF(ply, "https://i.imgur.com/fVFcRiM.gif", 0.2)
+        hook.Add("HUDPaint", "HUDPaint.SCP055_BlueScreen_".. ply:EntIndex(), function()
+            surface.SetDrawColor( 0, 102, 255)
+            surface.DrawRect(0, 0, SCP_055_CONFIG.ScrW, SCP_055_CONFIG.ScrH)
+            draw.DrawText( scp_055.GetTranslation(key), font, SCP_055_CONFIG.ScrW * multW, SCP_055_CONFIG.ScrH * multH, Color(255, 255, 255, 199), TEXT_ALIGN_CENTER )
+            multW = multW == 0.5 and 0.498 or 0.5
+            multH = multH == defineMultH and defineMultH - 0.002 or defineMultH
+        end)
+        
+        if (type(keyText) == "table") then
+            timer.Create("SCP055_DelayBlueScreen_".. ply:EntIndex(), duration, #keyText - 1, function()
+                if (not IsValid(ply)) then return end
+                i = i + 1
+                key = keyText[i]
+            end)
+        end
+
+        duration = type(keyText) == "table" and duration * #keyText or duration
+        timer.Simple(duration, function()
+            if (not IsValid(ply)) then return end
+            hook.Remove("HUDPaint", "HUDPaint.SCP055_BlueScreen_".. ply:EntIndex())
+            ply.SCP055_staticNoise:Remove()
+        end)
     end)
 end
 
@@ -198,8 +219,22 @@ net.Receive(SCP_055_CONFIG.BlueScreen, function()
     local ply = LocalPlayer()
     local keyText = net.ReadString()
     local font = net.ReadString()
-    local delay = net.ReadUInt(4)
-    scp_055.BlueScreen(ply, keyText, font, delay)
+    local duration = net.ReadUInt(4)
+    local multH = net.ReadFloat()
+    local delay = net.ReadUInt(5)
+    scp_055.BlueScreen(ply, keyText, font, duration, multH, delay)
+
+    hook.Remove("RenderScreenspaceEffects", "RenderScreenspaceEffects.SCP055_ItEvent_".. ply:EntIndex())
+end)
+
+net.Receive(SCP_055_CONFIG.BlueScreens, function()
+    local ply = LocalPlayer()
+    local keyText = net.ReadTable()
+    local font = net.ReadString()
+    local duration = net.ReadUInt(4)
+    local multH = net.ReadFloat()
+    local delay = net.ReadUInt(5)
+    scp_055.BlueScreen(ply, keyText, font, duration, multH, delay)
 
     hook.Remove("RenderScreenspaceEffects", "RenderScreenspaceEffects.SCP055_ItEvent_".. ply:EntIndex())
 end)
