@@ -53,217 +53,217 @@ SCP_055_CONFIG.Subtiles = {
 	{
 		key = "subtiles_1",
 		color = SCP_055_CONFIG.ColorPietroTalk,
-		pause = 0.55
+		pause = 0.92
 	},
 	{
 		key = "subtiles_2",
 		color = SCP_055_CONFIG.ColorBrightTalk,
-		pause = 0.35
+		pause = 1.44
 	},
 	{
 		key = "subtiles_3",
 		color = SCP_055_CONFIG.ColorBrightTalk,
-		pause = 0
+		pause = 2.29
 	},
 	{
 		key = "subtiles_4",
 		color = SCP_055_CONFIG.ColorBrightTalk,
-		pause = 0.2
+		pause = 1.61
 	},
 	{
 		key = "subtiles_5",
 		color = SCP_055_CONFIG.ColorBrightTalk,
-		pause = 0
+		pause = 1.86
 	},
 	{
 		key = "subtiles_6",
 		color = SCP_055_CONFIG.ColorPietroTalk,
-		pause = 0
+		pause = 1.87
 	},
 	{
 		key = "subtiles_7",
 		color = SCP_055_CONFIG.ColorBrightTalk,
-		pause = 0.5
+		pause = 1.37
 	},
 	{
 		key = "subtiles_8",
 		color = SCP_055_CONFIG.ColorBrightTalk,
-		pause = 0.17
+		pause = 3.4
 	},
 	{
 		key = "subtiles_9",
 		color = SCP_055_CONFIG.ColorBrightTalk,
-		pause = 0.2
+		pause = 1.18
 	},
 	{
 		key = "subtiles_10",
 		color = SCP_055_CONFIG.ColorPietroTalk,
-		pause = 0.2
+		pause = 2.55
 	},
 	{
 		key = "subtiles_11",
 		color = SCP_055_CONFIG.ColorBrightTalk,
-		pause = 0.2
+		pause = 1.22
 	},
 	{
 		key = "subtiles_12",
 		color = SCP_055_CONFIG.ColorBrightTalk,
-		pause = 0.1
+		pause = 1.99
 	},
 	{
 		key = "subtiles_13",
 		color = SCP_055_CONFIG.ColorPietroTalk,
-		pause = 0.2
+		pause = 1.68
 	},
 	{
 		key = "subtiles_14",
 		color = SCP_055_CONFIG.ColorBrightTalk,
-		pause = 0.2
+		pause = 3.35
 	},
 	{
 		key = "subtiles_15",
 		color = SCP_055_CONFIG.ColorPietroTalk,
-		pause = 0.7
+		pause = 1.91
 	},
 	{
 		key = "subtiles_16",
 		color = SCP_055_CONFIG.ColorBrightTalk,
-		pause = 0.33
+		pause = 9.95
 	},
 	{
 		key = "subtiles_17",
 		color = SCP_055_CONFIG.ColorPietroTalk,
-		pause = 0.17
+		pause = 1.65
 	},
 	{
 		key = "subtiles_18",
 		color = SCP_055_CONFIG.ColorBrightTalk,
-		pause = 0.24
+		pause = 1.28
 	},
 	{
 		key = "subtiles_19",
 		color = SCP_055_CONFIG.ColorBrightTalk,
-		pause = 0.51
+		pause = 8.14
 	},
 	{
 		key = "subtiles_20",
 		color = SCP_055_CONFIG.ColorPietroTalk,
-		pause = 0.44
+		pause = 10.43
 	},
 	{
 		key = "subtiles_21",
 		color = SCP_055_CONFIG.ColorBrightTalk,
-		pause = 0.33
+		pause = 2.93
 	},
 	{
 		key = "subtiles_22",
 		color = SCP_055_CONFIG.ColorBrightTalk,
-		pause = 0.35
+		pause = 8.41
 	},
 	{
 		key = "subtiles_23",
 		color = SCP_055_CONFIG.ColorPietroTalk,
-		pause = 0.36
+		pause = 8.73
 	},
 	{
 		key = "subtiles_24",
 		color = SCP_055_CONFIG.ColorBrightTalk,
-		pause = 0.48
+		pause = 1.81
 	},
 	{
 		key = "subtiles_25",
 		color = SCP_055_CONFIG.ColorBrightTalk,
-		pause = 0
+		pause = 10.07
 	},
 	{
 		key = "subtiles_26",
 		color = SCP_055_CONFIG.ColorBrightTalk,
-		pause = 0
+		pause = 6.16
 	},
 	{
 		key = "subtiles_27",
 		color = SCP_055_CONFIG.ColorPietroTalk,
-		pause = 0
+		pause = 4.04
 	},
 	{
 		key = "subtiles_28",
 		color = SCP_055_CONFIG.ColorBrightTalk,
-		pause = 0.35
+		pause = 1.01
 	},
 	{
 		key = "subtiles_29",
 		color = SCP_055_CONFIG.ColorPietroTalk,
-		pause = 0.41
+		pause = 0.87
 	},
 	{
 		key = "subtiles_30",
 		color = SCP_055_CONFIG.ColorBrightTalk,
-		pause = 0
+		pause = 4.84
 	},
 	{
 		key = "subtiles_31",
 		color = SCP_055_CONFIG.ColorPietroTalk,
-		pause = 0.35
+		pause = 1.84
 	},
 	{
 		key = "subtiles_32",
 		color = SCP_055_CONFIG.ColorBrightTalk,
-		pause = 0.35
+		pause = 4.76
 	},
 	{
 		key = "subtiles_33",
 		color = SCP_055_CONFIG.ColorPietroTalk,
-		pause = 0.48
+		pause = 1.84
 	},
 	{
 		key = "subtiles_34",
 		color = SCP_055_CONFIG.ColorBrightTalk,
-		pause = 0.5
+		pause = 4.43
 	},
 	{
 		key = "subtiles_35",
 		color = SCP_055_CONFIG.ColorPietroTalk,
-		pause = 0.33
+		pause = 1.79
 	},
 	{
 		key = "subtiles_36",
 		color = SCP_055_CONFIG.ColorBrightTalk,
-		pause = 0.31
+		pause = 0.97
 	},
 	{
 		key = "subtiles_37",
 		color = SCP_055_CONFIG.ColorPietroTalk,
-		pause = 0.1
+		pause = 2.20
 	},
 	{
 		key = "subtiles_38",
 		color = SCP_055_CONFIG.ColorBrightTalk,
-		pause = 0
+		pause = 7.39
 	},
 	{
 		key = "subtiles_39",
 		color = SCP_055_CONFIG.ColorPietroTalk,
-		pause = 0.1
+		pause = 2.15
 	},
 	{
 		key = "subtiles_40",
 		color = SCP_055_CONFIG.ColorBrightTalk,
-		pause = 0.38
+		pause = 4.24
 	},
 	{
 		key = "subtiles_41",
 		color = SCP_055_CONFIG.ColorBrightTalk,
-		pause = 0.32
+		pause = 3.07
 	},
 	{
 		key = "subtiles_42",
 		color = SCP_055_CONFIG.ColorPietroTalk,
-		pause = 0.64
+		pause = 1.02
 	},
 	{
 		key = "subtiles_43",
 		color = SCP_055_CONFIG.ColorBrightTalk,
-		pause = 0.46
+		pause = 3.25
 	},
 	{
 		key = "subtiles_44",
