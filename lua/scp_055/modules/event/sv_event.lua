@@ -85,6 +85,7 @@ function scp_055.RemoveTheDark(ply)
 		hook.Remove("Think", "Think.SCP055_MovePlayerToAPos_".. ply:EntIndex())
 		hook.Remove("Think", "Think.SCP055_ChaosChaos_".. ply:EntIndex())
 		timer.Remove("SCP055_Timer_TalkEvent_".. ply:EntIndex())
+		timer.Remove("HookRemove_SCP055_ChaosChaos_".. ply:EntIndex())
 
 		scp_055.KillBot(ply.SCP055_NPCReplace)
 	end

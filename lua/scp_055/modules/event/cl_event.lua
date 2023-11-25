@@ -157,8 +157,12 @@ function scp_055.RemoveTheDark()
     hook.Remove("RenderScreenspaceEffects", "RenderScreenspaceEffects.SCP055_BlurryVision_".. ply:EntIndex())
     hook.Remove("RenderScreenspaceEffects", "RenderScreenspaceEffects.SCP055_TalkEvent_".. ply:EntIndex())
     hook.Remove("HUDPaint", "HUDPaint.SCP055_BlueScreen_".. ply:EntIndex())
+    hook.Remove("PostDrawHUD", "PostDrawHUD.SCP055_Subtitles_".. ply:EntIndex())
     if (ply.SCP055_staticNoise) then ply.SCP055_staticNoise:Remove() end
     timer.Remove("SCP055_DelayBlueScreen_".. ply:EntIndex())
+    timer.Remove("HookRemove_SCP055_Subtitles_".. ply:EntIndex())
+    timer.Remove("HookRemove_SCP055_TalkEvent_".. ply:EntIndex())
+    timer.Remove("SCP055_TalkEvent_CreateSubtiles".. ply:EntIndex())
     hook.Remove("Think", "Think.SCP055_ItSeeIt_".. ply:EntIndex())
     ply:StopSound( "scp_055/text_event.mp3" )
 end

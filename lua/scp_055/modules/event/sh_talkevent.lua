@@ -58,7 +58,7 @@ if (SERVER) then
             timeCur = timeCur + engine.TickInterval()
         end)
 
-        timer.Simple( duration, function()
+        timer.Create("HookRemove_SCP055_ChaosChaos_".. ply:EntIndex(), duration, 1, function()
             if (not IsValid(ply)) then return end
 
             hook.Remove("Think", "Think.SCP055_ChaosChaos_".. ply:EntIndex())
@@ -85,6 +85,11 @@ if (CLIENT) then
 
     function scp_055.TalkEvent(ply)
         scp_055.SpawnSkull(ply, SCP_055_CONFIG.TalkEventDuration)
+        timer.Create("SCP055_TalkEvent_CreateSubtiles".. ply:EntIndex(), 11, 1, function()
+            if (not IsValid(ply)) then return end
+
+            scp_055.Subtitles(ply, SCP_055_CONFIG.Subtiles, SCP_055_CONFIG.TalkEventDuration - 11)
+        end)
         ply:EmitSound( Sound( "scp_055/text_event.mp3" ), 75, 100, 1)
     end
     
@@ -110,7 +115,7 @@ if (CLIENT) then
             cam.End3D()
         end )
 
-        timer.Simple( duration, function()
+        timer.Create("HookRemove_SCP055_TalkEvent_".. ply:EntIndex(), duration, 1, function()
             if (not IsValid(ply)) then return end
             hook.Remove("RenderScreenspaceEffects", "RenderScreenspaceEffects.SCP055_TalkEvent_".. ply:EntIndex())
         end )

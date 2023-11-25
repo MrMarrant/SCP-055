@@ -39,7 +39,7 @@ SCP_055_CONFIG.ItEventText[4] = "isalive"
 
 -- In seconds, the time it takes to the ascent effect.
 SCP_055_CONFIG.AscentTime = 5
-SCP_055_CONFIG.TalkEventDuration = 30 -- TODO: Mettre 167 (durée du mp3)
+SCP_055_CONFIG.TalkEventDuration = 167 -- TODO: Mettre 167 (durée du mp3)
 SCP_055_CONFIG.AscentDirection = Vector(0, 0, 18000)
 SCP_055_CONFIG.XDistanceSkull = 800
 SCP_055_CONFIG.EventCount = 2

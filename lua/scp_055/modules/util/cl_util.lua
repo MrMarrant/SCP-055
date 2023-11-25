@@ -136,7 +136,6 @@ function scp_055.DisPlayGIF(ply, material, alpha)
     return StaticNoise
 end
 
--- TODO : Son de confusion / Etat de choc
 function scp_055.BlurEffect(ply, duration)
     if (not IsValid(ply)) then return end
     hook.Add("HUDPaint", "HUDPaint.SCP055_BlurEffect_".. ply:EntIndex(), function()
@@ -149,6 +148,67 @@ function scp_055.BlurEffect(ply, duration)
     timer.Simple(duration, function()
         if (not IsValid(ply)) then return end
         hook.Remove("HUDPaint", "HUDPaint.SCP055_BlurEffect_".. ply:EntIndex())
+    end)
+end
+
+function scp_055.Subtitles(ply, subtitles, duration)
+    local subtitleIndex = 1
+    local curSubtile = subtitles[subtitleIndex]
+    local curText = scp_055.GetTranslation(curSubtile.key)
+    local pause = curSubtile.pause or 0
+    local charIndex = 1
+    local fadeInTime = 1
+    local fadeOutTime = 1
+    local displayTime = 5
+    local subtitleAlpha = 255
+    local color = curSubtile.color
+    local velocityText = 0.062
+    local TimeCur = CurTime()
+    local TimeEnd = TimeCur + velocityText
+    local TimePause = CurTime()
+    local TimePauseStop = TimePause + pause + (#curText * velocityText)
+    local x = SCP_055_CONFIG.ScrW / 2
+    local y = SCP_055_CONFIG.ScrH - 100
+
+    --TODO : pk pas à la place juste afficher le texte direct et gérer le temps d'apparition pour chaque texte à la place ?
+    hook.Add("PostDrawHUD", "PostDrawHUD.SCP055_Subtitles_".. ply:EntIndex(), function()
+        if subtitleIndex >= #subtitles then
+            -- Tous les sous-titres ont été affichés, commencer la transition de fondu
+            subtitleAlpha = Lerp(FrameTime() / fadeOutTime, subtitleAlpha, 0)
+        else
+            local text = string.sub(curText, 1, charIndex)
+    
+            -- Dessiner le fond noir
+            --draw.RoundedBox(8, x - 150, y - 30, 300, 60, Color(0, 0, 0, subtitleAlpha))
+    
+            -- Dessiner le texte
+            draw.SimpleText(text, "DermaLarge", x, y, color, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    
+            TimeCur = TimeCur + FrameTime()
+            TimePause = TimePause + FrameTime()
+            -- Mettre à jour l'index de caractère
+            if (TimeCur >= TimeEnd) then
+                charIndex = charIndex + 1
+                TimeEnd = TimeCur + velocityText
+            end
+
+            if charIndex > #curText and TimePause >= TimePauseStop then
+                subtitleIndex = subtitleIndex + 1
+                if subtitleIndex < #subtitles then
+                    charIndex = 1
+                    curSubtile = subtitles[subtitleIndex]
+                    color = curSubtile.color
+                    curText = scp_055.GetTranslation(curSubtile.key)
+                    pause = curSubtile.pause or 0
+                    TimePauseStop = TimePause + pause + (#curText * velocityText)
+                end
+            end
+        end
+    end)
+
+    timer.Create("HookRemove_SCP055_Subtitles_".. ply:EntIndex(), duration, 1, function()
+        if (not IsValid(ply)) then return end
+        hook.Remove("PostDrawHUD", "PostDrawHUD.SCP055_Subtitles_".. ply:EntIndex())
     end)
 end
 
