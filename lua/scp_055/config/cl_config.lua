@@ -19,7 +19,7 @@ SCP_055_CONFIG.ScrH = ScrH()
 
 SCP_055_CONFIG.RadiusEffect = SCP_055_CONFIG.RadiusEffect or 300
 
-SCP_055_CONFIG.ColorPietroTalk = Color(0, 196, 105)
+SCP_055_CONFIG.ColorPietroTalk = Color(230, 238, 0)
 SCP_055_CONFIG.ColorBrightTalk = Color(0, 111, 196)
 
 surface.CreateFont( "SCP055_Password", {

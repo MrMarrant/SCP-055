@@ -85,10 +85,32 @@ if (CLIENT) then
 
     function scp_055.TalkEvent(ply)
         scp_055.SpawnSkull(ply, SCP_055_CONFIG.TalkEventDuration)
-        timer.Create("SCP055_TalkEvent_CreateSubtiles".. ply:EntIndex(), 11, 1, function()
+        timer.Create("SCP055_TalkEvent_CreateSubtiles".. ply:EntIndex(), 11.29, 1, function()
             if (not IsValid(ply)) then return end
+            local timeEventDuration = SCP_055_CONFIG.TalkEventDuration - 11.29
+            scp_055.Subtitles(ply, SCP_055_CONFIG.Subtiles, timeEventDuration)
+            local countPsycho = 3
+            local timePsycho = timeEventDuration/countPsycho
+            local gifToDisplay = {
+                "https://i.imgur.com/zb6q1Hh.gif",
+                "https://i.imgur.com/gchvc46.gif",
+                "https://i.imgur.com/bw9C3Zy.gif"
+            }
+            local i = 0
+            timer.Create("SCP055_PsychoEffect_".. ply:EntIndex(), timePsycho, countPsycho, function()
+                if (not IsValid(ply)) then return end
 
-            scp_055.Subtitles(ply, SCP_055_CONFIG.Subtiles, SCP_055_CONFIG.TalkEventDuration - 11)
+                i = math.random(1, #gifToDisplay)
+                scp_055.DisPlayGIF(ply, gifToDisplay[i], 250, 3.7, 40, 40)
+                timer.Simple(0.5, function() --? 0.5s delay before the gif show up
+                    if (not IsValid(ply)) then return end
+                    ply:EmitSound( Sound( "scp_055/interlude.mp3" ))
+                end)
+
+                local nextPsycho = math.Rand(timePsycho*0.3, timePsycho)
+                table.remove(gifToDisplay, i)
+                timer.Adjust("SCP055_PsychoEffect_".. ply:EntIndex(), nextPsycho, nil, nil)
+            end)
         end)
         ply:EmitSound( Sound( "scp_055/text_event.mp3" ), 75, 100, 1)
     end
@@ -97,9 +119,9 @@ if (CLIENT) then
         local posPlayer = ply:GetPos()
         SkullModel:SetPos( posPlayer + Vector(SCP_055_CONFIG.XDistanceSkull, 0, 50) )
         SkullModel:SetAngles( Angle(0, -90, 0) )
-    
+
         hook.Remove("HUDPaint", "HUDPaint.SCP055_SetToTheDark".. ply:EntIndex())
-    
+
         hook.Add( "RenderScreenspaceEffects", "RenderScreenspaceEffects.SCP055_TalkEvent_".. ply:EntIndex(), function()
             DrawColorModify( tab )
             DrawSobel( 0.1 )

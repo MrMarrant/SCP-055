@@ -163,6 +163,7 @@ function scp_055.RemoveTheDark()
     timer.Remove("HookRemove_SCP055_Subtitles_".. ply:EntIndex())
     timer.Remove("HookRemove_SCP055_TalkEvent_".. ply:EntIndex())
     timer.Remove("SCP055_TalkEvent_CreateSubtiles".. ply:EntIndex())
+    timer.Remove("SCP055_PsychoEffect_".. ply:EntIndex())
     hook.Remove("Think", "Think.SCP055_ItSeeIt_".. ply:EntIndex())
     ply:StopSound( "scp_055/text_event.mp3" )
 end

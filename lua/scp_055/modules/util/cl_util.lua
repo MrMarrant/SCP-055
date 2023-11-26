@@ -114,9 +114,11 @@ end
 * @string material
 * @number alpha
 */
-function scp_055.DisPlayGIF(ply, material, alpha)
+function scp_055.DisPlayGIF(ply, material, alpha, duration, x, y)
     alpha = alpha or 1
-    local width, height = SCP_055_CONFIG.ScrW + 100, SCP_055_CONFIG.ScrH + 100 --? Cant disabled overflow-y, dont know why again so i hide it in a more stupid way.
+    x = x or 100
+    y = y or 100
+    local width, height = SCP_055_CONFIG.ScrW + x, SCP_055_CONFIG.ScrH + y --? Cant disabled overflow-y, dont know why again so i hide it in a more stupid way.
     StaticNoise = vgui.Create("DHTML")
     StaticNoise:SetPos(-10, -10) --? No idea why, but the element dont pos exactly to (0,0), so i've to do stupid shit like this.
     StaticNoise:SetSize(width, height)
@@ -129,10 +131,17 @@ function scp_055.DisPlayGIF(ply, material, alpha)
 
         '<div id="portrait">'..
             '<div id="container">'..
-                '<img id="gif-scp035" src="'..material..'" width="'..width..'" height="'..height..'">'..
+                '<img id="gif-scp055" src="'..material..'" width="'..width..'" height="'..height..'">'..
             '</div>'..
         '</div>'
         )
+    if (duration) then
+        timer.Create("SCP055_RemoveDisPlayGIF_".. ply:EntIndex(), duration, 1, function ()
+            if (not IsValid(StaticNoise)) then return end
+            StaticNoise:Remove()
+        end)
+    end
+
     return StaticNoise
 end
 
@@ -166,13 +175,17 @@ function scp_055.Subtitles(ply, subtitles, duration)
     local x = SCP_055_CONFIG.ScrW / 2
     local y = SCP_055_CONFIG.ScrH - 100
 
-    --TODO : pk pas à la place juste afficher le texte direct et gérer le temps d'apparition pour chaque texte à la place ?
     hook.Add("PostDrawHUD", "PostDrawHUD.SCP055_Subtitles_".. ply:EntIndex(), function()
         if subtitleIndex >= #subtitles then
             subtitleAlpha = Lerp(FrameTime() / fadeOutTime, subtitleAlpha, 0)
         else
-            -- Display Text
-            draw.SimpleText(curText, "DermaLarge", x, y, color, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            if (#curText < 150) then
+                draw.SimpleText(curText, "DermaLarge", x, y, color, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            else
+                local firstPart, secondPart = scp_055.DivideString(curText, 150)
+                draw.SimpleText(firstPart, "DermaLarge", x, y, color, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                draw.SimpleText(secondPart, "DermaLarge", x, y + 50, color, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            end
             -- Set TimePause
             TimePause = TimePause + FrameTime()
 
@@ -193,6 +206,14 @@ function scp_055.Subtitles(ply, subtitles, duration)
         if (not IsValid(ply)) then return end
         hook.Remove("PostDrawHUD", "PostDrawHUD.SCP055_Subtitles_".. ply:EntIndex())
     end)
+end
+
+function scp_055.DivideString(str, divider)
+    local indexDivider = string.find(string.sub(str, 1, divider), "%s[^%s]*$") or divider
+    local firstPart = string.sub(str, 1, indexDivider)
+    local secondPart = string.sub(str, indexDivider + 1)
+
+    return firstPart, secondPart
 end
 
 net.Receive(SCP_055_CONFIG.OpenPanelPassword, function()
