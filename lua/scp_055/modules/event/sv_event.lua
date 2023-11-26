@@ -68,6 +68,11 @@ function scp_055.CreateNPCReplace(ply)
 		NPC:SelectWeapon( "swep_scp055" )
 		NPC.SCP055_IsBot = true
 		NPC.SCP055_Owner = ply
+		NPC.IsMoving = false
+		NPC.IsPause = false
+		NPC.NextPause = 0
+		NPC.DurationMove = 0
+		NPC.SpeedMove = math.random(80, 200)
 	end
 
 	ply.SCP055_NPCReplace = NPC
@@ -222,9 +227,30 @@ net.Receive(SCP_055_CONFIG.ItSeeIt, function(len, ply)
 end)
 
 hook.Add( "StartCommand", "StartCommand.SCP055_ManageBot", function( bot, cmd )
-	if ( not bot:IsBot() or not bot:Alive() or not bot.SCP055_IsBot ) then return end
-
-		-- Clear any default movement or actions
-		cmd:ClearMovement() 
-		cmd:ClearButtons()
+	if ( bot:IsBot() and bot:Alive() and bot.SCP055_IsBot ) then
+		local CurrentTime = CurTime()
+		cmd:RemoveKey( IN_DUCK ) --? We don't want the bot to crouch
+		if not bot.IsMoving and not bot.IsPause then
+			bot.IsMoving = true
+            bot.DurationMove = CurrentTime + math.random(SCP_055_CONFIG.MinBotMove, SCP_055_CONFIG.MinBotMove * 2)
+			bot.SpeedMove = math.random(80, 200)
+			local Direction = Vector(math.Rand(-1, 1), math.Rand(-1, 1), 0):GetNormalized()
+			cmd:ClearMovement() 
+			cmd:ClearButtons()
+			cmd:SetViewAngles( ( Direction ):GetNormalized():Angle() )
+			bot:SetEyeAngles( ( Direction ):GetNormalized():Angle() )
+		end
+		if (CurrentTime > bot.DurationMove and not bot.IsPause) then
+			bot.IsMoving = false
+			bot.IsPause = true
+			bot.NextPause = CurrentTime + math.random(SCP_055_CONFIG.MinBotPause, SCP_055_CONFIG.MinBotPause * 2)
+			cmd:SetForwardMove( 0 )
+		end
+		if (bot.IsMoving) then
+			cmd:SetForwardMove( bot.SpeedMove )
+		end
+		if (bot.IsPause) then
+			if (CurrentTime > bot.NextPause) then bot.IsPause = false end
+		end
+	end
 end)

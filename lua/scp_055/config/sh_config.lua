@@ -43,6 +43,8 @@ SCP_055_CONFIG.TalkEventDuration = 167 -- TODO: Mettre 167 (durée du mp3)
 SCP_055_CONFIG.AscentDirection = Vector(0, 0, 18000)
 SCP_055_CONFIG.XDistanceSkull = 800
 SCP_055_CONFIG.EventCount = 2
+SCP_055_CONFIG.MinBotPause = 4
+SCP_055_CONFIG.MinBotMove = 4
 
 -- NET VAR
 SCP_055_CONFIG.OpenPanelPassword = "SCP_055_CONFIG.OpenPanelPassword"
