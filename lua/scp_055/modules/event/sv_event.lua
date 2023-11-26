@@ -16,7 +16,7 @@
 
 function scp_055.StartEvent(ply)
     local choice = math.random(1, SCP_055_CONFIG.EventCount)
-	choice = 2 -- TODO : Remove this line
+	choice = 1 -- TODO : Remove this line
 
     if (choice == 1) then
         scp_055.ItEvent(ply)
@@ -32,6 +32,10 @@ function scp_055.ItEvent(ply)
 	timer.Simple(0.1, function()
 		if (not scp_055.IsValid(ply)) then return end
 		ply:Freeze(true)
+	end)
+	timer.Simple(10, function()
+		if (not scp_055.IsValid(ply)) then return end
+		ply:Freeze(false)
 	end)
     net.Start(SCP_055_CONFIG.ItEvent)
     net.Send(ply)
@@ -153,23 +157,25 @@ function scp_055.KillBot(bot)
 	end
 end
 
-function scp_055.BlueScreen(ply, keyText, font, duration, multH, delay)
+function scp_055.BlueScreen(ply, keyText, font, duration, multH, delay, sfx)
 	net.Start(SCP_055_CONFIG.BlueScreen)
 		net.WriteString(keyText)
 		net.WriteString(font)
 		net.WriteUInt(duration, 4)
 		net.WriteFloat(multH)
 		net.WriteUInt(delay, 5)
+		net.WriteString(sfx)
 	net.Send(ply)
 end
 
-function scp_055.BlueScreens(ply, keyText, font, duration, multH, delay)
+function scp_055.BlueScreens(ply, keyText, font, duration, multH, delay, sfx)
 	net.Start(SCP_055_CONFIG.BlueScreens)
 		net.WriteTable(keyText)
 		net.WriteString(font)
 		net.WriteUInt(duration, 4)
 		net.WriteFloat(multH)
 		net.WriteUInt(delay, 5)
+		net.WriteString(sfx)
 	net.Send(ply)
 end
 
@@ -183,8 +189,8 @@ function scp_055.ForwardPlayer(ply, endStep, step)
 		if(currentStep >= endStep) then
 			hook.Remove("Think", "Think.SCP055_ForwardPlayer_".. ply:EntIndex())
 			local text = SCP_055_CONFIG.ItEventText[ math.random( #SCP_055_CONFIG.ItEventText ) ]
-			scp_055.BlueScreen(ply, text, "SCP055_BlueScreen_2", 3, 0.35, 0)
-			local pos = IsValid(ply.SCP055_NPCReplace) and ply.SCP055_NPCReplace:GetPos() or ply.SCP055_OriginPos
+			scp_055.BlueScreen(ply, text, "SCP055_BlueScreen_2", 3, 0.35, 0, "scp_055/talk_event_end.mp3")
+			local pos = IsValid(ply.SCP055_NPCReplace) and ply.SCP055_NPCReplace or ply.SCP055_OriginPos
 			scp_055.MovePlayerToAPos(ply, pos, 100, 100, true)
 		end
 	end)
@@ -194,13 +200,16 @@ function scp_055.MovePlayerToAPos(ply, targetPos, velocity, endDistance, endEffe
     if not IsValid(ply) or not targetPos then return end
 
 	ply:SetMoveType(MOVETYPE_NOCLIP)
+	local isEnt = IsEntity(targetPos)
+	local pos = targetPos
 
 	hook.Add("Think", "Think.SCP055_MovePlayerToAPos_".. ply:EntIndex(), function()
-		local direction = (targetPos - ply:GetPos()):GetNormalized()
+		if (isEnt) then pos = targetPos:GetPos() end
+		local direction = (pos - ply:GetPos()):GetNormalized()
 		local nouvellePos = ply:GetPos() + direction * velocity
 
 		ply:SetPos(nouvellePos)
-		if (ply:GetPos():Distance(targetPos) <= endDistance) then
+		if (ply:GetPos():Distance(pos) <= endDistance) then
 			hook.Remove("Think", "Think.SCP055_MovePlayerToAPos_".. ply:EntIndex()) 
 			if (endEffect) then scp_055.EndSCP055Effect(ply, true) end
 		end

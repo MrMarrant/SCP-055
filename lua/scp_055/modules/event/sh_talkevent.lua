@@ -16,11 +16,11 @@
 
 if (SERVER) then
     function scp_055.TalkEvent(ply)
-        local duration = 1 -- TODO : Mettre à 3
+        local duration = 3
         local keyText = {"introtalkevent_1", "introtalkevent_2", "introtalkevent_3", "introtalkevent_4"}
 
         scp_055.RemoveHook(ply, "HUDPaint", "HUDPaint.SCP055_SetToTheDark".. ply:EntIndex())
-        scp_055.BlueScreens(ply, keyText, "SCP055_BlueScreen_3", duration, 0.45, 0)
+        scp_055.BlueScreens(ply, keyText, "SCP055_BlueScreen_3", duration, 0.45, 0, "scp_055/talk_event_begin.mp3")
         timer.Create( "SCP055_Timer_TalkEvent_".. ply:EntIndex(), duration * #keyText, 1, function()
             if (not scp_055.IsValid(ply)) then return end
 
@@ -31,11 +31,11 @@ if (SERVER) then
                 if (not scp_055.IsValid(ply)) then return end
 
                 keyText = {"outrotalkevent_1", "outrotalkevent_2", "outrotalkevent_3", "outrotalkevent_4"}
-                scp_055.BlueScreens(ply, keyText, "SCP055_BlueScreen_3", duration, 0.45, 0)
+                scp_055.BlueScreens(ply, keyText, "SCP055_BlueScreen_3", duration, 0.45, 0, "scp_055/talk_event_end.mp3")
                 timer.Create( "SCP055_Timer_TalkEvent_".. ply:EntIndex(), duration * #keyText, 1, function()
                     if (not scp_055.IsValid(ply)) then return end
 
-                    local pos = IsValid(ply.SCP055_NPCReplace) and ply.SCP055_NPCReplace:GetPos() or ply.SCP055_OriginPos
+                    local pos = IsValid(ply.SCP055_NPCReplace) and ply.SCP055_NPCReplace or ply.SCP055_OriginPos
                     scp_055.MovePlayerToAPos(ply, pos, 100, 100, true)
                 end)
             end )

@@ -165,10 +165,12 @@ function scp_055.RemoveTheDark()
     timer.Remove("SCP055_TalkEvent_CreateSubtiles".. ply:EntIndex())
     timer.Remove("SCP055_PsychoEffect_".. ply:EntIndex())
     hook.Remove("Think", "Think.SCP055_ItSeeIt_".. ply:EntIndex())
+    ply:StopSound( "scp_055/talk_event_begin.mp3" )
+    ply:StopSound( "scp_055/talk_event_end.mp3" )
     ply:StopSound( "scp_055/text_event.mp3" )
 end
 
-function scp_055.BlueScreen(ply, keyText, font, duration, multH, delay)
+function scp_055.BlueScreen(ply, keyText, font, duration, multH, delay, sfx)
     local multW = 0.5
     local defineMultH = multH
     local key = type(keyText) == "table" and keyText[1] or keyText
@@ -195,6 +197,7 @@ function scp_055.BlueScreen(ply, keyText, font, duration, multH, delay)
             end)
         end
 
+        ply:EmitSound( Sound( sfx ))
         duration = type(keyText) == "table" and duration * #keyText or duration
         timer.Simple(duration, function()
             if (not IsValid(ply)) then return end
@@ -202,10 +205,6 @@ function scp_055.BlueScreen(ply, keyText, font, duration, multH, delay)
             ply.SCP055_staticNoise:Remove()
         end)
     end)
-end
-
-
-function scp_055.ErrorMessageEvent()
 end
 
 net.Receive(SCP_055_CONFIG.ItEvent, function()
@@ -227,7 +226,8 @@ net.Receive(SCP_055_CONFIG.BlueScreen, function()
     local duration = net.ReadUInt(4)
     local multH = net.ReadFloat()
     local delay = net.ReadUInt(5)
-    scp_055.BlueScreen(ply, keyText, font, duration, multH, delay)
+    local sfx = net.ReadString()
+    scp_055.BlueScreen(ply, keyText, font, duration, multH, delay, sfx)
 
     hook.Remove("RenderScreenspaceEffects", "RenderScreenspaceEffects.SCP055_ItEvent_".. ply:EntIndex())
 end)
@@ -239,7 +239,8 @@ net.Receive(SCP_055_CONFIG.BlueScreens, function()
     local duration = net.ReadUInt(4)
     local multH = net.ReadFloat()
     local delay = net.ReadUInt(5)
-    scp_055.BlueScreen(ply, keyText, font, duration, multH, delay)
+    local sfx = net.ReadString()
+    scp_055.BlueScreen(ply, keyText, font, duration, multH, delay, sfx)
 
     hook.Remove("RenderScreenspaceEffects", "RenderScreenspaceEffects.SCP055_ItEvent_".. ply:EntIndex())
 end)

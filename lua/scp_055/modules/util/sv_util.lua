@@ -71,7 +71,7 @@ function scp_055.StartSCP055Effect(ply)
 		scp_055.CreateNPCReplace(ply)
 		ply:SetEyeAngles(Angle(-180, 0, 0))
 		ply:Freeze(true)
-		scp_055.MovePlayerToAPos(ply, ply.SCP055_NPCReplace:GetPos() + SCP_055_CONFIG.AscentDirection, 50, 0)
+		scp_055.MovePlayerToAPos(ply, ply:GetPos() + SCP_055_CONFIG.AscentDirection, 50, 0)
 		scp_055.SetToTheDark(ply)
 		timer.Simple(SCP_055_CONFIG.AscentTime + 2, function()
 			if (not scp_055.IsValid(ply)) then return end
