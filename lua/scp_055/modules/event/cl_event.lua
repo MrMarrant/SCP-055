@@ -168,6 +168,7 @@ function scp_055.RemoveTheDark()
     ply:StopSound( "scp_055/talk_event_begin.mp3" )
     ply:StopSound( "scp_055/talk_event_end.mp3" )
     ply:StopSound( "scp_055/text_event.mp3" )
+    ply:StopSound( "scp_055/it_event_end.mp3" )
 end
 
 function scp_055.BlueScreen(ply, keyText, font, duration, multH, delay, sfx)
@@ -176,7 +177,6 @@ function scp_055.BlueScreen(ply, keyText, font, duration, multH, delay, sfx)
     local key = type(keyText) == "table" and keyText[1] or keyText
     local i = 1
     delay = delay or 0
-    -- TODO : Play sound
     timer.Simple(delay, function()
         if (not IsValid(ply)) then return end
 

@@ -189,7 +189,7 @@ function scp_055.ForwardPlayer(ply, endStep, step)
 		if(currentStep >= endStep) then
 			hook.Remove("Think", "Think.SCP055_ForwardPlayer_".. ply:EntIndex())
 			local text = SCP_055_CONFIG.ItEventText[ math.random( #SCP_055_CONFIG.ItEventText ) ]
-			scp_055.BlueScreen(ply, text, "SCP055_BlueScreen_2", 3, 0.35, 0, "scp_055/talk_event_end.mp3")
+			scp_055.BlueScreen(ply, text, "SCP055_BlueScreen_2", 3, 0.35, 0, "scp_055/it_event_end.mp3")
 			local pos = IsValid(ply.SCP055_NPCReplace) and ply.SCP055_NPCReplace or ply.SCP055_OriginPos
 			scp_055.MovePlayerToAPos(ply, pos, 100, 100, true)
 		end
