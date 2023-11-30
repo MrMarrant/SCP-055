@@ -93,7 +93,7 @@ if (CLIENT) then
             local timePsycho = timeEventDuration/countPsycho
             local gifToDisplay = {
                 "https://i.imgur.com/zb6q1Hh.gif",
-                "https://i.imgur.com/gchvc46.gif",
+                "https://i.imgur.com/1881MSv.gif",
                 "https://i.imgur.com/bw9C3Zy.gif"
             }
             local i = 0

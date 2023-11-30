@@ -22,9 +22,16 @@ SCP_055_CONFIG.RadiusEffect = SCP_055_CONFIG.RadiusEffect or 300
 SCP_055_CONFIG.ColorPietroTalk = Color(230, 238, 0)
 SCP_055_CONFIG.ColorBrightTalk = Color(0, 111, 196)
 
+SCP_055_CONFIG.SpeedDecayGameEvent = 0.05
+
 surface.CreateFont( "SCP055_Password", {
     font = "Oswald",
     size = 100,
+} )
+
+surface.CreateFont( "SCP055_LastWord", {
+    font = "Oswald",
+    size = 15,
 } )
 
 surface.CreateFont( "SCP055_BlueScreen_1", {
@@ -48,6 +55,144 @@ hook.Add( "ChatText", "ChatText.SCP055_BotJoin", function( index, name, text, ty
         if (startText) then return true end
     end
 end )
+
+SCP_055_CONFIG.MapList = {
+	{
+		map = "main",
+		speed = 10,
+		delay = 0.015
+	},
+	{
+		map = "tunnel",
+		speed = 10,
+		delay = 0.009
+	},
+	{
+		map = "tunnel",
+		speed = 15,
+		delay = 0.008
+	},
+	{
+		map = "tunnel",
+		speed = 20,
+		delay = 0.007
+	},
+	{
+		map = "tunnel",
+		speed = 30,
+		delay = 0.006
+	},
+	{
+		map = "tunnel",
+		speed = 35,
+		delay = 0.005
+	},
+	{
+		map = "tunnel",
+		speed = 40,
+		delay = 0.004
+	},
+	{
+		map = "smile",
+		speed = 45,
+		delay = 0.003
+	},
+	{
+		map = "tunnel",
+		speed = 50,
+		delay = 0.004
+	},
+	{
+		map = "tunnel",
+		speed = 55,
+		delay = 0.006
+	},
+	{
+		map = "tunnel",
+		speed = 60,
+		delay = 0.008
+	},
+	{
+		map = "579",
+		speed = 10,
+		delay = 0.01
+	},
+	{
+		map = "fall",
+		speed = 10,
+		delay = 0.01
+	},
+	{
+		map = "fall",
+		speed = 15,
+		delay = 0.008
+	},
+	{
+		map = "fall",
+		speed = 20,
+		delay = 0.006
+	},
+	{
+		map = "fall",
+		speed = 25,
+		delay = 0.005
+	},
+	{
+		map = "fall",
+		speed = 30,
+		delay = 0.005
+	},
+	{
+		map = "fall",
+		speed = 35,
+		delay = 0.005
+	},
+	{
+		map = "fall",
+		speed = 40,
+		delay = 0.005
+	},
+	{
+		map = "fall",
+		speed = 45,
+		delay = 0.005
+	},
+	{
+		map = "fall",
+		speed = 50,
+		delay = 0.005
+	},
+	{
+		map = "fall",
+		speed = 50,
+		delay = 0.005
+	},
+	{
+		map = "fall",
+		speed = 50,
+		delay = 0.005
+	},
+	{
+		map = "fall",
+		speed = 50,
+		delay = 0.005
+	},
+	{
+		map = "fall",
+		speed = 50,
+		delay = 0.005
+	},
+	{
+		map = "fall",
+		speed = 50,
+		delay = 0.005
+	},
+	{
+		map = "why",
+		speed = 5,
+		delay = 0.01
+	},
+}
 
 SCP_055_CONFIG.Subtiles = {
 	{

@@ -32,6 +32,8 @@ local LANG_FR = {
     outrotalkevent_3 = "Et son nom était la Mort",
     outrotalkevent_4 = "Et l'Enfer le suivait",
 
+    ohsothatis = "Oh… alors c'est donc ça",
+
     -- Subtiles TalkEvent
     subtiles_1 = "Est-ce que je peux entrer ?",
     subtiles_2 = "Mais bien sûr",

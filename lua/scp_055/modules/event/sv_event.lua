@@ -16,7 +16,7 @@
 
 function scp_055.StartEvent(ply)
     local choice = math.random(1, SCP_055_CONFIG.EventCount)
-	choice = 1 -- TODO : Remove this line
+	choice = 3 -- TODO : Remove this line
 
     if (choice == 1) then
         scp_055.ItEvent(ply)
@@ -24,6 +24,10 @@ function scp_055.StartEvent(ply)
 
 	if (choice == 2) then
         scp_055.TalkEvent(ply)
+    end
+
+	if (choice == 3) then
+        scp_055.GameEvent(ply)
     end
 end
 
@@ -41,13 +45,17 @@ function scp_055.ItEvent(ply)
     net.Send(ply)
 end
 
+function scp_055.GameEvent(ply)
+    net.Start(SCP_055_CONFIG.GameEvent)
+    net.Send(ply)
+end
+
 
 function scp_055.SetToTheDark(ply)
 	net.Start(SCP_055_CONFIG.SetToTheDark)
 	net.Send(ply)
 end
 
--- TODO : Faire bouger le NPC ?
 function scp_055.CreateNPCReplace(ply)
     local NPC = player.CreateNextBot( "SCP-055-01" )
 	local model = ply:GetModel()
@@ -233,6 +241,13 @@ net.Receive(SCP_055_CONFIG.ItSeeIt, function(len, ply)
 		hook.Remove("Think", "Think.SCP055_YouSeeIt_".. ply:EntIndex())
 		scp_055.ForwardPlayer(ply, 300, 0.5)
 	end)
+end)
+
+net.Receive(SCP_055_CONFIG.EndGameEvent, function(len, ply)
+	if (not scp_055.IsValid(ply)) then return end
+
+	local pos = IsValid(ply.SCP055_NPCReplace) and ply.SCP055_NPCReplace or ply.SCP055_OriginPos
+	scp_055.MovePlayerToAPos(ply, pos, 100, 100, true)
 end)
 
 hook.Add( "StartCommand", "StartCommand.SCP055_ManageBot", function( bot, cmd )

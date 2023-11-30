@@ -158,17 +158,25 @@ function scp_055.RemoveTheDark()
     hook.Remove("RenderScreenspaceEffects", "RenderScreenspaceEffects.SCP055_TalkEvent_".. ply:EntIndex())
     hook.Remove("HUDPaint", "HUDPaint.SCP055_BlueScreen_".. ply:EntIndex())
     hook.Remove("PostDrawHUD", "PostDrawHUD.SCP055_Subtitles_".. ply:EntIndex())
+    hook.Remove("PostDrawHUD", "PostDrawHUD.SCP055_GameEventLastWord_".. ply:EntIndex())
     if (ply.SCP055_staticNoise) then ply.SCP055_staticNoise:Remove() end
     timer.Remove("SCP055_DelayBlueScreen_".. ply:EntIndex())
     timer.Remove("HookRemove_SCP055_Subtitles_".. ply:EntIndex())
     timer.Remove("HookRemove_SCP055_TalkEvent_".. ply:EntIndex())
     timer.Remove("SCP055_TalkEvent_CreateSubtiles".. ply:EntIndex())
     timer.Remove("SCP055_PsychoEffect_".. ply:EntIndex())
+    timer.Remove("SCP055_DelayIt_".. ply:EntIndex())
+    timer.Remove("Falling.SCP055_Key_MovePlayer".. ply:EntIndex())
     hook.Remove("Think", "Think.SCP055_ItSeeIt_".. ply:EntIndex())
     ply:StopSound( "scp_055/talk_event_begin.mp3" )
     ply:StopSound( "scp_055/talk_event_end.mp3" )
     ply:StopSound( "scp_055/text_event.mp3" )
     ply:StopSound( "scp_055/it_event_end.mp3" )
+    ply:StopSound( "scp_055/end_effect.mp3" )
+    if (IsValid(ply.SCP0555_FrameGameEvent)) then 
+        ply.SCP0555_FrameGameEvent:Remove()
+        ply.SCP0555_FrameGameEvent = nil
+    end
 end
 
 function scp_055.BlueScreen(ply, keyText, font, duration, multH, delay, sfx)
