@@ -1,20 +1,30 @@
 local function PostEffect(ply, gamePanel)
     gamePanel.IsEnd = true
     timer.Remove("Falling.SCP055_Key_MovePlayer" .. ply:EntIndex())
+    ply:StopSound( "scp_055/theme_gameevent.wav" )
+    ply:EmitSound( Sound( "scp_055/reset.mp3" ))
     timer.Simple(10, function()
         if (not IsValid(gamePanel) or not IsValid(ply)) then return end
+        local duration = CurTime() + 4
         hook.Add("PostDrawHUD", "PostDrawHUD.SCP055_GameEventLastWord_" .. ply:EntIndex(), function()
             surface.SetDrawColor( 0, 0, 0)
             surface.DrawRect(0, 0, SCP_055_CONFIG.ScrW, SCP_055_CONFIG.ScrH)
-            draw.DrawText( scp_055.GetTranslation("ohsothatis"), "SCP055_LastWord", SCP_055_CONFIG.ScrW * 0.5, SCP_055_CONFIG.ScrH * 0.5, Color(255, 255, 255, 199), TEXT_ALIGN_CENTER )
+            if (CurTime() < duration) then
+                draw.DrawText( scp_055.GetTranslation("ohsothatis"), "SCP055_LastWord", SCP_055_CONFIG.ScrW * 0.5, SCP_055_CONFIG.ScrH * 0.5, Color(255, 255, 255, 199), TEXT_ALIGN_CENTER )
+            end
         end)
         gamePanel:GetParent():Remove()
+        ply:EmitSound( Sound( "scp_055/it_hear_you.mp3" ))
         timer.Simple(4, function()
             if (not IsValid(ply)) then return end
-            hook.Remove("PostDrawHUD", "PostDrawHUD.SCP055_GameEventLastWord_".. ply:EntIndex())
-            ply:EmitSound( Sound( "scp_055/end_effect.mp3" ))
-            net.Start(SCP_055_CONFIG.EndGameEvent)
-            net.SendToServer()
+            ply:EmitSound( Sound( "scp_055/call_end.mp3" ))
+            timer.Simple(1, function()
+                hook.Remove("PostDrawHUD", "PostDrawHUD.SCP055_GameEventLastWord_".. ply:EntIndex())
+                if (not IsValid(ply)) then return end
+                ply:EmitSound( Sound( "scp_055/end_effect.mp3" ))
+                net.Start(SCP_055_CONFIG.EndGameEvent)
+                net.SendToServer()
+            end)
         end)
     end)
 end
@@ -130,6 +140,7 @@ local function CreateEnnemy(gamePanel, ply, x, y, velocity, ennemies, index)
         end
         if (xPlayer < xEnnemy + ennemy:GetWide() and xPlayer + player1:GetWide() > xEnnemy) and 
         (yPlayer < yEnnemy + ennemy:GetTall() and yPlayer + player1:GetTall() > yEnnemy) then
+            ply:EmitSound( Sound( "scp_055/hit.mp3" ), 75, math.random( 90, 110 ))
             scp_055.NextMap(ply, gamePanel, 0)
         end
     end)
@@ -337,12 +348,12 @@ end
 
 -- Fonction pour créer un mur
 function scp_055.NextMap(ply, gamePanel, increment)
-    gamePanel.indexMap = gamePanel.indexMap + increment
-    local isEndGame = gamePanel.indexMap > #SCP_055_CONFIG.MapList and true or false
+    local isEndGame = gamePanel.indexMap >= #SCP_055_CONFIG.MapList and true or false
     if (gamePanel.indexMap > 0) then
         RemoveMap(ply, isEndGame)
     end
     if (not isEndGame) then
+        gamePanel.indexMap = gamePanel.indexMap + increment
         ply.SCP055_Unkey = nil
         local map = SCP_055_CONFIG.MapList[gamePanel.indexMap].map
         if (map == "tunnel") then
@@ -454,6 +465,7 @@ function scp_055.GameEvent()
     gamePanel.indexMap = 0
 
     scp_055.NextMap(ply, gamePanel, 1)
+    ply:StartLoopingSound("scp_055/theme_gameevent.wav")
 end
 
 net.Receive(SCP_055_CONFIG.GameEvent, function()

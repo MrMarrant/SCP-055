@@ -173,6 +173,7 @@ function scp_055.RemoveTheDark()
     ply:StopSound( "scp_055/text_event.mp3" )
     ply:StopSound( "scp_055/it_event_end.mp3" )
     ply:StopSound( "scp_055/end_effect.mp3" )
+    ply:StopSound( "scp_055/theme_gameevent.wav" )
     if (IsValid(ply.SCP0555_FrameGameEvent)) then 
         ply.SCP0555_FrameGameEvent:Remove()
         ply.SCP0555_FrameGameEvent = nil
