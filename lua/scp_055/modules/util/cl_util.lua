@@ -29,6 +29,33 @@ local tab = {
     [ "$pp_colour_mulb" ] = 0
 }
 
+function scp_055.ProximityEffect(ent)
+    local ply = LocalPlayer()
+    local maxRange = SCP_055_CONFIG.RadiusEffect
+
+    if (ply:GetPos():Distance(ent:GetPos()) > maxRange or not ply:Alive() or ply.SCP055_CloseEffect) then return end
+    ply.SCP055_CloseEffect = ply:StartLoopingSound(Sound("scp_055/it_is_not_far.wav"))
+
+    hook.Add("Think", "Think.SCP055_ProximityEffect".. ply:EntIndex(), function()
+        if (not IsValid(ply)) then return end
+        if (not IsValid(ent)) then
+            scp_055.RemoveProximityEffect(ply)
+            return
+        end
+
+        if (ply:GetPos():Distance(ent:GetPos()) > maxRange or not ply:Alive()) then
+            scp_055.RemoveProximityEffect(ply)
+            return
+        end
+    end)
+end
+
+function scp_055.RemoveProximityEffect(ply)
+    ply:StopLoopingSound(ply.SCP055_CloseEffect)
+    ply.SCP055_CloseEffect = nil
+    hook.Remove("Think", "Think.SCP055_ProximityEffect".. ply:EntIndex())
+end
+
 function scp_055.SetBriefcaseEffect(ent)
     local ply = LocalPlayer()
     local maxRange = SCP_055_CONFIG.RadiusEffect

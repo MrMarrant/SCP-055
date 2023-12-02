@@ -34,12 +34,12 @@ function ENT:RebuildPhysics( )
 end
 
 -- Use specially for the physics sounds
-function ENT:PhysicsCollide( data, physobj ) -- TODO : Changer les sons de collisions.
+function ENT:PhysicsCollide( data, physobj )
 	if data.DeltaTime > 0.2 then
 		if data.Speed > 250 then
-			self:EmitSound( "physics/concrete/concrete_impact_hard".. math.random(1, 3)..".wav", 75, math.random( 100, 110 ) )	
+			self:EmitSound( "scp_055/hard_briefcase.mp3", 75, math.random( 100, 110 ) )	
 		else
-			self:EmitSound( "physics/concrete/concrete_impact_soft".. math.random(1, 3)..".wav", 75, math.random( 100, 110 ) )		
+			self:EmitSound( "scp_055/soft_briefcase.mp3", 75, math.random( 100, 110 ) )		
 		end
 	end
 end
@@ -52,6 +52,7 @@ function ENT:Use(ply)
 	local weapon = ply:Give("swep_scp055")
 	if (IsValid(weapon)) then 
 		weapon:SetIsOpen(self:GetIsOpen())
+		ply:EmitSound(Sound("scp_055/pick_briefcase.mp3"))
 		self:Remove()
 	end
 end

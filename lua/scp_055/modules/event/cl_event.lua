@@ -56,7 +56,6 @@ function scp_055.ItEvent()
         if (ply.SCP055_DelayIt == 8) then 
             hook.Add( "Think", "Think.SCP055_ItSeeIt_".. ply:EntIndex(), function() scp_055.ItSeeIt(ply) end)
         end
-        -- TODO : Son d'apparition (SFX UltraKill ?)
     end)
 end
 
@@ -162,6 +161,7 @@ function scp_055.RemoveTheDark()
     hook.Remove("HUDPaint", "HUDPaint.SCP055_BlueScreen_".. ply:EntIndex())
     hook.Remove("PostDrawHUD", "PostDrawHUD.SCP055_Subtitles_".. ply:EntIndex())
     hook.Remove("PostDrawHUD", "PostDrawHUD.SCP055_GameEventLastWord_".. ply:EntIndex())
+    hook.Remove("Think", "Think.SCP055_ProximityEffect".. ply:EntIndex())
     if (ply.SCP055_staticNoise) then ply.SCP055_staticNoise:Remove() end
     timer.Remove("SCP055_DelayBlueScreen_".. ply:EntIndex())
     timer.Remove("HookRemove_SCP055_Subtitles_".. ply:EntIndex())

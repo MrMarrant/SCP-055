@@ -87,15 +87,14 @@ function SWEP:PrimaryAttack()
 	if (StateCheck) then
 		scp_055.UnCheckBriefcase(ply, self)
 	else
-		if (!scp_055.HasSecurityCard(ply)) then
-			-- TODO : jouer un son d'erreur
-			print("NoCard")
+		if (not scp_055.HasSecurityCard(ply)) then
+			ply:EmitSound(Sound("scp_055/error.mp3"))
 		else
 			scp_055.SetViewModel(VMAnim, check)
 			local NexIdle = VMAnim:SequenceDuration() / VMAnim:GetPlaybackRate()
 		
 			timer.Simple(NexIdle, function()
-				if(!self:IsValid() or !ply:IsValid()) then return end
+				if(not self:IsValid() or not ply:IsValid()) then return end
 
 				if (StateOpen) then
 					if (scp_055.IsValid(ply) or ply.SCP055_01) then -- If it is affect by 055 or was affect by it
@@ -110,7 +109,6 @@ function SWEP:PrimaryAttack()
 						scp_055.StartSCP055Effect(ply)
 					end)
 				else
-					--scp_055.StartSCP055Effect(ply) --TODO : A virer
 					self:SetIsCheck(true)
 					scp_055.OpenPanelPassword(ply)
 				end

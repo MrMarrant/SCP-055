@@ -58,6 +58,8 @@ function SWEP:PrimaryAttack()
 	local ply = self:GetOwner()
 
 	ply.scp055_cardCode = !ply.scp055_cardCode
+	local sfx = ply.scp055_cardCode and "scp_055/inspect.mp3" or "scp_055/uninspect.mp3"
+	ply:EmitSound(Sound(sfx))
 end
 
 function SWEP:SecondaryAttack()

@@ -20,11 +20,14 @@ function ENT:Draw()
     self:DrawModel() 
 end
 
--- TODO : Mettre un son qui boucle  quand un joueur est proche de l'entité.
 function ENT:Initialize()
     hook.Add("HUDPaint", "HUDPaint.SCP055_BriefcaseEffect".. self:EntIndex(), function()
         scp_055.SetBriefcaseEffect(self)
     end)
+end
+
+function ENT:Think()
+    scp_055.ProximityEffect(self)
 end
 
 function ENT:OnRemove()
