@@ -95,9 +95,9 @@ function scp_055.CheckPassword(password)
         scp_055.ClosePanelPassword()
         net.Start(SCP_055_CONFIG.OpenBriefcase)
         net.SendToServer()
-        -- TODO : Jouer un son d'ouverture de la mallette
+        scp_055.SoundToServer("scp_055/open_briefcase.mp3")
     else
-        -- TODO : Jouer un son d'erreur de la mallette
+        ply:EmitSound(Sound("scp_055/error.mp3"))
         -- TODO : Afficher un message d'erreur ?
     end
 end
@@ -176,7 +176,7 @@ function scp_055.Subtitles(ply, subtitles, duration)
     local y = SCP_055_CONFIG.ScrH - 100
 
     hook.Add("PostDrawHUD", "PostDrawHUD.SCP055_Subtitles_".. ply:EntIndex(), function()
-        if subtitleIndex >= #subtitles then
+        if subtitleIndex > #subtitles then
             subtitleAlpha = Lerp(FrameTime() / fadeOutTime, subtitleAlpha, 0)
         else
             if (#curText < 150) then
@@ -186,7 +186,7 @@ function scp_055.Subtitles(ply, subtitles, duration)
                 draw.SimpleText(firstPart, "DermaLarge", x, y, color, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
                 draw.SimpleText(secondPart, "DermaLarge", x, y + 50, color, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
             end
-            -- Set TimePause
+
             TimePause = TimePause + FrameTime()
 
             if TimePause >= TimePauseStop then
@@ -214,6 +214,12 @@ function scp_055.DivideString(str, divider)
     local secondPart = string.sub(str, indexDivider + 1)
 
     return firstPart, secondPart
+end
+
+function scp_055.SoundToServer(string)
+    net.Start(SCP_055_CONFIG.SoundToServer)
+        net.WriteString(string)
+    net.SendToServer()
 end
 
 net.Receive(SCP_055_CONFIG.OpenPanelPassword, function()

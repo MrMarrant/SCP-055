@@ -39,7 +39,7 @@ SCP_055_CONFIG.ItEventText[4] = "isalive"
 
 -- In seconds, the time it takes to the ascent effect.
 SCP_055_CONFIG.AscentTime = 5
-SCP_055_CONFIG.TalkEventDuration = 167 -- TODO: Mettre 167 (durée du mp3)
+SCP_055_CONFIG.TalkEventDuration = 167
 SCP_055_CONFIG.AscentDirection = Vector(0, 0, 18000)
 SCP_055_CONFIG.XDistanceSkull = 800
 SCP_055_CONFIG.EventCount = 2
@@ -61,3 +61,4 @@ SCP_055_CONFIG.BlueScreens = "SCP_055_CONFIG.BlueScreens"
 SCP_055_CONFIG.RemoveHook = "SCP_055_CONFIG.RemoveHook"
 SCP_055_CONFIG.GameEvent = "SCP_055_CONFIG.GameEvent"
 SCP_055_CONFIG.EndGameEvent = "SCP_055_CONFIG.EndGameEvent"
+SCP_055_CONFIG.SoundToServer = "SCP_055_CONFIG.SoundToServer"

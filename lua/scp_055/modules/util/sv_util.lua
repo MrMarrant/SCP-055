@@ -56,9 +56,11 @@ function scp_055.OpenBriefcase(ply)
 
 	scp_055.UnCheckBriefcase(ply, SCP055)
 	SCP055:SetIsOpen(true)
+	ply.SCP055_IsOpenBC = true
 end
 
 function scp_055.StartSCP055Effect(ply)
+	if(not IsValid(ply) or not ply:Alive()) then return end
 	scp_055.RemoveWeapons(ply)
 
 	timer.Simple(0.1, function() --? Strip weapon make 0.1s for remove all weapons.
@@ -179,4 +181,12 @@ net.Receive(SCP_055_CONFIG.UnCheckBriefcase, function(len, ply)
 	if (not IsValid(SCP055)) then return end
 
 	scp_055.UnCheckBriefcase(ply, SCP055)
+end)
+
+net.Receive(SCP_055_CONFIG.SoundToServer, function(len, ply)
+	local SCP055 = ply:GetWeapon("swep_scp055")
+	if (not IsValid(SCP055)) then return end
+	local sound = net.ReadString()
+
+	ply:EmitSound(Sound(sound))
 end)

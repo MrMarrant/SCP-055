@@ -57,6 +57,7 @@ function SWEP:Initialize()
 	self:SetWeaponHoldType( self.HoldType )
 	self:SetHoldType( self.HoldType )
 	self:SetPlaybackRate( GetConVarNumber( "sv_defaultdeployspeed" ) )
+	self:GetOwner().SCP055_IsOpenBC = self:GetIsOpen()
 end
 
 function SWEP:Deploy()
@@ -109,9 +110,9 @@ function SWEP:PrimaryAttack()
 						scp_055.StartSCP055Effect(ply)
 					end)
 				else
-					scp_055.StartSCP055Effect(ply) --TODO : A virer
-					-- self:SetIsCheck(true)
-					-- scp_055.OpenPanelPassword(ply)
+					--scp_055.StartSCP055Effect(ply) --TODO : A virer
+					self:SetIsCheck(true)
+					scp_055.OpenPanelPassword(ply)
 				end
 			end)
 		end
@@ -125,6 +126,7 @@ function SWEP:SecondaryAttack()
 	local ent = scp_055.Drop(self:GetOwner(), "scp_055")
 	if (IsValid(ent)) then
 		ent:SetIsOpen(self:GetIsOpen())
+		self:GetOwner().SCP055_IsOpenBC = nil
 		self:Remove()
 	end
 end
@@ -136,7 +138,8 @@ function SWEP:Reload()
 	local ply = self:GetOwner()
 	if (self:GetIsOpen() and scp_055.HasSecurityCard(ply)) then
 		self:SetIsOpen(false)
-		-- TODO : jouer un son / animation
+		ply.SCP055_IsOpenBC = false
+		ply:EmitSound(Sound("scp_055/close_briefcase.mp3"))
 	end
 end
 

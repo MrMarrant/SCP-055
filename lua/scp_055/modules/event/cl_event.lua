@@ -51,6 +51,7 @@ function scp_055.ItEvent()
     timer.Create("SCP055_DelayIt_".. ply:EntIndex(), 4, 4, function()
         if(not IsValid(ply)) then return end
         ply.SCP055_DelayIt = ply.SCP055_DelayIt + 2
+        if (ply.SCP055_DelayIt <= 6) then ply:EmitSound(Sound("scp_055/spot_on.mp3")) end
         if (ply.SCP055_DelayIt == 2) then timer.Adjust( "SCP055_DelayIt_".. ply:EntIndex(), 2 ) end
         if (ply.SCP055_DelayIt == 8) then 
             hook.Add( "Think", "Think.SCP055_ItSeeIt_".. ply:EntIndex(), function() scp_055.ItSeeIt(ply) end)
@@ -103,6 +104,7 @@ function scp_055.ItSeeIt(ply)
         hook.Remove("Think", "Think.SCP055_ItSeeIt_".. ply:EntIndex())
         net.Start(SCP_055_CONFIG.ItSeeIt)
         net.SendToServer()
+        ply:EmitSound( Sound("scp_055/it.mp3") )
     end
 end
 
@@ -147,6 +149,7 @@ function scp_055.SetToTheDark()
 	
 		DrawMotionBlur( AddAlpha, DrawAlpha, Delay )
     end)
+    ply:EmitSound( Sound("scp_055/begin.mp3") )	
 end
 
 function scp_055.RemoveTheDark()
@@ -170,10 +173,12 @@ function scp_055.RemoveTheDark()
     hook.Remove("Think", "Think.SCP055_ItSeeIt_".. ply:EntIndex())
     ply:StopSound( "scp_055/talk_event_begin.mp3" )
     ply:StopSound( "scp_055/talk_event_end.mp3" )
-    ply:StopSound( "scp_055/text_event.mp3" )
     ply:StopSound( "scp_055/it_event_end.mp3" )
     ply:StopSound( "scp_055/end_effect.mp3" )
-    ply:StopSound( "scp_055/theme_gameevent.wav" )
+    ply:StopSound( "scp_055/text_event.mp3" )
+    ply:StopSound( "scp_055/begin.mp3" )
+    ply:StopSound( "scp_055/end.wav" )
+    ply:StopSound( "scp_055/it.wav" )
     if (IsValid(ply.SCP0555_FrameGameEvent)) then 
         ply.SCP0555_FrameGameEvent:Remove()
         ply.SCP0555_FrameGameEvent = nil

@@ -22,15 +22,12 @@
 --]]
 function scp_055.DropEntitie(ply, weapon, entity)
     if (!IsValid(ply)) then return end
+    if (not ply:HasWeapon(weapon)) then return end
 
-    if (ply:HasWeapon(weapon)) then
-
-        local ent = ents.Create( entity )
-        ent:SetPos( ply:GetShootPos() + ply:GetAimVector() * 20 )
-        ent:SetAngles( ply:EyeAngles() + Angle(0, 48, 0))
-        ent:Spawn()
-        ent:Activate()
-    end
+    local ent = scp_055.Drop(ply, entity)
+    if (IsValid(ent) and entity == "scp_055") then
+		ent:SetIsOpen(ply.SCP055_IsOpenBC)
+	end
 end
 
 --[[

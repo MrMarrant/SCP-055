@@ -1,7 +1,6 @@
 local function PostEffect(ply, gamePanel)
     gamePanel.IsEnd = true
     timer.Remove("Falling.SCP055_Key_MovePlayer" .. ply:EntIndex())
-    ply:StopSound( "scp_055/theme_gameevent.wav" )
     ply:EmitSound( Sound( "scp_055/reset.mp3" ))
     timer.Simple(10, function()
         if (not IsValid(gamePanel) or not IsValid(ply)) then return end
@@ -158,8 +157,7 @@ local function CreatePlayer(gamePanel, ply, x, y, color)
         if (gamePanel.IsEnd) then alpha = math.Clamp(alpha - speedDecay, 0, 100) end
         color.a = alpha
         draw.RoundedBoxEx(0, 0, 0, width, height, color, false, false, true, true)
-        draw.RoundedBoxEx(2, width * 0.5, height * 0.5, width * 0.1, height * 0.1, Color(255, 255, 255), true, true, true,
-            true)
+        draw.RoundedBoxEx(2, width * 0.5, height * 0.5, width * 0.1, height * 0.1, Color(255, 255, 255), true, true, true, true)
     end
     ply.SCP055_walls = {}
     ply.SCP055_ennemies = {}
@@ -344,6 +342,7 @@ local function WhyMap(gamePanel, ply)
     CreateWall(gamePanel, gamePanel:GetWide() * 0.9, 0, gamePanel:GetWide() * 0.02, gamePanel:GetTall(), colorWall, ply.SCP055_walls)
     CreateCircularWall(gamePanel, gamePanel:GetWide() * 0.4, gamePanel:GetTall() * 0.55, gamePanel:GetWide() * 0.11, 255, 0, 0, ply.SCP055_walls, true)
     FallPlayer(ply, gamePanel)
+    ply:StopSound( "scp_055/end.wav" )
 end
 
 -- Fonction pour créer un mur
@@ -444,8 +443,10 @@ function scp_055.GameEvent()
         elseif keyCode == KEY_RIGHT then
             x, y = 1, 0
         end
-        ply.ActualKey = keyCode
-        MovePlayer(x, y)
+        if (x != 0 or y != 0) then
+            ply.ActualKey = keyCode
+            MovePlayer(x, y)
+        end
     end
 
     function frame:OnKeyCodeReleased(keyCode)
@@ -465,7 +466,7 @@ function scp_055.GameEvent()
     gamePanel.indexMap = 0
 
     scp_055.NextMap(ply, gamePanel, 1)
-    ply:StartLoopingSound("scp_055/theme_gameevent.wav")
+    ply:StartLoopingSound("scp_055/end.wav")
 end
 
 net.Receive(SCP_055_CONFIG.GameEvent, function()

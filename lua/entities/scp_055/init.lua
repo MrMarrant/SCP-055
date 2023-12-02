@@ -22,7 +22,6 @@ function ENT:Initialize()
 	self:SetModel( "models/scp_055/scp_055.mdl" )
 	self:InitVar()
 	self:RebuildPhysics()
-	-- TODO : Tourner en boucle un son de fond (ambiance)
 end
 
 -- Intialise the physic of the entity

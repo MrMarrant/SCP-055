@@ -16,7 +16,7 @@
 
 function scp_055.StartEvent(ply)
     local choice = math.random(1, SCP_055_CONFIG.EventCount)
-	choice = 3 -- TODO : Remove this line
+	choice = 2 -- TODO : Remove this line
 
     if (choice == 1) then
         scp_055.ItEvent(ply)
@@ -88,6 +88,7 @@ function scp_055.CreateNPCReplace(ply)
 	end
 
 	ply.SCP055_NPCReplace = NPC
+	NPC:EmitSound( Sound( "scp_055/close_briefcase.mp3" ))
 end
 
 function scp_055.SetViewModel(VMAnim, anim)
@@ -105,6 +106,7 @@ function scp_055.RemoveTheDark(ply)
 		timer.Remove("HookRemove_SCP055_ChaosChaos_".. ply:EntIndex())
 
 		scp_055.KillBot(ply.SCP055_NPCReplace)
+		ply.SCP055_IsOpenBC = nil
 	end
 end
 
