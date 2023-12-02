@@ -172,6 +172,30 @@ function scp_055.NewPosCircle(angle, rayon, centre)
 	return newPos
 end
 
+--[[
+    * Function used for drop the entitie if it is equip by a player.
+    * @Player ply The player who will drop the entity.
+    * @string weapon The weapon name to check.
+    * @string entity The entity name to create.
+--]]
+function scp_055.DropEntitie(ply, weapon, entity)
+    if (!IsValid(ply)) then return end
+    if (not ply:HasWeapon(weapon)) then return end
+
+    local ent = scp_055.Drop(ply, entity)
+    if (IsValid(ent) and entity == "scp_055") then
+		ent:SetIsOpen(ply.SCP055_IsOpenBC)
+	end
+end
+
+--[[
+    * Return true if the player has the security card or if is not needed
+    * @Player ply The player who will drop the entity.
+--]]
+function scp_055.HasSecurityCard(ply)
+    return (ply:HasWeapon("swep_cardscp055") or (not SCP_055_CONFIG.NeedCard:GetBool() and not ply:HasWeapon("swep_cardscp055")))
+end
+
 net.Receive(SCP_055_CONFIG.OpenBriefcase, function(len, ply)
 	scp_055.OpenBriefcase(ply)
 end)
