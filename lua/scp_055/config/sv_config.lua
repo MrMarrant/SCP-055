@@ -16,7 +16,7 @@
 
 -- Enable if it need to have the card for open SCP-055 briefcase
 SCP_055_CONFIG.NeedCard = CreateConVar( "SCP055_NeedCard", 0, {FCVAR_PROTECTED, FCVAR_ARCHIVE}, "Enable if it need to have the security card for open SCP-055 briefcase", 0, 1 )
-SCP_055_CONFIG.RadiusEffect = CreateConVar( "SCP055_RadiusEffect", 300, {FCVAR_PROTECTED, FCVAR_ARCHIVE}, "Radius effect of the briefcase, set it to 0 to disable it", 0, 9999 )
+SCP_055_CONFIG.RadiusEffect = CreateConVar( "SCP055_RadiusEffect", 150, {FCVAR_PROTECTED, FCVAR_ARCHIVE}, "Radius effect of the briefcase, set it to 0 to disable it", 0, 9999 )
 
 hook.Add( "PlayerDeath", "PlayerDeath.SCP055_Died", function( victim, inflictor, attacker )
     scp_055.SpawnRagdoll(victim, victim:GetModel(), victim.SCP055_NPCReplace and victim.SCP055_NPCReplace:GetPos() or victim.SCP055_OriginPos, victim:GetAngles(), true)
@@ -53,3 +53,12 @@ util.AddNetworkString(SCP_055_CONFIG.RemoveHook)
 util.AddNetworkString(SCP_055_CONFIG.GameEvent)
 util.AddNetworkString(SCP_055_CONFIG.EndGameEvent)
 util.AddNetworkString(SCP_055_CONFIG.SoundToServer)
+util.AddNetworkString(SCP_055_CONFIG.SetConvarInt)
+util.AddNetworkString(SCP_055_CONFIG.SetConvarBool)
+util.AddNetworkString(SCP_055_CONFIG.SetConvarClientSide)
+
+-- Send to player the list of actual players who wear the mask client side.
+hook.Add( "PlayerInitialSpawn", "PlayerInitialSpawn.SCP055_LoadPossessor", function(ply)
+    scp_055.SetConvarClientSide("ClientNeedCard", SCP_055_CONFIG.NeedCard:GetBool(), ply)
+    scp_055.SetConvarClientSide("ClientRadiusEffect", SCP_055_CONFIG.RadiusEffect:GetInt(), ply)
+end)

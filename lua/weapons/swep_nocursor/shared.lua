@@ -52,6 +52,11 @@ function SWEP:Initialize()
 	self:SetHoldType( self.HoldType )
 end
 
+function SWEP:PrimaryAttack()
+end
+
+function SWEP:SecondaryAttack()
+end
 
 function SWEP:OnDrop()
 	self:Remove()

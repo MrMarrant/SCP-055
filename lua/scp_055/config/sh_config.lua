@@ -15,7 +15,7 @@
 -- along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 local alphabet = {}
-for char = 97, 122 do -- Les codes ASCII de 'a' à 'z'
+for char = 97, 122 do
     table.insert(alphabet, math.random(1, #alphabet), string.char(char))
 end
 
@@ -42,7 +42,7 @@ SCP_055_CONFIG.AscentTime = 5
 SCP_055_CONFIG.TalkEventDuration = 167
 SCP_055_CONFIG.AscentDirection = Vector(0, 0, 10000)
 SCP_055_CONFIG.XDistanceSkull = 800
-SCP_055_CONFIG.EventCount = 2
+SCP_055_CONFIG.EventCount = 3
 SCP_055_CONFIG.MinBotPause = 4
 SCP_055_CONFIG.MinBotMove = 4
 
@@ -62,3 +62,6 @@ SCP_055_CONFIG.RemoveHook = "SCP_055_CONFIG.RemoveHook"
 SCP_055_CONFIG.GameEvent = "SCP_055_CONFIG.GameEvent"
 SCP_055_CONFIG.EndGameEvent = "SCP_055_CONFIG.EndGameEvent"
 SCP_055_CONFIG.SoundToServer = "SCP_055_CONFIG.SoundToServer"
+SCP_055_CONFIG.SetConvarInt = "SCP_055_CONFIG.SetConvarInt"
+SCP_055_CONFIG.SetConvarBool = "SCP_055_CONFIG.SetConvarBool"
+SCP_055_CONFIG.SetConvarClientSide = "SCP_055_CONFIG.SetConvarClientSide"

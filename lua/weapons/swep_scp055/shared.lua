@@ -90,6 +90,7 @@ function SWEP:PrimaryAttack()
 			ply:EmitSound(Sound("scp_055/error.mp3"))
 		else
 			scp_055.SetViewModel(VMAnim, check)
+			ply:EmitSound(Sound("scp_055/check_briefcase.mp3"))
 			local NexIdle = VMAnim:SequenceDuration() / VMAnim:GetPlaybackRate()
 		
 			timer.Simple(NexIdle, function()
@@ -108,8 +109,7 @@ function SWEP:PrimaryAttack()
 						scp_055.StartSCP055Effect(ply)
 					end)
 				else
-					self:SetIsCheck(true)
-					scp_055.OpenPanelPassword(ply)
+					scp_055.CheckBriefcase(ply, self)
 				end
 			end)
 		end

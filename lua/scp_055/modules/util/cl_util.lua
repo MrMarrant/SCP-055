@@ -31,7 +31,7 @@ local tab = {
 
 function scp_055.ProximityEffect(ent)
     local ply = LocalPlayer()
-    local maxRange = SCP_055_CONFIG.RadiusEffect
+    local maxRange = SCP_055_CONFIG.ClientRadiusEffect
 
     if (ply:GetPos():Distance(ent:GetPos()) > maxRange or not ply:Alive() or ply.SCP055_CloseEffect) then return end
     ply.SCP055_CloseEffect = ply:StartLoopingSound(Sound("scp_055/it_is_not_far.wav"))
@@ -58,7 +58,7 @@ end
 
 function scp_055.SetBriefcaseEffect(ent)
     local ply = LocalPlayer()
-    local maxRange = SCP_055_CONFIG.RadiusEffect
+    local maxRange = SCP_055_CONFIG.ClientRadiusEffect
 
     if (ply:GetPos():Distance(ent:GetPos()) > maxRange or not ply:Alive()) then return end
 
@@ -248,6 +248,64 @@ function scp_055.SoundToServer(string)
         net.WriteString(string)
     net.SendToServer()
 end
+
+function scp_055.SetConvarInt(name, value, ply)
+    if (ply:IsSuperAdmin() or game.SinglePlayer()) then --? Just for avoid to spam net message, we check server side to.
+        net.Start(SCP_055_CONFIG.SetConvarInt)
+            net.WriteString(name)
+            net.WriteUInt(value, 14)
+        net.SendToServer()
+    end
+end
+
+
+function scp_055.SetConvarBool(name, value, ply)
+    if (ply:IsSuperAdmin() or game.SinglePlayer()) then --? Just for avoid to spam net message, we check server side to.
+        net.Start(SCP_055_CONFIG.SetConvarBool)
+            net.WriteString(name)
+            net.WriteBool(value)
+        net.SendToServer()
+    end
+end
+
+hook.Add("PopulateToolMenu", "PopulateToolMenu.SCP055_MenuConfig", function()
+    spawnmenu.AddToolMenuOption("Utilities", "SCP-055", "SCP055_MenuConfig", "Settings", "", "", function(panel)
+        local ply = LocalPlayer()
+        local SCP055_NeedCard = vgui.Create("DCheckBoxLabel")
+        SCP055_NeedCard:SetPos( 5, 5 )
+        SCP055_NeedCard:SetText("")
+        SCP055_NeedCard:SizeToContents()
+        SCP055_NeedCard:SetValue( SCP_055_CONFIG.ClientNeedCard )
+        SCP055_NeedCard.OnChange = function(CheckBox, val)
+            scp_055.SetConvarBool("NeedCard", val, ply)
+        end
+        SCP055_NeedCard.Paint = function(CheckBox, w, h)
+            draw.DrawText( scp_055.GetTranslation("needcard_description"), "DermaDefaultBold", w*0.05, h * 0.2, Color(0, 153, 255), TEXT_ALIGN_LEFT )
+        end
+
+        local SCP055_RadiusEffect = vgui.Create("DNumSlider")
+        SCP055_RadiusEffect:SetPos( 5, 5 )
+        SCP055_RadiusEffect:SetSize( 100, 20 )
+        SCP055_RadiusEffect:SetMinMax( 0, 9999 )
+        SCP055_RadiusEffect:SetDecimals( 0 )
+        SCP055_RadiusEffect:SetValue( SCP_055_CONFIG.ClientRadiusEffect )
+        SCP055_RadiusEffect.OnValueChanged = function(NumSlider, val)
+            scp_055.SetConvarInt("RadiusEffect", val, ply)
+        end
+
+        panel:Clear()
+        panel:ControlHelp(scp_055.GetTranslation("warningsettings"))
+        panel:AddItem(SCP055_NeedCard)
+        panel:Help( scp_055.GetTranslation("radiuseffect_description") )
+        panel:AddItem(SCP055_RadiusEffect)
+    end)
+end)
+
+net.Receive(SCP_055_CONFIG.SetConvarClientSide, function ()
+    local name = net.ReadString()
+    local value = net.ReadUInt(14)
+    SCP_055_CONFIG[name] = value
+end)
 
 net.Receive(SCP_055_CONFIG.OpenPanelPassword, function()
     local ply = LocalPlayer()

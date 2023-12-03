@@ -17,10 +17,10 @@
 local LANG_FR = {
     enter = "ENTRER",
     quit = "QUITTER",
-    not055 = "Tu n'es pas SCP-055",
+    not055 = "Ce n'est pas toi",
     notstupid = "Ce n'est pas stupide",
     notalone = "Ce n'est pas seul",
-    isalive = "Est-ce en vie ?",
+    isalive = "Ce n'est pas vivant",
 
     introtalkevent_1 = "Et j'ai entendu comme le bruit du tonnerre",
     introtalkevent_2 = "Une des quatre bêtes disant viens et regardes",
@@ -33,6 +33,10 @@ local LANG_FR = {
     outrotalkevent_4 = "Et l'Enfer le suivait",
 
     ohsothatis = "Oh… alors c'est donc ça",
+
+    needcard_description = "Si coché, le joueur aura besoin d'avoir la carte d'autorisation sur lui pour ouvrir la mallette",
+    radiuseffect_description = "Zone de rayon de l'effet de la mallette, mettez-le à 0 pour désactiver l'effet",
+    warningsettings = "Seuls les Super Admins peuvent modifier ces valeurs, les autres rôles n'auront aucun effet sur ces valeurs.",
 
     -- Subtiles TalkEvent
     subtiles_1 = "Est-ce que je peux entrer ?",

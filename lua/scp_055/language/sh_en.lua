@@ -17,10 +17,10 @@
 local LANG_EN = {
     enter = "ENTER",
     quit = "QUIT",
-    not055 = "You are not SCP-055",
+    not055 = "It isn't you",
     notstupid = "It isn't stupid",
     notalone = "It isn't alone",
-    isalive = "Is it alive ?",
+    isalive = "Is isn't alive",
 
     introtalkevent_1 = "And I heard as it were the noise of thunder",
     introtalkevent_2 = "One of the four beasts saying come and see",
@@ -33,6 +33,10 @@ local LANG_EN = {
     outrotalkevent_4 = "And hell followed with him",
 
     ohsothatis = "Oh … so that's how it is.",
+
+    needcard_description = "Enable if it need to have the security card for open SCP-055 briefcase",
+    radiuseffect_description = "Radius effect of the briefcase, set it to 0 to disable it",
+    warningsettings = "Only Super Admins can change these values, all other roles will do nothing.",
 
     -- Subtiles TalkEvent
     subtiles_1 = "Can I come in?",

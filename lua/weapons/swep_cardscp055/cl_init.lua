@@ -44,15 +44,13 @@ function SWEP:DrawHUD()
         surface.SetDrawColor( 255, 255, 255, 255 )
         surface.DrawTexturedRect( SCP_055_CONFIG.ScrW *0.27, SCP_055_CONFIG.ScrH * 0.3, SCP_055_CONFIG.ScrW * 0.5, SCP_055_CONFIG.ScrH * 0.5 )
 
-        surface.SetFont( "SCP055_Password" )
-        surface.SetTextColor( 0, 0, 0 )
-
         local x = 0
         local passwordEdit = self.ActualPassword
         for i = 1, #passwordEdit do
-            surface.SetTextPos( SCP_055_CONFIG.ScrW *0.364 + x, SCP_055_CONFIG.ScrH * 0.54 ) 
-            surface.DrawText( passwordEdit[i] )
-            x = x + 114.5
+            surface.SetDrawColor( 0, 0, 0, 0)
+            surface.DrawRect(0, 0, SCP_055_CONFIG.ScrW, SCP_055_CONFIG.ScrH)
+            draw.DrawText( passwordEdit[i], "SCP055_Password", SCP_055_CONFIG.ScrW *0.372 + x, SCP_055_CONFIG.ScrH * 0.528, Color(0, 0, 0, 255), TEXT_ALIGN_CENTER )
+            x = x + SCP_055_CONFIG.ScrW *0.059
         end
     end
 end

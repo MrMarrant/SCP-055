@@ -43,10 +43,16 @@ function scp_055.OpenPanelPassword(ply)
 	net.Send(ply)
 end
 
+function scp_055.CheckBriefcase(ply, SCP055)
+	SCP055:SetIsCheck(true)
+	scp_055.OpenPanelPassword(ply)
+end
+
 function scp_055.UnCheckBriefcase(ply, SCP055)
 	local VMAnim = ply:GetViewModel()
 	scp_055.SetViewModel(VMAnim, "uncheck")
 	SCP055:SetIsCheck(false)
+	ply:EmitSound(Sound("scp_055/uncheck_briefcase.mp3"))
 end
 
 function scp_055.OpenBriefcase(ply)
@@ -198,6 +204,45 @@ end
 function scp_055.HasSecurityCard(ply)
     return (ply:HasWeapon("swep_cardscp055") or (not SCP_055_CONFIG.NeedCard:GetBool() and not ply:HasWeapon("swep_cardscp055")))
 end
+
+/* 
+* 
+* @string name
+* @number value
+*/
+function scp_055.SetConvarClientSide(name, value, ply)
+    if (type( value ) == "boolean") then value = value and 1 or 0 end
+    net.Start(SCP_055_CONFIG.SetConvarClientSide)
+        net.WriteString(name)
+        net.WriteUInt(value, 14)
+    if (ply) then
+        net.Send(ply)
+    else
+        net.Broadcast()
+    end
+end
+
+-- Set Convar Int for the client side
+net.Receive(SCP_055_CONFIG.SetConvarInt, function ( len, ply )
+    if (ply:IsSuperAdmin() or game.SinglePlayer()) then
+        local name = net.ReadString()
+        local value = net.ReadUInt(14)
+        SCP_055_CONFIG[name]:SetInt(value)
+
+        scp_055.SetConvarClientSide('Client'..name, value) --? The value clientside start with Client
+    end
+end)
+
+-- Set Convar Bool for the client side
+net.Receive(SCP_055_CONFIG.SetConvarBool, function ( len, ply )
+    if (ply:IsSuperAdmin() or game.SinglePlayer()) then
+        local name = net.ReadString()
+        local value = net.ReadBool()
+        SCP_055_CONFIG[name]:SetBool(value)
+
+        scp_055.SetConvarClientSide('Client'..name, value) --? The value clientside start with Client
+    end
+end)
 
 net.Receive(SCP_055_CONFIG.OpenBriefcase, function(len, ply)
 	scp_055.OpenBriefcase(ply)

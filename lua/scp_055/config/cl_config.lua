@@ -25,12 +25,12 @@ SCP_055_CONFIG.ColorBrightTalk = Color(0, 111, 196)
 SCP_055_CONFIG.SpeedDecayGameEvent = 0.08
 
 surface.CreateFont( "SCP055_Password", {
-    font = "Oswald",
-    size = 100,
+    font = "Anton",
+    size = 120,
 } )
 
 surface.CreateFont( "SCP055_LastWord", {
-    font = "Oswald",
+    font = "Anton",
     size = 15,
 } )
 

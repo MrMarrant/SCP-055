@@ -16,7 +16,6 @@
 
 function scp_055.StartEvent(ply)
     local choice = math.random(1, SCP_055_CONFIG.EventCount)
-	choice = 2 -- TODO : Remove this line
 
     if (choice == 1) then
         scp_055.ItEvent(ply)
@@ -203,7 +202,7 @@ function scp_055.ForwardPlayer(ply, endStep, step)
 			local text = SCP_055_CONFIG.ItEventText[ math.random( #SCP_055_CONFIG.ItEventText ) ]
 			scp_055.BlueScreen(ply, text, "SCP055_BlueScreen_2", 3, 0.35, 0, "scp_055/it_event_end.mp3")
 			local pos = IsValid(ply.SCP055_NPCReplace) and ply.SCP055_NPCReplace or ply.SCP055_OriginPos
-			scp_055.MovePlayerToAPos(ply, pos, 100, 100, true)
+			scp_055.MovePlayerToAPos(ply, pos, 100, 50, true)
 		end
 	end)
 end
@@ -251,7 +250,7 @@ net.Receive(SCP_055_CONFIG.EndGameEvent, function(len, ply)
 	if (not scp_055.IsValid(ply)) then return end
 
 	local pos = IsValid(ply.SCP055_NPCReplace) and ply.SCP055_NPCReplace or ply.SCP055_OriginPos
-	scp_055.MovePlayerToAPos(ply, pos, 50, 100, true)
+	scp_055.MovePlayerToAPos(ply, pos, 50, 50, true)
 end)
 
 hook.Add( "StartCommand", "StartCommand.SCP055_ManageBot", function( bot, cmd )
