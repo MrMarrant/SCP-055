@@ -1,7 +1,12 @@
 local function PostEffect(ply, gamePanel)
-    gamePanel.IsEnd = true
     timer.Remove("Falling.SCP055_Key_MovePlayer" .. ply:EntIndex())
     ply:EmitSound( Sound( "scp_055/reset.mp3" ))
+
+    timer.Create("SCP055_SetAlphaGamePanel_" .. ply:EntIndex(), 0.1, 100, function()
+        if (not IsValid(ply) or not IsValid(gamePanel)) then return end
+        gamePanel.alphaValue = math.Clamp(gamePanel.alphaValue - 2, 0, 150)
+    end)
+
     timer.Simple(10, function()
         if (not IsValid(gamePanel) or not IsValid(ply)) then return end
         local duration = CurTime() + 4
@@ -16,10 +21,12 @@ local function PostEffect(ply, gamePanel)
         ply:EmitSound( Sound( "scp_055/it_hear_you.mp3" ))
         timer.Simple(4, function()
             if (not IsValid(ply)) then return end
+            if (not ply:Alive()) then return end
             ply:EmitSound( Sound( "scp_055/call_end.mp3" ))
             timer.Simple(1, function()
-                hook.Remove("PostDrawHUD", "PostDrawHUD.SCP055_GameEventLastWord_".. ply:EntIndex())
                 if (not IsValid(ply)) then return end
+                if (not ply:Alive()) then return end
+                hook.Remove("PostDrawHUD", "PostDrawHUD.SCP055_GameEventLastWord_".. ply:EntIndex())
                 ply:EmitSound( Sound( "scp_055/end_effect.mp3" ))
                 net.Start(SCP_055_CONFIG.EndGameEvent)
                 net.SendToServer()
@@ -56,13 +63,10 @@ end
 -- Fonction pour créer un mur
 local function CreateWall(gamePanel, x, y, width, height, color, walls, nextMap)
     local wall = vgui.Create("EditablePanel", gamePanel)
-    local alpha = color.a
     wall:SetSize(width, height)
     wall:SetPos(x, y)
-    local speedDecay = SCP_055_CONFIG.SpeedDecayGameEvent
     function wall:Paint(width, height)
-        if (gamePanel.IsEnd) then alpha = math.Clamp(alpha - speedDecay, 0, 100) end
-        color.a = alpha
+        color.a = gamePanel.alphaValue
         draw.RoundedBoxEx(0, 0, 0, width, height, color, false, false, true, true)
     end
     wall.nextMap = nextMap or nil
@@ -93,12 +97,9 @@ local function CreateCircularWall(gamePanel, x, y, radius, r, g, b, walls, nextM
 
     wall.x, wall.y = x, y
     wall.nextMap = nextMap or nil
-    local alpha = 255
-    local speedDecay = SCP_055_CONFIG.SpeedDecayGameEvent
     function wall:Paint(width, height)
-        if (gamePanel.IsEnd) then alpha = math.Clamp(alpha - speedDecay, 0, 100) end
         draw.NoTexture()
-        surface.SetDrawColor( r, g, b, alpha)
+        surface.SetDrawColor( r, g, b, gamePanel.alphaValue)
         draw.NoTexture()
         draw.Circle( width / 2, height / 2, 200, math.sin( CurTime() ) * 10 + 30 )
     end
@@ -151,11 +152,8 @@ local function CreatePlayer(gamePanel, ply, x, y, color)
     ply.SCP055_player1 = vgui.Create("EditablePanel", gamePanel)
     ply.SCP055_player1:SetSize(20, 20)
     ply.SCP055_player1:SetPos(x, y)
-    local alpha = 255
-    local speedDecay = SCP_055_CONFIG.SpeedDecayGameEvent
     function ply.SCP055_player1:Paint(width, height)
-        if (gamePanel.IsEnd) then alpha = math.Clamp(alpha - speedDecay, 0, 100) end
-        color.a = alpha
+        color.a = gamePanel.alphaValue
         draw.RoundedBoxEx(0, 0, 0, width, height, color, false, false, true, true)
         draw.RoundedBoxEx(2, width * 0.5, height * 0.5, width * 0.1, height * 0.1, Color(255, 255, 255), true, true, true, true)
     end
@@ -464,6 +462,7 @@ function scp_055.GameEvent()
     gamePanel:Center()
     gamePanel:SetBackgroundColor(Color(0, 0, 0))
     gamePanel.indexMap = 0
+    gamePanel.alphaValue = 255
 
     scp_055.NextMap(ply, gamePanel, 1)
     ply:StartLoopingSound("scp_055/end.wav")

@@ -54,7 +54,6 @@ local idle = "idle"
 
 function SWEP:Initialize()
 	self:InitVar()
-	self:SetWeaponHoldType( self.HoldType )
 	self:SetHoldType( self.HoldType )
 	self:SetPlaybackRate( GetConVarNumber( "sv_defaultdeployspeed" ) )
 	self:GetOwner().SCP055_IsOpenBC = self:GetIsOpen()

@@ -123,7 +123,7 @@ function scp_055.EndSCP055Effect(ply, isBlur)
 			else bot:Remove() end
 		end
 		ply.SCP055_NPCReplace = nil
-
+		ply:SetSuppressPickupNotices( true )
 		for key, value in ipairs(ply.SCP055_Weapons) do
 			local weapon = ply:Give(value)
 		end
@@ -132,11 +132,13 @@ function scp_055.EndSCP055Effect(ply, isBlur)
 			ply:SetAmmo(value, key)
 		end
 		ply:SelectWeapon( "swep_scp055" )
+		ply:SetSuppressPickupNotices( false )
 	end
 
 	net.Start(SCP_055_CONFIG.RemoveTheDark)
 	net.Send(ply)
 
+	ply:StripWeapon("swep_nocursor")
 	ply.SCP055_Ammos = nil
 	ply.SCP055_Weapons = nil
 	ply.SCP055_AffectBySCP005 = nil
@@ -249,7 +251,7 @@ net.Receive(SCP_055_CONFIG.EndGameEvent, function(len, ply)
 	if (not scp_055.IsValid(ply)) then return end
 
 	local pos = IsValid(ply.SCP055_NPCReplace) and ply.SCP055_NPCReplace or ply.SCP055_OriginPos
-	scp_055.MovePlayerToAPos(ply, pos, 100, 100, true)
+	scp_055.MovePlayerToAPos(ply, pos, 50, 100, true)
 end)
 
 hook.Add( "StartCommand", "StartCommand.SCP055_ManageBot", function( bot, cmd )

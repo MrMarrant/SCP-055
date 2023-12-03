@@ -47,9 +47,10 @@ end
 function scp_055.ItEvent()
     local ply = LocalPlayer()
     ply.SCP055_DelayIt = 0
-    scp_055.SpawnRoadSign(ply)
-    timer.Create("SCP055_DelayIt_".. ply:EntIndex(), 4, 4, function()
+    timer.Create("SCP055_DelayIt_".. ply:EntIndex(), 3, 4, function()
         if(not IsValid(ply)) then return end
+
+        scp_055.SpawnRoadSign(ply)
         ply.SCP055_DelayIt = ply.SCP055_DelayIt + 2
         if (ply.SCP055_DelayIt <= 6) then ply:EmitSound(Sound("scp_055/spot_on.mp3")) end
         if (ply.SCP055_DelayIt == 2) then timer.Adjust( "SCP055_DelayIt_".. ply:EntIndex(), 2 ) end
@@ -59,7 +60,6 @@ function scp_055.ItEvent()
     end)
 end
 
-
 function scp_055.SpawnRoadSign(ply)
     local angle = Angle(0, 180, 0)
     local posPlayer = ply:GetPos()
@@ -67,6 +67,8 @@ function scp_055.SpawnRoadSign(ply)
     hook.Remove("HUDPaint", "HUDPaint.SCP055_SetToTheDark".. ply:EntIndex())
 
     hook.Add( "RenderScreenspaceEffects", "RenderScreenspaceEffects.SCP055_ItEvent_".. ply:EntIndex(), function()
+        if (not IsValid(ply)) then return end
+
         DrawColorModify( tab )
         DrawSobel( 0.1 )
         cam.Start3D()
@@ -170,6 +172,7 @@ function scp_055.RemoveTheDark()
     timer.Remove("SCP055_PsychoEffect_".. ply:EntIndex())
     timer.Remove("SCP055_DelayIt_".. ply:EntIndex())
     timer.Remove("Falling.SCP055_Key_MovePlayer".. ply:EntIndex())
+    timer.Remove("SCP055_SetAlphaGamePanel_".. ply:EntIndex())
     hook.Remove("Think", "Think.SCP055_ItSeeIt_".. ply:EntIndex())
     ply:StopSound( "scp_055/talk_event_begin.mp3" )
     ply:StopSound( "scp_055/talk_event_end.mp3" )

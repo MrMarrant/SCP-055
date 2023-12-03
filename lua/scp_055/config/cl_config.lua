@@ -22,7 +22,7 @@ SCP_055_CONFIG.RadiusEffect = SCP_055_CONFIG.RadiusEffect or 300
 SCP_055_CONFIG.ColorPietroTalk = Color(230, 238, 0)
 SCP_055_CONFIG.ColorBrightTalk = Color(0, 111, 196)
 
-SCP_055_CONFIG.SpeedDecayGameEvent = 0.05
+SCP_055_CONFIG.SpeedDecayGameEvent = 0.08
 
 surface.CreateFont( "SCP055_Password", {
     font = "Oswald",

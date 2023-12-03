@@ -36,7 +36,7 @@ if (SERVER) then
                     if (not scp_055.IsValid(ply)) then return end
 
                     local pos = IsValid(ply.SCP055_NPCReplace) and ply.SCP055_NPCReplace or ply.SCP055_OriginPos
-                    scp_055.MovePlayerToAPos(ply, pos, 100, 100, true)
+                    scp_055.MovePlayerToAPos(ply, pos, 50, 100, true)
                 end)
             end )
         end )

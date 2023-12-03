@@ -20,11 +20,11 @@ AddCSLuaFile( "cl_init.lua" )
 SWEP.Slot = 0
 SWEP.SlotPos = 1
 
-SWEP.Spawnable = true
+SWEP.Spawnable = false
 
-SWEP.Category = "SCP"
-SWEP.ViewModel = Model( "" )
-SWEP.WorldModel = Model( "models/weapons/card_scp055/w_card_scp055.mdl" )
+SWEP.Category = ""
+SWEP.ViewModel = ""
+SWEP.WorldModel = ""
 
 SWEP.ViewModelFOV = 65
 SWEP.HoldType = "normal"
@@ -40,21 +40,19 @@ SWEP.Secondary.DefaultClip = -1
 SWEP.Secondary.Automatic = false
 SWEP.Secondary.Ammo = "none"
 SWEP.DrawAmmo = false
+SWEP.AutoSwitch = true
+SWEP.Automatic = false
 
 -- Variables Personnal to this weapon --
 -- [[ STATS WEAPON ]]
-SWEP.PrimaryCooldown = 1
+SWEP.PrimaryCooldown = 1.5
 
 function SWEP:Initialize()
+	self:SetWeaponHoldType( self.HoldType )
 	self:SetHoldType( self.HoldType )
-	self:GetOwner().scp055_cardCode = nil
 end
 
-function SWEP:SecondaryAttack()
-	local ply = self:GetOwner()
-	if CLIENT then ply.scp055_cardCode = nil return end
 
-	self:SetNextSecondaryFire( CurTime() + self.PrimaryCooldown )
-	local ent = scp_055.Drop(self:GetOwner(), "card_scp055")
-	if (IsValid(ent)) then self:Remove() end
+function SWEP:OnDrop()
+	self:Remove()
 end
