@@ -34,11 +34,6 @@ surface.CreateFont( "SCP055_LastWord", {
     size = 15,
 } )
 
-surface.CreateFont( "SCP055_BlueScreen_1", {
-    font = "Libre Barcode 39",
-    size = 100,
-} )
-
 surface.CreateFont( "SCP055_BlueScreen_2", {
     font = "Rock Salt",
     size = 300,
