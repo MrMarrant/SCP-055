@@ -69,12 +69,14 @@ function scp_055.CreateNPCReplace(ply)
 			NPC:ManipulateBoneAngles(i, ply:GetManipulateBoneAngles(i))
 			NPC:ManipulateBonePosition(i, ply:GetManipulateBonePosition(i))
 		end
+		if (ply.SCP055_Weapons["swep_cardscp055"]) then NPC.SCP055_HasCard = true  end
 	else
 		NPC:SetPos( pos )
 		NPC:SetAngles( angle )
 		NPC:SetModel( model )
 		NPC:SetSkin( ply:GetSkin() )
 		NPC:SetBodyGroups( ply:GetBodyGroups() )
+		if (ply.SCP055_Weapons["swep_cardscp055"]) then NPC:Give( "swep_cardscp055" ) end
 		NPC:Give( "swep_scp055" )
 		NPC:SelectWeapon( "swep_scp055" )
 		NPC.SCP055_IsBot = true
@@ -123,8 +125,8 @@ function scp_055.EndSCP055Effect(ply, isBlur)
 		end
 		ply.SCP055_NPCReplace = nil
 		ply:SetSuppressPickupNotices( true )
-		for key, value in ipairs(ply.SCP055_Weapons) do
-			local weapon = ply:Give(value)
+		for key, value in pairs(ply.SCP055_Weapons) do
+			local weapon = ply:Give(key)
 		end
 
 		for key, value in ipairs(ply.SCP055_Ammos) do
@@ -149,21 +151,23 @@ end
 function scp_055.KillBot(bot)
 	if (not IsValid(bot)) then return end
 
-	bot.SCP055_Owner.SCP055_NPCReplace = nil
+	local owner = bot.SCP055_Owner
+	owner.SCP055_NPCReplace = nil
 
 	if (bot.SCP055_IsBot) then
 		if (bot:Alive()) then
-			local NPCWeapon = bot:GetWeapon( "swep_scp055" )
-			if (IsValid(NPCWeapon)) then
-				scp_055.Drop(bot, "scp_055")
-				NPCWeapon:Remove() 
-			end
+			if (bot:HasWeapon("swep_scp055")) then scp_055.Drop(bot, "scp_055") end
+			if (bot:HasWeapon("swep_cardscp055")) then scp_055.Drop(bot, "card_scp055") end
 		end
 
 		bot:Kick()
 	else
-		local ent = scp_055.CreateEnt("scp_055")
-		ent:SetPos( bot:GetPos() )
+		local entSCP055 = scp_055.CreateEnt("scp_055")
+		if (IsValid(entSCP055)) then entSCP055:SetPos( bot:GetPos() + math.rando(-20, 20) ) end
+		if (bot.SCP055_HasCard) then
+			local entCard = scp_055.CreateEnt("card_scp055")
+			if (IsValid(entCard)) then entCard:SetPos( bot:GetPos() + math.rando(-20, 20) ) end
+		end
 		bot:Remove()
 	end
 end

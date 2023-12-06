@@ -32,6 +32,7 @@ end
 
 function scp_055.CreateEnt(name)
 	local ent = ents.Create( name )
+	if (not IsValid(ent)) then return false end
 	ent:Spawn()
 	ent:Activate()
 
@@ -95,7 +96,7 @@ end
 function scp_055.RemoveWeapons(ply)
 	ply.SCP055_Weapons = {}
 	for key, value in ipairs(ply:GetWeapons()) do
-		table.insert(ply.SCP055_Weapons, value:GetClass())
+		ply.SCP055_Weapons[value:GetClass()] = true
 	end
 	ply.SCP055_Ammos = ply:GetAmmo()
 
