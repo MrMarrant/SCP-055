@@ -49,7 +49,7 @@ function SWEP:DrawHUD()
         for i = 1, #passwordEdit do
             surface.SetDrawColor( 0, 0, 0, 0)
             surface.DrawRect(0, 0, SCP_055_CONFIG.ScrW, SCP_055_CONFIG.ScrH)
-            draw.DrawText( passwordEdit[i], "SCP055_Password", SCP_055_CONFIG.ScrW *0.372 + x, SCP_055_CONFIG.ScrH * 0.528, Color(0, 0, 0, 255), TEXT_ALIGN_CENTER )
+            draw.DrawText( passwordEdit[i], "SCP055_Password", SCP_055_CONFIG.ScrW *0.372 + x, SCP_055_CONFIG.ScrH * 0.55, Color(0, 0, 0, 255), TEXT_ALIGN_CENTER )
             x = x + SCP_055_CONFIG.ScrW *0.059
         end
     end
