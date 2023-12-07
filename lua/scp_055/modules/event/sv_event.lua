@@ -76,6 +76,10 @@ function scp_055.CreateNPCReplace(ply)
 		NPC:SetModel( model )
 		NPC:SetSkin( ply:GetSkin() )
 		NPC:SetBodyGroups( ply:GetBodyGroups() )
+		for i = 0, ply:GetNumBodyGroups() - 1 do
+            local BodyGroup = ply:GetBodygroup(i)
+            NPC:SetBodygroup(i, BodyGroup)
+        end
 		if (ply.SCP055_Weapons["swep_cardscp055"]) then NPC:Give( "swep_cardscp055" ) end
 		NPC:Give( "swep_scp055" )
 		NPC:SelectWeapon( "swep_scp055" )

@@ -46,6 +46,8 @@ SWEP.Automatic = false
 -- Variables Personnal to this weapon --
 -- [[ STATS WEAPON ]]
 SWEP.PrimaryCooldown = 1.5
+SWEP.ReloadCooldown = 1.5
+SWEP.ReloadNextFire = 0
 
 -- Animation SWEP CONST --
 local check = "check"
@@ -131,12 +133,18 @@ end
 -- Close the entitie
 function SWEP:Reload()
 	if CLIENT then return end
+	if (not self:GetIsOpen()) then return end
+	local CurrentTime = CurTime()
+	if (CurrentTime < self.ReloadNextFire) then return end
 
+	self.ReloadNextFire = CurrentTime + self.ReloadCooldown
 	local ply = self:GetOwner()
-	if (self:GetIsOpen() and scp_055.HasSecurityCard(ply)) then
+	if (scp_055.HasSecurityCard(ply)) then
 		self:SetIsOpen(false)
 		ply.SCP055_IsOpenBC = false
 		ply:EmitSound(Sound("scp_055/close_briefcase.mp3"))
+	else
+		ply:EmitSound(Sound("scp_055/error.mp3"))
 	end
 end
 
