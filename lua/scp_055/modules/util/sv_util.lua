@@ -53,6 +53,7 @@ function scp_055.UnCheckBriefcase(ply, SCP055)
 	local VMAnim = ply:GetViewModel()
 	scp_055.SetViewModel(VMAnim, "uncheck")
 	SCP055:SetIsCheck(false)
+	SCP055:SetNextPrimaryFire( CurTime() + 2 )
 	ply:EmitSound(Sound("scp_055/uncheck_briefcase.mp3"))
 end
 
@@ -72,7 +73,7 @@ function scp_055.StartSCP055Effect(ply)
 
 	timer.Simple(0.1, function() --? Strip weapon make 0.1s for remove all weapons.
 		ply.SCP055_AffectBySCP005 = true
-		ply.SCP055_01 = true
+		if (SCP_055_CONFIG.CanUseOncePerLife:GetBool()) then ply.SCP055_01 = true end
 		ply:SetRenderMode(RENDERMODE_TRANSALPHA)
 		ply:SetColor( Color(0, 0, 0, 0))
 		ply.SCP055_OriginPos = ply:GetPos()

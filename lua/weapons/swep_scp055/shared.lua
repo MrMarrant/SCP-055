@@ -45,8 +45,9 @@ SWEP.Automatic = false
 
 -- Variables Personnal to this weapon --
 -- [[ STATS WEAPON ]]
-SWEP.PrimaryCooldown = 1.5
-SWEP.ReloadCooldown = 1.5
+SWEP.PrimaryCooldown = 2
+SWEP.PrimaryCooldownEffect = 10
+SWEP.ReloadCooldown = 2.5
 SWEP.ReloadNextFire = 0
 
 -- Animation SWEP CONST --
@@ -77,7 +78,8 @@ function SWEP:Deploy()
 end
 
 function SWEP:PrimaryAttack()
-	self:SetNextPrimaryFire( CurTime() + self.PrimaryCooldown )
+	local CurrentTime = CurTime()
+	self:SetNextPrimaryFire( CurrentTime + self.PrimaryCooldown )
 	if CLIENT then return end
 
 	local ply = self:GetOwner()
@@ -101,8 +103,9 @@ function SWEP:PrimaryAttack()
 				if (StateOpen) then
 					if (scp_055.IsValid(ply) or ply.SCP055_01) then -- If it is affect by 055 or was affect by it
 						scp_055.UnCheckBriefcase(ply, self)
-						return 
+						return
 					end
+					self:SetNextPrimaryFire( CurrentTime + self.PrimaryCooldownEffect )
 					scp_055.SetViewModel(VMAnim, open)
 					local NexIdle = VMAnim:SequenceDuration() / VMAnim:GetPlaybackRate()
 		

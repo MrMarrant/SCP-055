@@ -37,6 +37,7 @@ local LANG_FR = {
     needcard_description = "Si coché, le joueur aura besoin d'avoir la carte d'autorisation sur lui pour ouvrir la mallette",
     radiuseffect_description = "Zone de rayon de l'effet de la mallette, mettez-le à 0 pour désactiver l'effet",
     warningsettings = "Seuls les Super Admins peuvent modifier ces valeurs, les autres rôles n'auront aucun effet sur ces valeurs.",
+    useonceperlife_description = "Si coché, un joueur ne pourra utiliser SCP-055 qu'une seule fois par vie.",
 
     -- Subtiles TalkEvent
     subtiles_1 = "Est-ce que je peux entrer ?",

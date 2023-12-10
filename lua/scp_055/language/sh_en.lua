@@ -37,6 +37,7 @@ local LANG_EN = {
     needcard_description = "Enable if it need to have the security card for open SCP-055 briefcase",
     radiuseffect_description = "Radius effect of the briefcase, set it to 0 to disable it",
     warningsettings = "Only Super Admins can change these values, all other roles will do nothing.",
+    useonceperlife_description = "If checked, a player can only use SCP-055 once per lifetime.",
 
     -- Subtiles TalkEvent
     subtiles_1 = "Can I come in?",

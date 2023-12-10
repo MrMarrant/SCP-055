@@ -283,6 +283,18 @@ hook.Add("PopulateToolMenu", "PopulateToolMenu.SCP055_MenuConfig", function()
             draw.DrawText( scp_055.GetTranslation("needcard_description"), "DermaDefaultBold", w*0.05, h * 0.2, Color(0, 153, 255), TEXT_ALIGN_LEFT )
         end
 
+        local SCP055_CanUseOncePerLife = vgui.Create("DCheckBoxLabel")
+        SCP055_CanUseOncePerLife:SetPos( 5, 5 )
+        SCP055_CanUseOncePerLife:SetText("")
+        SCP055_CanUseOncePerLife:SizeToContents()
+        SCP055_CanUseOncePerLife:SetValue( SCP_055_CONFIG.ClientCanUseOncePerLife )
+        SCP055_CanUseOncePerLife.OnChange = function(CheckBox, val)
+            scp_055.SetConvarBool("CanUseOncePerLife", val, ply)
+        end
+        SCP055_CanUseOncePerLife.Paint = function(CheckBox, w, h)
+            draw.DrawText( scp_055.GetTranslation("useonceperlife_description"), "DermaDefaultBold", w*0.05, h * 0.2, Color(0, 153, 255), TEXT_ALIGN_LEFT )
+        end
+
         local SCP055_RadiusEffect = vgui.Create("DNumSlider")
         SCP055_RadiusEffect:SetPos( 5, 5 )
         SCP055_RadiusEffect:SetSize( 100, 20 )
@@ -296,6 +308,7 @@ hook.Add("PopulateToolMenu", "PopulateToolMenu.SCP055_MenuConfig", function()
         panel:Clear()
         panel:ControlHelp(scp_055.GetTranslation("warningsettings"))
         panel:AddItem(SCP055_NeedCard)
+        panel:AddItem(SCP055_CanUseOncePerLife)
         panel:Help( scp_055.GetTranslation("radiuseffect_description") )
         panel:AddItem(SCP055_RadiusEffect)
     end)

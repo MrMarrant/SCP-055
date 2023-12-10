@@ -75,7 +75,6 @@ function scp_055.CreateNPCReplace(ply)
 		NPC:SetAngles( angle )
 		NPC:SetModel( model )
 		NPC:SetSkin( ply:GetSkin() )
-		NPC:SetBodyGroups( ply:GetBodyGroups() )
 		for i = 0, ply:GetNumBodyGroups() - 1 do
             local BodyGroup = ply:GetBodygroup(i)
             NPC:SetBodygroup(i, BodyGroup)
