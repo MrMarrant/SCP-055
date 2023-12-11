@@ -305,12 +305,24 @@ hook.Add("PopulateToolMenu", "PopulateToolMenu.SCP055_MenuConfig", function()
             scp_055.SetConvarInt("RadiusEffect", val, ply)
         end
 
+        local SCP055_MaxDurationGameEvent = vgui.Create("DNumSlider")
+        SCP055_MaxDurationGameEvent:SetPos( 5, 5 )
+        SCP055_MaxDurationGameEvent:SetSize( 100, 20 )
+        SCP055_MaxDurationGameEvent:SetMinMax( 1, 9999 )
+        SCP055_MaxDurationGameEvent:SetDecimals( 0 )
+        SCP055_MaxDurationGameEvent:SetValue( SCP_055_CONFIG.ClientMaxDurationGameEvent )
+        SCP055_MaxDurationGameEvent.OnValueChanged = function(NumSlider, val)
+            scp_055.SetConvarInt("MaxDurationGameEvent", val, ply)
+        end
+
         panel:Clear()
         panel:ControlHelp(scp_055.GetTranslation("warningsettings"))
         panel:AddItem(SCP055_NeedCard)
         panel:AddItem(SCP055_CanUseOncePerLife)
         panel:Help( scp_055.GetTranslation("radiuseffect_description") )
         panel:AddItem(SCP055_RadiusEffect)
+        panel:Help( scp_055.GetTranslation("maxdurationgameevent_description") )
+        panel:AddItem(SCP055_MaxDurationGameEvent)
     end)
 end)
 

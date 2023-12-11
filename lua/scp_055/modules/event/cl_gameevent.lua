@@ -1,3 +1,11 @@
+local function StartTimerPlayingTime(gamePanel, ply)
+    timer.Create("SCP055_StartTimerPlayingTime_" .. ply:EntIndex(), SCP_055_CONFIG.ClientMaxDurationGameEvent or 120, 1, function()
+        if (not IsValid(gamePanel) or not IsValid(ply)) then return end
+        gamePanel.indexMap = #SCP_055_CONFIG.MapList - 1
+        scp_055.NextMap(ply, gamePanel, 1)
+    end)
+end
+
 local function PostEffect(ply, gamePanel)
     timer.Remove("Falling.SCP055_Key_MovePlayer" .. ply:EntIndex())
     ply:EmitSound( Sound( "scp_055/reset.mp3" ))
@@ -349,6 +357,9 @@ function scp_055.NextMap(ply, gamePanel, increment)
     if (gamePanel.indexMap > 0) then
         RemoveMap(ply, isEndGame)
     end
+    if (gamePanel.indexMap == 2) then --? We remove the limitation timer if player is on the second map
+        timer.Remove("SCP055_StartTimerPlayingTime_".. ply:EntIndex())
+    end
     if (not isEndGame) then
         gamePanel.indexMap = gamePanel.indexMap + increment
         ply.SCP055_Unkey = nil
@@ -427,11 +438,15 @@ function scp_055.GameEvent()
     frame:MakePopup()
     frame:SetDraggable( false )
     frame:ShowCloseButton( false )
+    frame.toggleconsole = input.GetKeyCode(input.LookupBinding("toggleconsole"))
 
     function frame:OnKeyCodePressed(keyCode)
         local ply = LocalPlayer()
         if (ply.SCP055_Unkey) then return end
         local x, y = 0, 0
+        --if keyCode == frame.toggleconsole and not gui.IsConsoleVisible() then
+            --gui.ShowConsole() --! Impossible à utilser ici, voir d'autre solutions
+            --! Soit refaire intégralement le menu pour pouvoir ouvrir la console, ou fermer le menu quand on essaye d'ouvrir la console
         if keyCode == KEY_UP then
             x, y = 0, -1
         elseif keyCode == KEY_DOWN then
@@ -466,6 +481,7 @@ function scp_055.GameEvent()
 
     scp_055.NextMap(ply, gamePanel, 1)
     ply:StartLoopingSound("scp_055/end.wav")
+    StartTimerPlayingTime(gamePanel, ply)
 end
 
 net.Receive(SCP_055_CONFIG.GameEvent, function()
