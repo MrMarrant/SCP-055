@@ -38,7 +38,7 @@ local LANG_FR = {
     radiuseffect_description = "Zone de rayon de l'effet de la mallette, mettez-le à 0 pour désactiver l'effet",
     warningsettings = "Seuls les Super Admins peuvent modifier ces valeurs, les autres rôles n'auront aucun effet sur ces valeurs.",
     useonceperlife_description = "Si coché, un joueur ne pourra utiliser SCP-055 qu'une seule fois par vie.",
-    maxdurationgameevent_description = "Définis le temps maximum avant de tp directement sur le dernier écran lors de l'événement mini jeu.",
+    maxdurationgameevent_description = "Définis le temps maximum en secondes avant de tp directement sur le dernier écran lors de l'événement mini jeu.",
 
     -- Subtiles TalkEvent
     subtiles_1 = "Est-ce que je peux entrer ?",

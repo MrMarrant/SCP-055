@@ -38,7 +38,7 @@ local LANG_EN = {
     radiuseffect_description = "Radius effect of the briefcase, set it to 0 to disable it",
     warningsettings = "Only Super Admins can change these values, all other roles will do nothing.",
     useonceperlife_description = "If checked, a player can only use SCP-055 once per lifetime.",
-    maxdurationgameevent_description = "Set max time before tp directly to last screen during the mini game event.",
+    maxdurationgameevent_description = "Set max time in seconds before tp directly to last screen during the mini game event.",
 
     -- Subtiles TalkEvent
     subtiles_1 = "Can I come in?",

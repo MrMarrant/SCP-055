@@ -18,7 +18,7 @@
 SCP_055_CONFIG.NeedCard = CreateConVar( "SCP055_NeedCard", 0, {FCVAR_PROTECTED, FCVAR_ARCHIVE}, "Enable if it need to have the security card for open SCP-055 briefcase", 0, 1 )
 SCP_055_CONFIG.RadiusEffect = CreateConVar( "SCP055_RadiusEffect", 150, {FCVAR_PROTECTED, FCVAR_ARCHIVE}, "Radius effect of the briefcase, set it to 0 to disable it", 0, 9999 )
 SCP_055_CONFIG.CanUseOncePerLife = CreateConVar( "SCP055_CanUseOncePerLife", 1, {FCVAR_PROTECTED, FCVAR_ARCHIVE}, "If checked, a player can only use SCP-055 once per lifetime.", 0, 1 )
-SCP_055_CONFIG.MaxDurationGameEvent = CreateConVar( "SCP055_MaxDurationGameEvent", 120, {FCVAR_PROTECTED, FCVAR_ARCHIVE}, "Set max time before tp directly to last screen at muzzle event", 1, 9999 )
+SCP_055_CONFIG.MaxDurationGameEvent = CreateConVar( "SCP055_MaxDurationGameEvent", 120, {FCVAR_PROTECTED, FCVAR_ARCHIVE}, "Set max time in seconds before tp directly to last screen at the mini game event", 1, 9999 )
 
 hook.Add( "PlayerDeath", "PlayerDeath.SCP055_Died", function( victim, inflictor, attacker )
     scp_055.SpawnRagdoll(victim, victim:GetModel(), victim.SCP055_NPCReplace and victim.SCP055_NPCReplace:GetPos() or victim.SCP055_OriginPos, victim:GetAngles(), true)
