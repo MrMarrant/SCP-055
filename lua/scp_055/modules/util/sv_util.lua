@@ -212,11 +212,17 @@ end
 * @string name
 * @number value
 */
-function scp_055.SetConvarClientSide(name, value, ply)
+function scp_055.SetConvarClientSide(name, value, ply, typeValue)
+	typeValue = typeValue or "number"
     if (type( value ) == "boolean") then value = value and 1 or 0 end
     net.Start(SCP_055_CONFIG.SetConvarClientSide)
         net.WriteString(name)
-        net.WriteUInt(value, 14)
+        net.WriteString(typeValue)
+		if (typeValue == "string") then
+			net.WriteString(value)
+		else
+        	net.WriteUInt(value, 14)
+		end
     if (ply) then
         net.Send(ply)
     else

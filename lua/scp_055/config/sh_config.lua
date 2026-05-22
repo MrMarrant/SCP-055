@@ -14,23 +14,6 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-local alphabet = {}
-for char = 97, 122 do
-    table.insert(alphabet, math.random(1, #alphabet), string.char(char))
-end
-
-for digit = 0, 9 do
-    table.insert(alphabet, math.random(1, #alphabet), tostring(digit))
-end
-
-local password = ""
-
-for i = 1, 6 do
-    local randomIndex = math.random(1, #alphabet)
-    password = password .. alphabet[randomIndex]
-end
-
-SCP_055_CONFIG.SecurityPassword = password
 SCP_055_CONFIG.ItEventText = {}
 SCP_055_CONFIG.ItEventText[1] = "not055"
 SCP_055_CONFIG.ItEventText[2] = "notstupid"

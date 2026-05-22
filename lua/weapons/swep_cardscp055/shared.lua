@@ -43,7 +43,23 @@ SWEP.DrawAmmo = false
 
 -- Variables Personnal to this weapon --
 -- [[ STATS WEAPON ]]
-SWEP.PrimaryCooldown = 1
+SWEP.PrimaryCooldown = 0.2
+SWEP.CurrentPrimaryCooldown = CurTime()
+
+function SWEP:PrimaryAttack()
+	if SERVER then return end
+	local CurrentTime = CurTime()
+	if (self.CurrentPrimaryCooldown < CurrentTime) then
+		self.ActualPassword = string.upper( SCP_055_CONFIG.ClientSecurityPassword )
+
+		local ply = self:GetOwner()
+
+		ply.scp055_cardCode = !ply.scp055_cardCode
+		local sfx = ply.scp055_cardCode and "scp_055/inspect.mp3" or "scp_055/uninspect.mp3"
+		ply:EmitSound(Sound(sfx))
+		self.CurrentPrimaryCooldown = CurrentTime + self.PrimaryCooldown
+	end
+end
 
 function SWEP:Initialize()
 	self:SetHoldType( self.HoldType )

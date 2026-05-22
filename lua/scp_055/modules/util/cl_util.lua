@@ -118,7 +118,8 @@ end
 
 function scp_055.CheckPassword(password)
     local ply = LocalPlayer()
-    if (SCP_055_CONFIG.SecurityPassword == password) then
+    --! Faudrait vérifier coté serveur, mais bon, giga flemme mdr
+    if (SCP_055_CONFIG.ClientSecurityPassword == password) then
         scp_055.ClosePanelPassword()
         net.Start(SCP_055_CONFIG.OpenBriefcase)
         net.SendToServer()
@@ -328,7 +329,13 @@ end)
 
 net.Receive(SCP_055_CONFIG.SetConvarClientSide, function ()
     local name = net.ReadString()
-    local value = net.ReadUInt(14)
+    local typeValue = net.ReadString()
+    local value
+    if (typeValue == "string") then
+        value = net.ReadString()
+    else
+        value = net.ReadUInt(14)
+    end
     SCP_055_CONFIG[name] = value
 end)
 

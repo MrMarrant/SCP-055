@@ -22,20 +22,8 @@ SWEP.Purpose = "It has rounded corners"
 SWEP.DrawCrosshair = false
 SWEP.Base = "weapon_base"
 SWEP.AutoSwitchTo = false
-SWEP.ActualPassword =  string.upper( SCP_055_CONFIG.SecurityPassword )
 
 local cardCode = Material( "card_scp055/card_code.png" )
-
-function SWEP:PrimaryAttack()
-	self:SetNextPrimaryFire( CurTime() + self.PrimaryCooldown )
-    self.ActualPassword =  string.upper( SCP_055_CONFIG.SecurityPassword )
-
-	local ply = self:GetOwner()
-
-	ply.scp055_cardCode = !ply.scp055_cardCode
-	local sfx = ply.scp055_cardCode and "scp_055/inspect.mp3" or "scp_055/uninspect.mp3"
-	ply:EmitSound(Sound(sfx))
-end
 
 function SWEP:DrawHUD()
     local ply = self:GetOwner()

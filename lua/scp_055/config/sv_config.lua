@@ -20,6 +20,24 @@ SCP_055_CONFIG.RadiusEffect = CreateConVar( "SCP055_RadiusEffect", 150, {FCVAR_P
 SCP_055_CONFIG.CanUseOncePerLife = CreateConVar( "SCP055_CanUseOncePerLife", 1, {FCVAR_PROTECTED, FCVAR_ARCHIVE}, "If checked, a player can only use SCP-055 once per lifetime.", 0, 1 )
 SCP_055_CONFIG.MaxDurationGameEvent = CreateConVar( "SCP055_MaxDurationGameEvent", 120, {FCVAR_PROTECTED, FCVAR_ARCHIVE}, "Set max time in seconds before tp directly to last screen at the mini game event", 1, 9999 )
 
+local alphabet = {}
+for char = 97, 122 do
+    table.insert(alphabet, math.random(1, #alphabet), string.char(char))
+end
+
+for digit = 0, 9 do
+    table.insert(alphabet, math.random(1, #alphabet), tostring(digit))
+end
+
+local password = ""
+
+for i = 1, 6 do
+    local randomIndex = math.random(1, #alphabet)
+    password = password .. alphabet[randomIndex]
+end
+
+SCP_055_CONFIG.SecurityPassword = password
+
 hook.Add( "PlayerDeath", "PlayerDeath.SCP055_Died", function( victim, inflictor, attacker )
     scp_055.SpawnRagdoll(victim, victim:GetModel(), victim.SCP055_NPCReplace and victim.SCP055_NPCReplace:GetPos() or victim.SCP055_OriginPos, victim:GetAngles(), true)
     scp_055.DropEntitie(victim, "swep_cardscp055", "card_scp055")
@@ -65,4 +83,5 @@ hook.Add( "PlayerInitialSpawn", "PlayerInitialSpawn.SCP055_LoadPossessor", funct
     scp_055.SetConvarClientSide("ClientRadiusEffect", SCP_055_CONFIG.RadiusEffect:GetInt(), ply)
     scp_055.SetConvarClientSide("ClientCanUseOncePerLife", SCP_055_CONFIG.CanUseOncePerLife:GetBool(), ply)
     scp_055.SetConvarClientSide("ClientMaxDurationGameEvent", SCP_055_CONFIG.MaxDurationGameEvent:GetInt(), ply)
+    scp_055.SetConvarClientSide("ClientSecurityPassword", SCP_055_CONFIG.SecurityPassword, ply, "string")
 end)
