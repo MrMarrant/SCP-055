@@ -56,7 +56,8 @@ function scp_055.SetToTheDark(ply)
 end
 
 function scp_055.CreateNPCReplace(ply)
-    local NPC = player.CreateNextBot( "SCP-055-01" )
+    --? In singleplayer there is no free slot for a bot, so we use a ragdoll instead.
+    local NPC = not game.SinglePlayer() and player.CreateNextBot( "SCP-055-01" ) or nil
 	local model = ply:GetModel()
 	local pos = ply:GetPos()
 	local angle = ply:GetAngles()
@@ -70,6 +71,7 @@ function scp_055.CreateNPCReplace(ply)
 			NPC:ManipulateBonePosition(i, ply:GetManipulateBonePosition(i))
 		end
 		if (ply.SCP055_Weapons["swep_cardscp055"]) then NPC.SCP055_HasCard = true  end
+		NPC.SCP055_Owner = ply
 	else
 		NPC:SetPos( pos )
 		NPC:SetAngles( angle )
@@ -155,7 +157,7 @@ function scp_055.KillBot(bot)
 	if (not IsValid(bot)) then return end
 
 	local owner = bot.SCP055_Owner
-	owner.SCP055_NPCReplace = nil
+	if (IsValid(owner)) then owner.SCP055_NPCReplace = nil end
 
 	if (bot.SCP055_IsBot) then
 		if (bot:Alive()) then
@@ -166,10 +168,10 @@ function scp_055.KillBot(bot)
 		bot:Kick()
 	else
 		local entSCP055 = scp_055.CreateEnt("scp_055")
-		if (IsValid(entSCP055)) then entSCP055:SetPos( bot:GetPos() + math.rando(-20, 20) ) end
+		if (IsValid(entSCP055)) then entSCP055:SetPos( bot:GetPos() + Vector(math.random(-20, 20), math.random(-20, 20), 10) ) end
 		if (bot.SCP055_HasCard) then
 			local entCard = scp_055.CreateEnt("card_scp055")
-			if (IsValid(entCard)) then entCard:SetPos( bot:GetPos() + math.rando(-20, 20) ) end
+			if (IsValid(entCard)) then entCard:SetPos( bot:GetPos() + Vector(math.random(-20, 20), math.random(-20, 20), 10) ) end
 		end
 		bot:Remove()
 	end

@@ -47,10 +47,13 @@ SWEP.PrimaryCooldown = 0.2
 SWEP.CurrentPrimaryCooldown = CurTime()
 
 function SWEP:PrimaryAttack()
-	if SERVER then return end
+	if SERVER then
+		if (game.SinglePlayer()) then self:CallOnClient("PrimaryAttack") end
+		return
+	end
 	local CurrentTime = CurTime()
 	if (self.CurrentPrimaryCooldown < CurrentTime) then
-		self.ActualPassword = string.upper( SCP_055_CONFIG.ClientSecurityPassword )
+		self.ActualPassword = string.upper( SCP_055_CONFIG.ClientSecurityPassword or "" )
 
 		local ply = self:GetOwner()
 
@@ -69,6 +72,7 @@ end
 function SWEP:SecondaryAttack()
 	local ply = self:GetOwner()
 	if CLIENT then ply.scp055_cardCode = nil return end
+	if (game.SinglePlayer()) then self:CallOnClient("SecondaryAttack") end
 
 	self:SetNextSecondaryFire( CurTime() + self.PrimaryCooldown )
 	local ent = scp_055.Drop(self:GetOwner(), "card_scp055")

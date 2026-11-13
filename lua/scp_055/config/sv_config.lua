@@ -76,9 +76,13 @@ util.AddNetworkString(SCP_055_CONFIG.SoundToServer)
 util.AddNetworkString(SCP_055_CONFIG.SetConvarInt)
 util.AddNetworkString(SCP_055_CONFIG.SetConvarBool)
 util.AddNetworkString(SCP_055_CONFIG.SetConvarClientSide)
+util.AddNetworkString(SCP_055_CONFIG.RequestClientConfig)
 
--- Send to player the list of actual players who wear the mask client side.
-hook.Add( "PlayerInitialSpawn", "PlayerInitialSpawn.SCP055_LoadPossessor", function(ply)
+--? Sent when the client ask for it, net messages sent at PlayerInitialSpawn can be lost (always the case in singleplayer).
+net.Receive(SCP_055_CONFIG.RequestClientConfig, function(len, ply)
+    if (ply.SCP055_ConfigSent) then return end
+    ply.SCP055_ConfigSent = true
+
     scp_055.SetConvarClientSide("ClientNeedCard", SCP_055_CONFIG.NeedCard:GetBool(), ply)
     scp_055.SetConvarClientSide("ClientRadiusEffect", SCP_055_CONFIG.RadiusEffect:GetInt(), ply)
     scp_055.SetConvarClientSide("ClientCanUseOncePerLife", SCP_055_CONFIG.CanUseOncePerLife:GetBool(), ply)

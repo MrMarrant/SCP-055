@@ -327,6 +327,11 @@ hook.Add("PopulateToolMenu", "PopulateToolMenu.SCP055_MenuConfig", function()
     end)
 end)
 
+hook.Add("InitPostEntity", "InitPostEntity.SCP055_RequestClientConfig", function()
+    net.Start(SCP_055_CONFIG.RequestClientConfig)
+    net.SendToServer()
+end)
+
 net.Receive(SCP_055_CONFIG.SetConvarClientSide, function ()
     local name = net.ReadString()
     local typeValue = net.ReadString()
